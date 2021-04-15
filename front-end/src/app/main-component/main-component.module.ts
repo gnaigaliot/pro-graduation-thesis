@@ -14,7 +14,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule,
     MainComponentRoutingModule,
     SharedModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    DemoMaterialModule
   ],
   providers: [
   ],

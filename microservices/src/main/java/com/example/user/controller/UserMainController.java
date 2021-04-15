@@ -164,21 +164,11 @@ public class UserMainController {
             if (userService.checkLogin(user)) {
                 result = jwtService.generateTokenLogin(user.getUserName());
                 httpStatus = HttpStatus.OK;
-                
-//                UsernamePasswordAuthenticationToken authReq
-//                    = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
-//                Authentication auth = authenticationManager.authenticate(authReq);
-//
-//                SecurityContext sc = SecurityContextHolder.getContext();
-//                sc.setAuthentication(auth);
-//                HttpSession session = request.getSession(true);
-//                session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, sc);
                 UserBean userBean =userService.loadUserByUsername(user.getUserName());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         userBean, null,
                         AuthorityUtils.createAuthorityList(userBean.getRole()));
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                SecurityContext context = SecurityContextHolder.getContext();
             } else {
                 result = "Wrong userId and password";
                 httpStatus = HttpStatus.BAD_REQUEST;

@@ -29,7 +29,7 @@ export class AppHeaderComponent {
     this.router.navigate(['/user-info/change-password']);
   }
 
-  public logOut() {
+  public logout() {
     this.router.navigate(['/login']);
     Storage.clear();
   }

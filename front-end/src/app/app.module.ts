@@ -22,6 +22,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MatIconModule } from '@angular/material/icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { AuthGuard } from './core/guards';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
     MatIconModule
   ],
   providers: [
+    AuthGuard,
     {
       provide: LocationStrategy,
       useClass: PathLocationStrategy

@@ -49,14 +49,14 @@ export class LoginComponent implements OnInit {
             const user = this.authService.extractTokenData(res);
             Storage.clear();
             Storage.setUserToken(user);
-            this.router.navigate(["starter"]);
+            this.router.navigate([""]);
           });
         } else {
-          this.error = "Invalid username or password";
+          this.error = "Tên đăng nhập hoặc mật khẩu không đúng";
         }
       },
       error => {
-        this.error = "Invalid username or password";
+        this.error = "Đăng nhập lỗi, vui lòng thử lại";
       }
     );
   }

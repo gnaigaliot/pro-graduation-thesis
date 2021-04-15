@@ -67,92 +67,36 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
     // TODO Khai báo các url trên side-sidebar
     this.items = [
       {
-        label: "Trang chủ",
-        icon: "pi pi-home",
-        routerLink: ["/starter"]
+        label: 'Trang chủ',
+        icon: 'pi pi-home',
+        routerLink: ['/dashboard']
       },
       {
-        label: "Quản lý người dùng",
-        icon: "pi pi-user",
-        routerLink: ["/user"]
+        label: 'Quản lý user',
+        icon: 'pi pi-user',
+        routerLink: ['/user']
       },
-      // For employee-manager
       {
-        label: "Quản lý nhân viên",
-        icon: "pi pi-users",
+        label: 'Quản lý nhân viên',
+        icon: 'pi pi-users',
         items: [
           {
-            label: "Quản lý phòng ban",
-            icon: "pi pi-th-large",
-            routerLink: ["/employee-manager/departments"]
+            label: 'Quản lý phòng ban',
+            icon: 'pi pi-th-large',
+            routerLink: ['/employee-manager/departments']
           },
           {
-            label: "Quản lý nhân viên",
-            icon: "pi pi-th-large",
-            routerLink: ["/employee-manager/employees"]
+            label: 'Quản lý nhân viên',
+            icon: 'pi pi-th-large',
+            routerLink: ['/employee-manager/employees']
           },
           {
-            label: "Quản lý chức vụ",
-            icon: "pi pi-th-large",
-            routerLink: ["/employee-manager/positions"]
+            label: 'Quản lý chức vụ',
+            icon: 'pi pi-th-large',
+            routerLink: ['/employee-manager/positions']
           }
         ]
-      },
-      {
-        label: "Quản lý căn hộ",
-        icon: "pi pi-inbox",
-        items: [
-          {
-            label: "Căn hộ",
-            routerLink: ["/department-manager/department"],
-            icon: "pi pi-th-large"
-          },
-          {
-            label: "Cư dân",
-            routerLink: ["/department-manager/person"],
-            icon: "pi pi-th-large"
-          }
-        ]
-      },
-      {
-        label: "Quản lý hóa đơn",
-        icon: "pi pi-money-bill",
-
-        items: [
-          {
-            label: "Hóa đơn điện, nước",
-            icon: "pi pi-money-bill",
-            routerLink: ["/bill/bill-water-electrict"]
-          },
-          {
-            label: "Hóa đơn dịch vụ",
-            icon: "pi pi-money-bill",
-            routerLink: ["/bill/bill-orther"]
-          },
-          {
-            label: "Loại dịch vụ",
-            icon: "pi pi-list",
-            routerLink: ["/bill/bill-service-type"]
-          }
-        ]
-      },
-      // {
-      //   label: "Thống kê",
-      //   icon: "pi pi-align-right",
-
-      //   items: [
-      //     {
-      //       label: "Thống kê hóa đơn",
-      //       icon: "pi pi-th-large",
-      //       routerLink: ["/statistical/bill-month"]
-      //     },
-      //     {
-      //       label: "Thống kê người dân",
-      //       icon: "pi pi-th-large",
-      //       routerLink: ["/statistical/person-month"]
-      //     }
-      //   ]
-      // }
+      }
     ];
   }
 }

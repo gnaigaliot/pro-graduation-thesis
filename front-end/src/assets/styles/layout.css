@@ -1526,7 +1526,7 @@ body
   .ui-panelmenu-header:not(.ui-state-active)
   > a:hover {
   background-color: #dbdbdb;
-  color: #b8c7ce;
+  color: #000000;
   border: none;
 }
 body
@@ -1536,7 +1536,7 @@ body
   .ui-menuitem-link:hover
   .ui-menuitem-text,
 body .ui-panelmenu .ui-panelmenu-content .ui-menuitem .ui-menuitem-link {
-  color: #b8c7ce;
+  color: #000000;
 }
 body nav.vps-menus .ui-menuitem {
   border: none;
@@ -3204,4 +3204,12 @@ Giangth fix css 03/11/2020
 }
 strong {
   font-weight: bold!important;
+}
+.panelmenu-custom a:hover {
+  background-color: #dbdbdb!important;
+  color: #000000!important;
+  border: none!important;
+}
+.panelmenu-custom {
+  word-break: break-all;
 }
