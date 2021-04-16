@@ -1536,7 +1536,7 @@ body
   .ui-menuitem-link:hover
   .ui-menuitem-text,
 body .ui-panelmenu .ui-panelmenu-content .ui-menuitem .ui-menuitem-link {
-  color: #000000;
+  color: #4b4b4b;
 }
 body nav.vps-menus .ui-menuitem {
   border: none;
@@ -1565,7 +1565,7 @@ body
   .ui-panelmenu-header:not(.ui-state-active)
   > a:hover
   .ui-panelmenu-icon {
-  color: #b8c7ce;
+  color: #000000; 
 }
 .vps-menus .ui-panelmenu .ui-panelmenu-header .ui-menuitem-icon {
   position: absolute;
@@ -1618,7 +1618,7 @@ body .vps-menus .ui-panelmenu .ui-submenu-list .ui-menuitem::before {
   display: none;
 }
 body .ui-panelmenu .ui-panelmenu-content .ui-submenu-list .ui-menuitem-link {
-  padding-left: 30px;
+  padding-left: 45px;
 }
 body .vps-menus .ui-panelmenu .ui-submenu-list .ui-menuitem:last-child::before {
   background-color: #dbdbdb;
@@ -3192,6 +3192,10 @@ Giangth fix css 03/11/2020
   font-size: inherit!important;
   padding-right: 2px;
 }
+.pi-fw {
+  float: right;
+  margin-top: 3px;
+}
 .p-dropdown {
   display: flex!important;
 }
@@ -3205,11 +3209,21 @@ Giangth fix css 03/11/2020
 strong {
   font-weight: bold!important;
 }
-.panelmenu-custom a:hover {
+.panelmenu-custom .ui-panelmenu-header:hover {
   background-color: #dbdbdb!important;
   color: #000000!important;
   border: none!important;
 }
 .panelmenu-custom {
   word-break: break-all;
+}
+body .panelmenu-custom .ui-panelmenu .ui-panelmenu-panel a {
+  font-size: 15px;
+  font-weight: 400;
+}
+.mat-menu-content {
+  padding: 0!important;
+}
+#mat-menu-panel-0 {
+  width: 300px;
 }

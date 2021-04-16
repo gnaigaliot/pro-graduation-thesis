@@ -8,9 +8,11 @@ import { BaseComponent } from '../shared/components/base-component/base-componen
 	styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent extends BaseComponent implements AfterViewInit, OnInit {
+	formConfig = {};
 	constructor(
 	) {
 		super(null);
+		this.formSearch = this.buildForm({}, this.formConfig);
 	}
 
 	public get f() {

@@ -1,1 +1,122 @@
-<h1>hehehe</h1>
+<form id="formSearch" [formGroup]="formSearch">
+    <div class="page-wrapper" style="display: block;">
+        <div class="container-fluid">
+
+            <!--     
+        <div fxLayout="row wrap">
+            <div fxFlex.gt-sm="60%">
+                <mat-card>
+                    <mat-card-content>
+                        <div  fxLayout="row">
+                            <div class="col-md-9 col-xl-9">
+                                <mat-card-title>Thống kê cư dân trong năm 123</mat-card-title>
+                            </div>
+                            <div class="col-md-3 col-xl-3">
+                                <p-dropdown [options]="listYear" [virtualScroll]="true" itemSize="30" (onChange)="changeYearPerson()"
+                                formControlName="yearPerson"></p-dropdown>
+                            </div>
+                        </div>
+                        <p-chart #chart type="bar" [data]="data"></p-chart> 
+                        <p-chart type="bar" [data]="data"></p-chart>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div> -->
+            <div class="row">
+                <!-- Column -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-row">
+                                <div class="round round-lg text-white d-flex align-items-center justify-content-center rounded-circle bg-info">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" 
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users feather-sm">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                </div>
+                                <div class="ms-2 align-self-center">
+                                    <h3 class="mb-0">$3249</h3>
+                                    <h6 class="text-muted mb-0">Tổng số nhân viên</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <!-- Column -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-row">
+                                <div
+                                    class="round round-lg text-white d-flex align-items-center justify-content-center rounded-circle bg-warning">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-monitor fill-white feather-lg">
+                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                                    </svg>
+                                </div>
+                                <div class="ms-2 align-self-center">
+                                    <h3 class="mb-0">$2376</h3>
+                                    <h6 class="text-muted mb-0">Online Revenue</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <!-- Column -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-row">
+                                <div
+                                    class="round round-lg text-white d-flex align-items-center justify-content-center rounded-circle bg-primary">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-shopping-bag fill-white feather-lg">
+                                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                    </svg>
+                                </div>
+                                <div class="ms-2 align-self-center">
+                                    <h3 class="mb-0">$1795</h3>
+                                    <h6 class="text-muted mb-0">Offline Products</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+                <!-- Column -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-row">
+                                <div
+                                    class="round round-lg text-white d-flex justify-content-center align-items-center rounded-circle bg-danger">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" class="feather feather-shield fill-white feather-lg">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                    </svg>
+                                </div>
+                                <div class="ms-2 align-self-center">
+                                    <h3 class="mb-0">$687</h3>
+                                    <h6 class="text-muted mb-0">Ad. Expense</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Column -->
+            </div>
+        </div>
+    </div>
+</form>

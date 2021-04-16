@@ -5782,7 +5782,7 @@ a {
 }
 
 .bg-info {
-  background-color: #62d1f3 !important;
+  background-color: #5caec7 !important;
   color: #fff;
 }
 
@@ -23746,4 +23746,12 @@ body.dark {
 
 .main-body {
   margin-top: 40px;
+}
+
+.ms-2 {
+  margin-left: .5rem!important;
+}
+
+.ui-panelmenu-header {
+  padding: 0 15px;
 }

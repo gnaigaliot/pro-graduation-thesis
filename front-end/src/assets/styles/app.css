@@ -8,7 +8,8 @@ html {
 
 body {
 /*     font-family: 'Open Sans', sans-serif; */
-  font-family:  Arial,"Lato","Helvetica Neue",sans-serif !important;
+  /* font-family:  Arial,"Lato","Helvetica Neue",sans-serif !important; */
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
   -webkit-font-smoothing: antialiased;
   line-height: 1.42857143;

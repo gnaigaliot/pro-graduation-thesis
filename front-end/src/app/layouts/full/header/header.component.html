@@ -4,11 +4,18 @@
 <!-- ============================================================== -->
 <button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> <img src="assets/images/users/1.jpg" alt="user" class="profile-pic"> </button>
 <mat-menu #profile="matMenu" class="mymegamenu">
+    <div class="d-flex no-block align-items-center p-3 bg-info text-white mb-2">
+        <div class=""><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="60"></div>
+        <div class="ms-2">
+            <h4 class="mb-0 text-white">Steave Jobs</h4>
+            <p class=" mb-0">varun@gmail.com</p>
+        </div>
+    </div>
     <button mat-menu-item>
         <mat-icon>settings</mat-icon> Đổi mật khẩu </button>
     <button mat-menu-item>
         <mat-icon>account_box</mat-icon> Thông tin cơ bản </button>
     <button mat-menu-item (click)="logout()">
         <mat-icon>exit_to_app</mat-icon> Đăng xuất </button>
-</mat-menu>
+</mat-menu> 
 
