@@ -14,63 +14,71 @@ import org.hibernate.SessionFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
-
 public interface CommonData {
-	public SessionFactory getSessionFactory();
+    public SessionFactory getSessionFactory();
 
-	public <T> T get(Class dataModel, Serializable id);
+    public <T> T get(Class dataModel, Serializable id);
 
-	public Session getSession();
-	public String getTableName(Class dataModel);
+    public Session getSession();
 
-	public String getNameId(Class dataModel);
+    public String getTableName(Class dataModel);
 
-	public String columnName(String input);
+    public String getNameId(Class dataModel);
 
-	public void saveOrUpdate(Object dataObject);
+    public String columnName(String input);
 
-	public void save(Object dataObject);
+    public void saveOrUpdate(Object dataObject);
 
-	public void delete(Object entity);
-	public void deleteByIds(List<Long> arrId, Class className, String idColumn);
+    public void save(Object dataObject);
 
-	public List<String> getLstUserSequence() throws Exception;
+    public void delete(Object entity);
 
-	public void deleteByIds(Long[] arrId, Class className, String idColumn);
-	public void deleteById(Long id, Class className, String idColumn);
+    public void deleteByIds(List<Long> arrId, Class className, String idColumn);
 
-	public <T> List<T> getAll(Class<T> tableName, String orderColumn);
-	public <T> Page<T> listAll(Class dataModel, Pageable pageable);
-	public <T> List<T> findByProperty(Class<T> tableName, String propertyName, Object value, String orderClause);
-	public <T> List<T> findByProperties(Class<T> tableName, Object... pairs);
+    public List<String> getLstUserSequence() throws Exception;
 
-	public <T> List<T> findByIds(Class<T> tableName, String idColumn, String ids, String orderColumn);
+    public void deleteByIds(Long[] arrId, Class className, String idColumn);
 
-	public void flushSession();
+    public void deleteById(Long id, Class className, String idColumn);
 
-	public void clear();
-	public Query createQuery(String hql);
+    public <T> List<T> getAll(Class<T> tableName, String orderColumn);
 
-	public SQLQuery createSQLQuery(String sql);
-	public CallableStatement prepareCall(String sql);
+    public <T> Page<T> listAll(Class dataModel, Pageable pageable);
 
-	public Long getSequence(String sequenceName);
+    public <T> List<T> findByProperty(Class<T> tableName, String propertyName, Object value, String orderClause);
 
-	public Long getAutoIncrement(String tableName);
+    public <T> List<T> findByProperties(Class<T> tableName, Object... pairs);
 
-	public boolean duplicate(Class className, String idColumn, Long idValue, String codeColumn, String codeValue);
-	public boolean hasConstraint(Class className, String idColumn, Long idValue);
-	public String getOrderByClause(HttpServletRequest req, String defaultColumn, String... whitelist);
+    public <T> List<T> findByIds(Class<T> tableName, String idColumn, String ids, String orderColumn);
 
-	public void setResultTransformer(SQLQuery query, Class obj);
+    public void flushSession();
 
-	public List<String> getReturnAliasColumns(SQLQuery query);
+    public void clear();
 
-	public void commitTransaction();
+    public Query createQuery(String hql);
 
+    public SQLQuery createSQLQuery(String sql);
+
+    public CallableStatement prepareCall(String sql);
+
+    public Long getSequence(String sequenceName);
+
+    public Long getAutoIncrement(String tableName);
+
+    public boolean duplicate(Class className, String idColumn, Long idValue, String codeColumn, String codeValue);
+
+    public boolean hasConstraint(Class className, String idColumn, Long idValue);
+
+    public String getOrderByClause(HttpServletRequest req, String defaultColumn, String... whitelist);
+
+    public void setResultTransformer(SQLQuery query, Class obj);
+
+    public List<String> getReturnAliasColumns(SQLQuery query);
+
+    public void commitTransaction();
 
     public <T> List<T> list(String nativeQuery, List<Object> paramList, Class obj);
+
     /**
      * 
      * @param list
@@ -78,6 +86,7 @@ public interface CommonData {
      * @return
      */
     public <T> List<T> list(String nativeQuery, Map<String, Object> mapParams, Class obj);
+
     /**
      * 
      * @param list
@@ -85,6 +94,7 @@ public interface CommonData {
      * @return
      */
     public <T> T get(String nativeQuery, List<Object> paramList, Class obj);
+
     /**
      * 
      * @param list
@@ -92,5 +102,5 @@ public interface CommonData {
      * @return
      */
     public <T> T get(String nativeQuery, Map<String, Object> mapParams, Class obj);
-    
+
 }

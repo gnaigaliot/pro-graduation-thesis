@@ -3,13 +3,6 @@ package com.example.user.entity;
 import java.util.Date;
 import java.util.List;
 
-/**
- * UserForm class
- *
- * @author
- * @since 1.0
- * @version 1.0
- */
 public class UserForm {
 
     private Long       userId;

@@ -74,9 +74,9 @@ export class AuthService extends BasicService {
     return this.authenticated;
   }
 
-  actionRequestToken(formValue) {
+  actionRequestToken(formValue): Observable<string> {
     const headers = {
-      "content-type": "application/x-www-form-urlencoded"
+      'content-type': 'application/x-www-form-urlencoded'
     };
     const payload = new HttpParams()
       .set('userName', formValue.userName)
@@ -84,7 +84,7 @@ export class AuthService extends BasicService {
     return this.httpClient.post(this.serviceUrl + '/login', payload, {responseType: 'text', headers: headers});
   }
 
-  getCurrentUserInfo() {
+  getCurrentUserInfo(): Observable<object> {
     const headers = {
       'Authorization': window.sessionStorage.getItem('token'),
       'Content-Type': 'application/json'

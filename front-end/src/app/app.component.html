@@ -1,8 +1,8 @@
 <router-outlet><app-spinner></app-spinner></router-outlet>
-<p-confirmDialog #cd [style]="{width: '425px'}" [acceptButtonStyleClass]="'btn-info'" [rejectButtonStyleClass]="'btn-danger'">
+<p-confirmDialog #cd [style]="{width: '425px'}" [acceptButtonStyleClass]="'btn-info'" [rejectButtonStyleClass]="'btn-danger'" class="default-font">
   <p-footer>
-    <button type="button" pButton class="btn-info" icon="pi pi-check" [label]="'Có'" (click)="cd.accept()"></button>
-    <button type="button" pButton class="btn-danger" icon="pi pi-times" [label]="'Không'" (click)="cd.reject()"></button>
+    <button type="button" pButton class="btn btn-info" icon="pi pi-check" [label]="'CÃ³'" (click)="cd.accept()"></button>
+    <button type="button" pButton class="btn btn-danger" icon="pi pi-times" [label]="'KhÃ´ng'" (click)="cd.reject()"></button>
   </p-footer>
 </p-confirmDialog>
 <p-toast position="bottom-right"></p-toast>

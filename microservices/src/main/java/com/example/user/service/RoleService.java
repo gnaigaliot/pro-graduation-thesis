@@ -10,13 +10,6 @@ import org.springframework.stereotype.Service;
 import com.example.user.dao.RoleDAO;
 import com.example.user.entity.RoleBO;
 
-
-
-/**
- * @author TanPTN
- * @since May 3, 2019
- * @version 1.0
- */
 @Service
 public class RoleService {
     @Autowired
@@ -28,11 +21,4 @@ public class RoleService {
     public List<RoleBO> findAll() {
         return roleDAO.findAll();
     }
-//    public List<String> findUserAccount(Long userId) {
-//        return roleDAO.getRole(userId, entityManager);
-//    }
-    
-    
-
-    
 }

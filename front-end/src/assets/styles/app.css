@@ -4175,6 +4175,9 @@ a.text-#000000:hover {
 .text-u-c {
   text-transform: uppercase;
 }
+.text-u-c i {
+  font-weight: bold;
+}
 
 .text-l-t {
   text-decoration: line-through;

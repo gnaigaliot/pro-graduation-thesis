@@ -36,6 +36,9 @@ export class Storage {
    * clear
    */
   public static clear(): void {
+    this.storage.removeItem('token');
+    this.storage.removeItem('listRoleUser');
+    this.storage.removeItem('userLoginName');
     this.storage.removeItem(this.instanceName);
   }
   /**

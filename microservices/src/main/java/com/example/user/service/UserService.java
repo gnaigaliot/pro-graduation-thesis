@@ -4,21 +4,11 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-
 import com.example.common.DataTableResults;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
 import com.example.user.entity.UserBean;
 import com.example.user.entity.UserForm;
-
-
-
-/**
- * @author TanPTN
- * @since May 3, 2019
- * @version 1.0
- */
 
 public interface UserService {
     UserBO save(UserBO user);

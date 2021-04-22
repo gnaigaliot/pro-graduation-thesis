@@ -8,18 +8,18 @@ import {
   Directive,
   AfterViewInit,
   OnInit
-} from "@angular/core";
-import { MediaMatcher } from "@angular/cdk/layout";
-import { MenuItems } from "../../../shared/menu-items/menu-items";
-import { Storage } from "../../../shared/service/storage.service";
-import { UserToken } from "../../../core/models/user-token.model";
-import { Router } from "@angular/router";
-import { MenuItem } from "primeng/api";
+} from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import { MenuItems } from '../../../shared/menu-items/menu-items';
+import { Storage } from '../../../shared/service/storage.service';
+import { UserToken } from '../../../core/models/user-token.model';
+import { Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { BaseComponent } from '../../../shared/components/base-component/base-component.component';
 
 @Component({
-  selector: "app-sidebar",
-  templateUrl: "./sidebar.component.html",
+  selector: 'app-sidebar',
+  templateUrl: './sidebar.component.html',
   styleUrls: []
 })
 export class AppSidebarComponent extends BaseComponent implements OnInit, OnDestroy {
@@ -27,7 +27,7 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
   userInfo: UserToken;
 
   items: MenuItem[];
-  private _mobileQueryListener: () => void;
+  private mobileQueryListener: () => void;
 
   constructor(
     changeDetectorRef: ChangeDetectorRef,
@@ -36,9 +36,10 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
     public menuItems: MenuItems
   ) {
     super(null);
-    this.mobileQuery = media.matchMedia("(min-width: 768px)");
-    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
-    this.mobileQuery.addListener(this._mobileQueryListener);
+    this.mobileQuery = media.matchMedia('(min-width: 768px)');
+    this.mobileQueryListener = () => changeDetectorRef.detectChanges();
+    // tslint:disable-next-line: deprecation
+    this.mobileQuery.addListener(this.mobileQueryListener);
     this.userInfo = Storage.getUserToken();
   }
 
@@ -47,22 +48,28 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
   }
 
   ngOnDestroy(): void {
-    this.mobileQuery.removeListener(this._mobileQueryListener);
+    // tslint:disable-next-line: deprecation
+    this.mobileQuery.removeListener(this.mobileQueryListener);
   }
 
+  // tslint:disable-next-line: typedef
   public userInformation() {
-    this.router.navigate(["/user-info"]);
+    this.router.navigate(['/user-info']);
   }
 
+  // tslint:disable-next-line: typedef
   public changePassword() {
-    this.router.navigate(["/user-info/change-password"]);
+    this.router.navigate(['/user-info/change-password']);
   }
 
+  // tslint:disable-next-line: typedef
   public logOut() {
-    this.router.navigate(["/login"]);
+    this.router.navigate(['/login']);
     Storage.clear();
   }
-  routerLink: ["/pagename"];
+  // tslint:disable-next-line: member-ordering
+  routerLink: ['/pagename'];
+  // tslint:disable-next-line: typedef
   private innitMenu() {
     // TODO Khai báo các url trên side-sidebar
     this.items = [
@@ -96,6 +103,11 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
             routerLink: ['/employee-manager/positions']
           }
         ]
+      },
+      {
+        label: 'Quản lý chấm công',
+        icon: 'pi pi-chart-line',
+        routerLink: ['/timekeeping-manager']
       }
     ];
   }

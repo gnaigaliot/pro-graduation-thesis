@@ -24,40 +24,40 @@ import com.example.user.service.UserService;
 
 public class JwtAuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 
-	private final static String TOKEN_HEADER = "authorization";
+    private final static String TOKEN_HEADER = "authorization";
 
-	@Autowired
-	private JwtService jwtService;
+    @Autowired
+    private JwtService jwtService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-			throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
-		String authToken = httpRequest.getHeader(TOKEN_HEADER);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String authToken = httpRequest.getHeader(TOKEN_HEADER);
 
-		if (jwtService.validateTokenLogin(authToken)) {
-			String username = jwtService.getUsernameFromToken(authToken);
+        if (jwtService.validateTokenLogin(authToken)) {
+            String username = jwtService.getUsernameFromToken(authToken);
 
-			UserBean user = userService.loadUserByUsername(username);
-			if (user != null) {
-				boolean enabled = true;
-				boolean accountNonExpired = true;
-				boolean credentialsNonExpired = true;
-				boolean accountNonLocked = true;
-				UserDetails userDetail = new User(username, user.getPassword(), enabled, accountNonExpired,
-						credentialsNonExpired, accountNonLocked, user.getAuthorities());
+            UserBean user = userService.loadUserByUsername(username);
+            if (user != null) {
+                boolean enabled = true;
+                boolean accountNonExpired = true;
+                boolean credentialsNonExpired = true;
+                boolean accountNonLocked = true;
+                UserDetails userDetail = new User(username, user.getPassword(), enabled, accountNonExpired,
+                        credentialsNonExpired, accountNonLocked, user.getAuthorities());
 
-				UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
-						null, userDetail.getAuthorities());
-				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-				SecurityContextHolder.getContext().setAuthentication(authentication);
-			}
-		}
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetail,
+                        null, userDetail.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
+        }
 
-		chain.doFilter(request, response);
-	}
+        chain.doFilter(request, response);
+    }
 }

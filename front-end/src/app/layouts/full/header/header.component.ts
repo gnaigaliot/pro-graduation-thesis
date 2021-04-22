@@ -21,16 +21,17 @@ export class AppHeaderComponent {
     this.userInfo = Storage.getUserToken();
   }
 
-  public userInformation() {
+  public userInformation(): void {
     this.router.navigate(['/user-info']);
   }
 
-  public changePassword() {
+  public changePassword(): void {
     this.router.navigate(['/user-info/change-password']);
   }
 
-  public logout() {
-    this.router.navigate(['/login']);
+  public logout(event: MouseEvent): void {
+    event.preventDefault();
     Storage.clear();
+    this.router.navigate(['/login']);
   }
 }

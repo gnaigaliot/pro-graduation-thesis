@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { Router } from "@angular/router";
-import { HttpParams } from "@angular/common/http";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpParams } from '@angular/common/http';
 import { UserService } from 'src/app/core/services/user.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { Storage } from 'src/app/shared/service/storage.service';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   error: string;
@@ -25,10 +25,10 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if(Storage.getUserToken() != null) {
-      this.router.navigate(["starter"]);
+      this.router.navigate(['starter']);
       return;
     }
-    window.sessionStorage.removeItem("token");
+    window.sessionStorage.removeItem('token');
     this.buildForm();
   }
 
@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  login() {
+  login(): void {
     if (this.loginForm.invalid) {
       return;
     }
@@ -44,27 +44,27 @@ export class LoginComponent implements OnInit {
     this.authService.actionRequestToken(this.loginForm.value).subscribe(
       data => {
         if (data) {
-          window.sessionStorage.setItem("token", data);
+          window.sessionStorage.setItem('token', data);
           this.authService.getCurrentUserInfo().subscribe(res => {
             const user = this.authService.extractTokenData(res);
             Storage.clear();
             Storage.setUserToken(user);
-            this.router.navigate([""]);
+            this.router.navigate(['']);
           });
         } else {
-          this.error = "Tên đăng nhập hoặc mật khẩu không đúng";
+          this.error = 'Tên đăng nhập hoặc mật khẩu không đúng';
         }
       },
       error => {
-        this.error = "Đăng nhập lỗi, vui lòng thử lại";
+        this.error = 'Đăng nhập lỗi, vui lòng thử lại';
       }
     );
   }
 
   private buildForm(): void {
     this.loginForm = this.formBuilder.group({
-      userName: ["", Validators.required],
-      password: ["", Validators.required]
+      userName: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 }

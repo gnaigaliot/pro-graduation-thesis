@@ -304,7 +304,7 @@ body .ui-contextmenu .ui-menuitem-link .ui-menuitem-icon.danger,
 }
 .modal-body .panel-default .panel-heading,
 .table-wrapper .ui-table-thead th {
-  background-color: #faa31b;
+  background-color: #1e88e5;
 }
 .modal-body .panel-default .panel-heading {
   color: #fff;
@@ -419,7 +419,7 @@ body .ui-dialog .ui-dialog-titlebar .ui-dialog-title {
 }
 body .ui-dialog .ui-dialog-footer button {
   padding: 0px;
-  border-radius: 0px;
+  border-radius: 3px;
 }
 body .ui-button.ui-button-text-icon-left .ui-button-text {
   padding: 3px 1em 3px 2.3em;
@@ -3182,8 +3182,9 @@ Giangth fix css 03/11/2020
 .p-multiselect {
   display: flex!important;
 }
-.p-confirm-dialog {
+.ui-confirmdialog {
   z-index: 9999999999999!important;
+  background-color: #ffffff;
 }
 .p-dialog-mask {
   z-index: 9999999999!important;
@@ -3226,4 +3227,7 @@ body .panelmenu-custom .ui-panelmenu .ui-panelmenu-panel a {
 }
 #mat-menu-panel-0 {
   width: 300px;
+}
+.default-font {
+  font-family: Arial,"Lato","Helvetica Neue",sans-serif !important;
 }

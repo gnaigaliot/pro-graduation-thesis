@@ -1,10 +1,9 @@
-import { OnInit, ViewChild, Injectable } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { FormGroup } from "@angular/forms";
-import { CommonUtils } from "../../service/common-utils.service";
-import { DEFAULT_MODAL_OPTIONS, ACTION_FORM } from "../../../core/app-config";
-import { SysPropertyDetailBean } from "../../../core/models/sys-property-details.model";
-import { debug } from "util";
+import { OnInit, ViewChild, Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { CommonUtils } from '../../service/common-utils.service';
+import { DEFAULT_MODAL_OPTIONS, ACTION_FORM } from '../../../core/app-config';
+import { SysPropertyDetailBean } from '../../../core/models/sys-property-details.model';
 import { Storage } from '../../service/storage.service';
 @Injectable()
 export class BaseComponent {
@@ -16,7 +15,7 @@ export class BaseComponent {
    */
   resultList: any = {};
   formSearch: FormGroup;
-  @ViewChild("ptable") dataTable: any;
+  @ViewChild('ptable') dataTable: any;
   private mainService: any;
 
   constructor(
@@ -61,6 +60,7 @@ export class BaseComponent {
   /**
    * Lay cau hinh cac thuoc tinh
    */
+  // tslint:disable-next-line: typedef
   private findPropertyDetails() {
     if (!this.actr) {
       return;
@@ -84,6 +84,7 @@ export class BaseComponent {
   /**
    * findAllPropertyConfigs
    */
+  // tslint:disable-next-line: typedef
   public findAllPropertyConfigs() {
     return this.propertyConfigs;
   }
@@ -91,7 +92,7 @@ export class BaseComponent {
   /**
    * Xu ly tim kiem chung
    */
-  public setMainService(serviceSearch) {
+  public setMainService(serviceSearch): void{
     this.mainService = serviceSearch;
   }
 
@@ -100,7 +101,7 @@ export class BaseComponent {
       resultList: null,
       formSearch: null
     }
-  ) {
+  ): void {
     this.resultList = param.resultList;
     this.formSearch = param.formSearch;
   }
@@ -112,7 +113,6 @@ export class BaseComponent {
     const params = this.formSearch ? this.formSearch.value : null;
     this.mainService.search(params, event).subscribe(res => {
       this.resultList = res;
-      
     });
 
     if (!event) {
@@ -143,7 +143,7 @@ export class BaseComponent {
   /**
    * Xu ly show popup
    */
-  public activeFormModal(service, component, data) {
+  public activeFormModal(service, component, data): void {
     const modalRef = service.open(component, DEFAULT_MODAL_OPTIONS);
     modalRef.componentInstance.setFormValue(this.propertyConfigs, data);
     modalRef.result.then(result => {
@@ -159,14 +159,14 @@ export class BaseComponent {
   /**
    * Xu ly show popup
    */
-  public havePermission(roleCode) {
+  public havePermission(roleCode): boolean {
     const lstRole = Storage.getUserToken().lstRoleCode;
-    if(lstRole == null) {
+    if (lstRole == null) {
       return false;
     }
-    if(lstRole.indexOf(roleCode)>=0 || lstRole.indexOf("ROLE_ADMIN")>=0) {
+    if (lstRole.indexOf(roleCode) >= 0 || lstRole.indexOf('ROLE_ADMIN') >= 0) {
       return true;
     }
-     return false;
+    return false;
   }
 }

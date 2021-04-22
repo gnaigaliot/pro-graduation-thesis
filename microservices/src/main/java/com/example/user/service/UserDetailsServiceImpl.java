@@ -86,7 +86,7 @@ class UserDetailsServiceImpl implements  UserService {
     
     public UserBean getUserByUsername(String username) {
         UserBean user = userDAO.getUserByName(uttData, username);
-        user.setLstRoleCode(roleDAO.findAllRoleOfUserCode(user.getUserCode()));
+        user.setLstRoleCode(roleDAO.findAllRoleOfUserCode(user.getUserName()));
             if (user.getUserName().equals(username)) {
                 return user;
             }

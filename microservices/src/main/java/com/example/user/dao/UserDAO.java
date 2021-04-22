@@ -19,12 +19,6 @@ import com.example.user.entity.UserBO;
 import com.example.user.entity.UserBean;
 import com.example.user.entity.UserForm;
 
-
-/**
- * @author TanPTN
- * @since May 3, 2019
- * @version 1.0	
- */
 @Transactional
 @Repository
 public interface UserDAO extends CrudRepository<UserBO, Long> {

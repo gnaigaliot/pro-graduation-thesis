@@ -1,7 +1,6 @@
 package com.example.user.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,12 +11,6 @@ import javax.persistence.Table;
 
 import com.example.common.CommonUtil;
 
-
-/**
- * @author TanPTN
- * @since 09/05/2019
- * @version 1.0
- */
 @Entity
 @Table(name = "roles")
 public class RoleBO  implements Serializable{
