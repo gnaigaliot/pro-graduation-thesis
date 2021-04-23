@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.common.CommonUtil;
 import com.example.common.DataTableResults;
-import com.example.common.UttData;
+import com.example.common.VfData;
 import com.example.user.entity.UserBO;
 import com.example.user.entity.UserBean;
 import com.example.user.entity.UserForm;
@@ -52,7 +52,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
 //        }
 //    }
 
-    public default UserBean getUserWithRole(UttData uttData, String userName) {
+    public default UserBean getUserWithRole(VfData uttData, String userName) {
         String hql = "SELECT " 
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 
@@ -67,7 +67,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
         return (UserBean) query.uniqueResult();
     }
     
-    public default UserBean getUserByName(UttData uttData, String userName) {
+    public default UserBean getUserByName(VfData uttData, String userName) {
         String hql = "SELECT " 
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 
@@ -95,7 +95,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
      * @return
      */
     
-    public default DataTableResults<UserBean> getStudentList(UttData uttData, UserForm userForm, HttpServletRequest req) {
+    public default DataTableResults<UserBean> getStudentList(VfData uttData, UserForm userForm, HttpServletRequest req) {
         List<Object> paramList = new ArrayList<>();
         String nativeSQL = "SELECT "
                 + "     usr.user_id AS userId " 
@@ -138,7 +138,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
      * @return
      */
     
-    public default DataTableResults<UserBean> getDatatable(UttData uttData, UserForm userForm, HttpServletRequest req) {
+    public default DataTableResults<UserBean> getDatatable(VfData uttData, UserForm userForm, HttpServletRequest req) {
         List<Object> paramList = new ArrayList<>();
         String nativeSQL = "SELECT "
                 + "     usr.user_id AS userId " 
@@ -167,7 +167,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
     }
 
 
-    public default UserBean getUserInfoById(UttData uttData, Long userId) {
+    public default UserBean getUserInfoById(VfData uttData, Long userId) {
         String hql = "SELECT " 
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 

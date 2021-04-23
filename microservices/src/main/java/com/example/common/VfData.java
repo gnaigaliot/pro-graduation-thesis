@@ -17,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import com.example.domain.DataTable;
 
 
-public interface UttData {
+public interface VfData {
 	/**
 	 * Get session factory.
 	 *

@@ -16,8 +16,7 @@ export class PositionSearchComponent extends BaseComponent implements OnInit {
   formConfig = {
     positionCode: ['', [Validators.maxLength(50)]],
     positionName: ['', [Validators.maxLength(50)]],
-    salary: ['', [Validators.maxLength(50)]],
-    status: ['']
+    salary: ['', [Validators.maxLength(50)]]
   };
   constructor(
     public actr: ActivatedRoute,

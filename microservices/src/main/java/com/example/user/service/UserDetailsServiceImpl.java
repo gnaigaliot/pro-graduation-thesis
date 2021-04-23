@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.common.DataTableResults;
-import com.example.common.UttData;
+import com.example.common.VfData;
 import com.example.user.dao.RoleDAO;
 import com.example.user.dao.UserDAO;
 import com.example.user.dao.UserRoleDAO;
@@ -38,7 +38,7 @@ class UserDetailsServiceImpl implements  UserService {
     private UserRoleDAO uRoleDAO;
     
     @Autowired
-    private UttData uttData;
+    private VfData uttData;
     
     public DataTableResults<UserBean> getStudentList(UserForm userForm, HttpServletRequest req) {
         return userDAO.getStudentList(uttData, userForm, req);

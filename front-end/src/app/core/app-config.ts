@@ -7,7 +7,7 @@ export const CONFIG: any = {
     fileStorage: '/file',
     /********************UTT ESS SYSTEM*****************/
     user: '/utt-ess/users',
-    position: '/employee-manager/position',
+    position: '/v1/employee-manager/position',
     employees: '/employees',
     report: '/report'
   }

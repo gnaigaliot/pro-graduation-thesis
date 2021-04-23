@@ -47,13 +47,8 @@ import org.springframework.stereotype.Component;
 import com.example.domain.DataTable;
 import com.google.gson.Gson;
 
-/**
- * @author vietlv2
- * @since Jul, 2018
- * @version 1.0
- */
 @Component
-public class UttDataImpl implements UttData {
+public class UttDataImpl implements VfData {
 
     @Autowired
     private EntityManager entityManager;

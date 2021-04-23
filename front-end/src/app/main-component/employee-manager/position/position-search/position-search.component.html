@@ -50,9 +50,9 @@
                     <col class="size-1">
                     <col class="size-1">
                     <col class="size-1">
-                    <col class="size-2">
-                    <col class="size-2">
-                    <col class="size-4">
+                    <col class="size-6">
+                    <col class="size-6">
+                    <col class="size-6">
                 </colgroup>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
@@ -83,24 +83,24 @@
 
                     <!-- Edit -->
                     <td class="vt-align-center">
-                        <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.id)" [title]="'Sửa'">
+                        <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.positionId)" [title]="'Sửa'">
                             <i class="pi pi-pencil"></i></a>
                     </td>
 
                     <!-- Delete -->
                     <td class="vt-align-center">
-                        <a class="btn-table delete" (click)="processDelete(item.id)" [title]="'Xóa'">
+                        <a class="btn-table delete" (click)="processDelete(item.positionId)" [title]="'Xóa'">
                             <i class="pi pi-trash"></i></a>
                     </td>
 
                     <!-- Code -->
-                    <td class="vt-align-center">{{item.code}}</td>
+                    <td class="vt-align-center">{{item.positionCode}}</td>
 
                     <!-- Name -->
-                    <td>{{item.name}}</td>
+                    <td>{{item.positionName}}</td>
 
                     <!-- salary -->
-                    <td>{{item.salary}}</td>
+                    <td>{{ item.salary | currency }}</td>
                 </tr>
 
             </ng-template>
