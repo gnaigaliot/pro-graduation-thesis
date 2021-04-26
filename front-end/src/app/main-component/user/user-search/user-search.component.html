@@ -1,9 +1,9 @@
 <div *ngIf="havePermission('ROLE_ADMIN')">
-  <div class="panel panel-default">
+  <div class="panel panel-default default-font">
     <form id="formSearch" [formGroup]="formSearch">
       <div class="panel-heading">
         <strong class="text-u-c">
-          <i class="fa fa-th"></i>
+          <i class="pi pi-search"></i>
           <span>Thông tin tìm kiếm</span>
         </strong>
       </div>
@@ -23,21 +23,21 @@
         </div>
       </div>
       <div class="panel-footer vt-area-button">
-        <button type="submit" (click)="processSearch();" class="btn btn-sm btn-info"><i class="fa fa-search"></i> Tìm
+        <button type="submit" (click)="processSearch();" class="btn btn-sm btn-info"><i class="pi pi-search"></i> Tìm
           kiếm</button>
       </div>
     </form>
   </div>
 
-  <div class="panel panel-default">
+  <div class="panel panel-default default-font">
     <div class="panel-heading vt-relative">
       <strong class="text-u-c">
-        <i class="fa fa-th"></i>
+        <i class="pi pi-list"></i>
         <span> Danh sách tài khoản</span>
       </strong>
       <div class="vt-absolute vt-shotcut-button-in-heading">
         <div>
-          <button type="button" (click)="prepareSaveOrUpdate()" class="btn btn-sm btn-info"><i class="fa fa-plus"></i>
+          <button type="button" (click)="prepareSaveOrUpdate()" class="btn btn-sm btn-info"><i class="pi pi-plus-circle"></i>
             Thêm mới</button>
         </div>
       </div>
@@ -75,12 +75,10 @@
           <tr>
             <td class="vt-align-center">{{index+1}}</td>
             <td class="vt-align-center">
-              <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.userId)" [title]="'Sửa'"><i
-                  class="fa fa-edit"></i></a>
+              <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.userId)" [title]="'Sửa'"><i class="pi pi-pencil"></i></a>
             </td>
             <td class="vt-align-center">
-              <a class="btn-table delete" (click)="processDelete(item.userId)" [title]="'Xóa'"><i
-                  class="fa fa-trash-alt"></i></a>
+              <a class="btn-table delete" (click)="processDelete(item.userId)" [title]="'Xóa'"><i class="pi pi-trash"></i></a>
             </td>
             <td class="vt-align-center">{{item.userCode}}</td>
             <td>{{item.fullName}}</td>

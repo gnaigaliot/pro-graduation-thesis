@@ -8,8 +8,9 @@ export const CONFIG: any = {
     /********************UTT ESS SYSTEM*****************/
     user: '/utt-ess/users',
     position: '/v1/employee-manager/position',
-    employees: '/employees',
-    report: '/report'
+    employee: '/v1/employee-manager/employee',
+    report: '/report',
+    department: '/v1/employee-manager/department'
   }
 };
 

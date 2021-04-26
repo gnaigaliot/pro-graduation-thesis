@@ -3231,3 +3231,15 @@ body .panelmenu-custom .ui-panelmenu .ui-panelmenu-panel a {
 .default-font {
   font-family: Arial,"Lato","Helvetica Neue",sans-serif !important;
 }
+.ui-datepicker {
+  background-color: #ffffff;
+}
+body .ui-datepicker table.ui-datepicker-calendar td:not(.ui-state-disabled) a.ui-state-active {
+  color: #ffffff;
+  background-color: #0275d8;
+  border-radius: 50%;
+}
+.default-font .panel-heading .icon-center i {
+  padding-top: 4px;
+  padding-left: 2px;
+}

@@ -2,7 +2,7 @@
  * Copyright (C) 2018 Viettel Telecom. All rights reserved. VIETTEL PROPRIETARY/CONFIDENTIAL. Use is
  * subject to license terms.
  */
-package com.example.employeeManager.position.controller;
+package com.example.employeeManager.department.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,52 +23,57 @@ import com.example.common.Constants;
 import com.example.common.DataTableResults;
 import com.example.common.Response;
 import com.example.controller.BaseController;
-import com.example.employeeManager.position.bean.PositionsBean;
-import com.example.employeeManager.position.bo.PositionsBO;
-import com.example.employeeManager.position.form.PositionsForm;
-import com.example.employeeManager.position.service.PositionsService;
+import com.example.employeeManager.department.bean.DepartmentBean;
+import com.example.employeeManager.department.bo.DepartmentBO;
+import com.example.employeeManager.department.form.DepartmentForm;
+import com.example.employeeManager.department.service.DepartmentService;
 
+/**
+ * @author d2tsoftware
+ * @since 24/04/2021
+ * @version 1.0
+ */
 @Controller
-@RequestMapping("/v1/employee-manager/position")
-public class PositionsController extends BaseController {
+@RequestMapping("/v1/employee-manager/department")
+public class DepartmentController extends BaseController {
 
-    private static String adResourceKey = "resource.positions";
+    private static String adResourceKey = "resource.department";
 
     @Autowired
-    private PositionsService positionsService;
+    private DepartmentService departmentService;
 
     /**
      * findById
-     * @param positionsId
+     * @param departmentId
      * @return
      */
-    @GetMapping(path = "/{positionsId}")
-    public @ResponseBody Response findById(HttpServletRequest req, @PathVariable Long positionsId) {
+    @GetMapping(path = "/{departmentId}")
+    public @ResponseBody Response findById(HttpServletRequest req, @PathVariable Long departmentId) {
 //        if (! permissionChecker.hasPermission("action.view", adResourceKey, req)) {
 //            return Response.invalidPermission();
 //        }
-        PositionsBO positionsBO = positionsService.findById(positionsId);
-        if(positionsBO == null) {
+        DepartmentBO departmentBO = departmentService.findById(departmentId);
+        if(departmentBO == null) {
             return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
         }
-        return Response.success().withData(positionsBO);
+        return Response.success().withData(departmentBO);
     }
 
     /**
      * processSearch
-     * @param PositionsForm form
+     * @param DepartmentForm form
      * @return DataTableResults
      */
     @GetMapping(path = "/search")
-    public @ResponseBody DataTableResults<PositionsBean> processSearch(HttpServletRequest req, PositionsForm form) {
+    public @ResponseBody DataTableResults<DepartmentBean> processSearch(HttpServletRequest req, DepartmentForm form) {
 //        if (! permissionChecker.hasPermission("action.view", adResourceKey, req)) {
 //            throw new PermissionException();
 //        }
-        return positionsService.getDatatables(form);
+        return departmentService.getDatatables(form);
     }
 
     /**
-     * saveOrUpdate PositionsBO
+     * saveOrUpdate DepartmentBO
      * @param req
      * @param form
      * @return
@@ -76,49 +81,49 @@ public class PositionsController extends BaseController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Response saveOrUpdate(HttpServletRequest req, @RequestBody PositionsForm form) throws Exception {
-        Long positionId = CommonUtil.NVL(form.getPositionId());
-        PositionsBO positionsBO;
-        if(positionId > 0L) {
+    public @ResponseBody Response saveOrUpdate(HttpServletRequest req, @RequestBody DepartmentForm form) throws Exception {
+        Long departmentId = CommonUtil.NVL(form.getDepartmentId());
+        DepartmentBO departmentBO;
+        if(departmentId > 0L) {
 //            if (!permissionChecker.hasPermission("action.update", adResourceKey, req)) {
 //                return Response.invalidPermission();
 //            }
-            positionsBO = positionsService.findById(positionId);
-            if(positionsBO == null){
+            departmentBO = departmentService.findById(departmentId);
+            if(departmentBO == null){
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
+            departmentBO.setStatusDepartment(form.getStatusDepartment());
         } else {
 //            if (!permissionChecker.hasPermission("action.insert", adResourceKey, req)) {
 //                return Response.invalidPermission();
 //            }
-            positionsBO = new PositionsBO();
+            departmentBO = new DepartmentBO();
+            departmentBO.setStatusDepartment(Constants.STATUS_DEPARTMENT.EFFECTIVE);
         }
-        positionsBO.setPositionCode(form.getPositionCode());
-        positionsBO.setPositionName(form.getPositionName());
-        positionsBO.setSalary(form.getSalary());
-        positionsBO.setStatus(form.getStatus());
-        positionsService.saveOrUpdate(positionsBO);
-        return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(positionsBO);
+        departmentBO.setDepartmentCode(form.getDepartmentCode());
+        departmentBO.setDepartmentName(form.getDepartmentName());
+        departmentService.saveOrUpdate(departmentBO);
+        return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(departmentBO);
     }
 
     /**
      * delete
-     * @param positionsId
+     * @param departmentId
      * @return
      */
-    @DeleteMapping(path = "/{positionsId}")
+    @DeleteMapping(path = "/{departmentId}")
     @ResponseStatus(HttpStatus.OK)
-    public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long positionsId) {
+    public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long departmentId) {
 //        if (! permissionChecker.hasPermission("action.delete", adResourceKey, req)) {
 //            return Response.invalidPermission();
 //        }
-        PositionsBO bo ;
-        if(positionsId > 0L) {
-            bo = positionsService.findById(positionsId);
+        DepartmentBO bo ;
+        if(departmentId > 0L) {
+            bo = departmentService.findById(departmentId);
             if(bo == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
-            positionsService.delete(bo);
+            departmentService.delete(bo);
             return Response.success(Constants.RESPONSE_CODE.DELETE_SUCCESS);
         } else {
             return Response.error(Constants.RESPONSE_CODE.ERROR);

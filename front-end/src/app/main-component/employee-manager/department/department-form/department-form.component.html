@@ -1,0 +1,60 @@
+<div class="modal-body">
+    <form id="formSave" [formGroup]="formSave">
+        <div class="panel panel-default default-font">
+            <div class="panel-heading">
+                <strong class="text-u-c">
+                    <i class="pi pi-microsoft"></i>
+                    <span *ngIf="!formSave.get('departmentId').value"> Thêm mới phòng ban</span>
+                    <span *ngIf="formSave.get('departmentId').value"> Sửa thông tin phòng ban</span>
+                </strong>
+                <div class="vt-absolute vt-shotcut-button-in-heading icon-center">
+                    <span style="display: inline-block;" (click)="activeModal.close()" title="{{'Đóng'}}"
+                        class="btn btn-span btn-sm btn-info"><i class="pi pi-times"></i></span>
+                </div>
+            </div>
+            <div class="panel-body padding-xl ui-g">
+                <div class="ui-g-12">
+                    <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Mã phòng ban <font size="2"
+                            color="red">* </font></label>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="departmentCode"
+                            maxlength="10">
+                        <app-control-messages [control]="f['departmentCode']"></app-control-messages>
+                    </div>
+
+                    <label class="ui-g-12 ui-md-6 ui-lg-3 control-label vt-align-right">Tên phòng ban <font size="2"
+                            color="red">* </font></label>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3">
+                        <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="departmentName"
+                            maxlength="50">
+                        <app-control-messages [control]="f['departmentName']"></app-control-messages>
+                    </div>
+                </div>
+
+                <div class="ui-g-12" *ngIf="formSave.get('departmentId').value">
+                    <!-- salary -->
+                    <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Trạng thái</label>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 nowrap">
+                        <div class="form-check-inline">
+                            <label class="i-checks">
+                                <input type="radio" formControlName="statusDepartment" class="form-check-input control-label" id="status1" [value]="1" name="statusDepartment">
+                                <i></i> Đang hoạt động
+                            </label>
+                        </div>
+                        <div class="form-check-inline">
+                            <label class="i-checks">
+                                <input type="radio" formControlName="statusDepartment" class="form-check-input control-label" id="status2" [value]="2" name="statusDepartment">
+                                <i></i> Không hoạt động
+                            </label>
+                        </div>
+                        <app-control-messages [control]="f['statusDepartment']"></app-control-messages>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer vt-area-button">
+                <button type="submit" (click)="processSaveOrUpdate()" class="btn btn-sm btn-info"> <i class="pi pi-save"></i> Lưu lại</button>
+                <button type="button" (click)="activeModal.close()" class="btn btn-sm btn-danger"> <i class="pi pi-times"></i> Hủy</button>
+            </div>
+        </div>
+    </form>
+</div>

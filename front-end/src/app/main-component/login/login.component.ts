@@ -23,8 +23,9 @@ export class LoginComponent implements OnInit {
     private userService: UserService
   ) {}
 
+  // tslint:disable-next-line:typedef
   ngOnInit() {
-    if(Storage.getUserToken() != null) {
+    if (Storage.getUserToken() != null) {
       this.router.navigate(['starter']);
       return;
     }
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
     this.buildForm();
   }
 
+  // tslint:disable-next-line:typedef
   get f() {
     return this.loginForm.controls;
   }

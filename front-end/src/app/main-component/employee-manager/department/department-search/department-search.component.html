@@ -1,0 +1,117 @@
+<div class="panel panel-default default-font">
+    <form id="formSearch" [formGroup]="formSearch">
+        <div class="panel-heading">
+            <strong class="text-u-c">
+                <i class="pi pi-search"></i>
+                <span>Thông tin tìm kiếm</span>
+            </strong>
+        </div>
+        <div class="panel-body padding-xl ui-g">
+            <div class="ui-g-12">
+                <label class="ui-g-12 ui-md-4 ui-lg-2 control-label vt-align-right">Mã phòng ban</label>
+                <div class="ui-g-12 ui-md-4 ui-lg-3">
+                    <input class="form-control" formControlName="departmentCode" maxlength="10" autofocus>
+                </div>
+
+                <label class="ui-g-12 ui-md-4 ui-lg-3 control-label vt-align-right">Tên phòng ban</label>
+                <div class="ui-g-12 ui-md-4 ui-lg-3">
+                    <input class="form-control" formControlName="departmentName" maxlength="50">
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer vt-area-button">
+            <button type="submit" (click)="processSearch();" class="btn btn-sm btn-info">
+                <i class="pi pi-search"></i> Tìm kiếm
+            </button>
+        </div>
+    </form>
+</div>
+<div class="panel panel-default default-font">
+    <div class="panel-heading vt-relative">
+        <strong class="text-u-c">
+            <i class="pi pi-list"></i>
+            <span> Danh sách phòng ban</span>
+        </strong>
+        <div class="vt-absolute vt-shotcut-button-in-heading">
+            <div>
+                <button type="button" (click)="prepareSaveOrUpdate()" class="btn btn-sm btn-info"><i class="pi pi-plus-circle"></i>
+                    Thêm mới
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body panel-table">
+        <p-table #ptable [value]="resultList.data" [paginator]="resultList.data && resultList.data.length"
+            (onLazyLoad)="processSearch($event)" [lazy]="true" [rows]="10" [totalRecords]="resultList.recordsTotal"
+            [responsive]="true" [lazyLoadOnInit]="false"
+            tableStyleClass="table table-wrapper table-hover table-striped b-t b-b">
+            <ng-template pTemplate="colgroup" let-columns>
+                <colgroup>
+                    <col class="size-1">
+                    <col class="size-1">
+                    <col class="size-1">
+                    <col class="size-6">
+                    <col class="size-6">
+                    <col class="size-4">
+                </colgroup>
+            </ng-template>
+            <ng-template pTemplate="header" let-columns>
+                <tr>
+                    <!-- STT -->
+                    <th>STT</th>
+
+                    <!-- Sửa -->
+                    <th>Sửa</th>
+
+                    <!-- Xóa -->
+                    <th>Xóa</th>
+
+                    <!-- Code -->
+                    <th>Mã phòng ban</th>
+
+                    <!-- Name -->
+                    <th>Tên phòng ban</th>
+                    <th>Trạng thái</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-item let-index="rowIndex">
+                <tr>
+                    <!-- STT -->
+                    <td class="vt-align-center">{{index+1}}</td>
+
+                    <!-- Edit -->
+                    <td class="vt-align-center">
+                        <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.departmentId)" [title]="'Sửa'">
+                            <i class="pi pi-pencil"></i></a>
+                    </td>
+
+                    <!-- Delete -->
+                    <td class="vt-align-center">
+                        <a class="btn-table delete" (click)="processDelete(item.departmentId)" [title]="'Xóa'">
+                            <i class="pi pi-trash"></i></a>
+                    </td>
+
+                    <!-- Code -->
+                    <td class="vt-align-center">{{item.departmentCode}}</td>
+
+                    <!-- Name -->
+                    <td>{{item.departmentName}}</td>
+                    <td *ngIf="item.statusDepartment == 1">Đang hoạt động</td>
+                    <td *ngIf="item.statusDepartment == 2">Không hoạt động</td>
+                    <td *ngIf="item.statusDepartment != 1 && item.statusDepartment != 2"></td>
+                </tr>
+
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr class="emptymessage">
+                    <td [attr.colspan]="6">
+                        Không tồn tại bản ghi
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="paginatorleft">
+                <table-footer [resultList]="resultList"></table-footer>
+            </ng-template>
+        </p-table>
+    </div>
+</div>

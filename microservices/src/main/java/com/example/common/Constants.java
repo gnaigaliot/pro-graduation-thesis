@@ -62,4 +62,9 @@ public class Constants {
         String SYS_CAT = "SYS_CAT";
         String SYS_CAT_CHILD = "SYS_CAT_CHILD";
     }
+    
+    public interface STATUS_DEPARTMENT {
+        public static final int EFFECTIVE = 1;
+        public static final int NOT_EFFECTIVE = 2;
+    }
 }
