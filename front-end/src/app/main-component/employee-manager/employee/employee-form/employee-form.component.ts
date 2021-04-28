@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AppComponent } from 'src/app/app.component';
+import { DepartmentService } from 'src/app/core/services/department/department.service';
 import { EmployeeService } from 'src/app/core/services/employee/employee.service';
+import { PositionService } from 'src/app/core/services/position/position.service';
 import { BaseComponent } from 'src/app/shared/components/base-component/base-component.component';
 import { CommonUtils } from 'src/app/shared/service/common-utils.service';
 
@@ -13,6 +15,10 @@ import { CommonUtils } from 'src/app/shared/service/common-utils.service';
 })
 export class EmployeeFormComponent extends BaseComponent implements OnInit {
   formSave: FormGroup;
+  public listDepartment: any = [];
+  public listPositions: any = [];
+  public idEmployee: any;
+
   formConfig = {
     employeeId: [''],
     employeeCode: ['', [Validators.required]],
@@ -21,14 +27,25 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     gender: ['', [Validators.required]],
     email: ['', [Validators.required]],
     phoneNumber: ['', [Validators.required]],
-    status: ['']
+    status: [''],
+    departmentId: ['', [Validators.required]],
+    positionId: ['', [Validators.required]]
   };
   constructor(
     private app: AppComponent,
     private employeeService: EmployeeService,
-    public activeModal: NgbActiveModal
+    public activeModal: NgbActiveModal,
+    private departmentService: DepartmentService,
+    private positionService: PositionService
   ) {
     super(null);
+    this.departmentService.getAllWithoutPagination().subscribe(res => {
+      this.listDepartment = res;
+    });
+
+    this.positionService.getAllWithoutPagination().subscribe(data => {
+      this.listPositions = data;
+    });
     this.formSave = this.buildForm({}, this.formConfig);
   }
 

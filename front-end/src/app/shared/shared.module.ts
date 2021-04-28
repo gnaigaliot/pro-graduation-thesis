@@ -44,7 +44,7 @@ import {RadioButtonModule} from 'primeng/radiobutton';
 import { ImportErrorComponent } from './components/import-error/import-error.component';
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { ConfirmationService } from 'primeng/api';
-import { Table } from 'primeng/table'
+import { Table } from 'primeng/table';
 
 @NgModule({
   declarations: [

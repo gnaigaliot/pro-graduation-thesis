@@ -4,6 +4,8 @@
  */
 package com.example.employeeManager.department.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,7 @@ import com.example.employeeManager.department.bean.DepartmentBean;
 import com.example.employeeManager.department.bo.DepartmentBO;
 import com.example.employeeManager.department.form.DepartmentForm;
 import com.example.employeeManager.department.service.DepartmentService;
+import com.example.employeeManager.position.bo.PositionsBO;
 
 /**
  * @author d2tsoftware
@@ -128,5 +131,10 @@ public class DepartmentController extends BaseController {
         } else {
             return Response.error(Constants.RESPONSE_CODE.ERROR);
         }
+    }
+    
+    @GetMapping(path = "/get-all")
+    public @ResponseBody List<DepartmentBO> getAll(HttpServletRequest req){
+        return departmentService.getAll();
     }
 }

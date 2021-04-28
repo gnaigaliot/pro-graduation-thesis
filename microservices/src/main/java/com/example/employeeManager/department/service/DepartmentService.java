@@ -5,6 +5,8 @@
 
 package com.example.employeeManager.department.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +65,9 @@ public class DepartmentService {
      */
     public void delete(DepartmentBO entity) {
         departmentdao.delete(entity);
+    }
+    
+    public List<DepartmentBO> getAll() {
+        return departmentdao.findAll();
     }
 }

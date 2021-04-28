@@ -54,7 +54,12 @@ public class EmployeeBO {
     @Column(name = "user_id")
     private Long userId;
 
+    @Column(name = "department_id")
+    private Long departmentId;
 
+    @Column(name = "position_id")
+    private Long positionId;
+    
     /**
      * Set the "employeeId" field value
      * @param employeeId
@@ -250,5 +255,34 @@ public class EmployeeBO {
     public Long getUserId() {
         return this.userId;
     }
+    /**
+     * Set the "departmentId" field value
+     * @param departmentId
+     */
+    public void setDepartmentId( Long departmentId ) {
+        this.departmentId = departmentId ;
+    }
 
+    /**
+     * Get the "departmentId" field value
+     * @return the field value
+     */
+    public Long getDepartmentId() {
+        return this.departmentId;
+    }
+    /**
+     * Set the "positionId" field value
+     * @param positionId
+     */
+    public void setPositionId( Long positionId ) {
+        this.positionId = positionId ;
+    }
+
+    /**
+     * Get the "positionId" field value
+     * @return the field value
+     */
+    public Long getPositionId() {
+        return this.positionId;
+    }
 }

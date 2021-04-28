@@ -75,33 +75,29 @@
             <ng-template pTemplate="colgroup" let-columns>
                 <colgroup>
                     <col class="size-1">
-                    <col class="size-1">
-                    <col class="size-1">
-                    <col class="size-4">
-                    <col class="size-6">
-                    <col class="size-3">
-                    <col class="size-5">
-                    <col class="size-3">
+                    <col class="size-1 col-feature">
+                    <col class="size-1 col-feature">
+                    <col class="size-7">
                     <col class="size-3">
                     <col class="size-2">
+                    <col class="size-6">
+                    <col class="size-2">
+                    <col class="size-3">
+                    <col class="size-3">
                 </colgroup>
             </ng-template>
             <ng-template pTemplate="header" let-columns>
                 <tr>
                     <!-- STT -->
                     <th>STT</th>
-
                     <!-- Sửa -->
                     <th>Sửa</th>
-
                     <!-- Xóa -->
                     <th>Xóa</th>
-
-                    <!-- Code -->
-                    <th>Mã nhân viên</th>
-
                     <!-- Name -->
                     <th>Tên nhân viên</th>
+                    <!-- Code -->
+                    <th>Mã nhân viên</th>
                     <th>Giới tính</th>
                     <th>Email</th>
                     <th>Ngày sinh</th>
@@ -113,32 +109,38 @@
                 <tr>
                     <!-- STT -->
                     <td class="vt-align-center">{{index+1}}</td>
-
                     <!-- Edit -->
                     <td class="vt-align-center">
                         <a class="btn-table edit" (click)="prepareSaveOrUpdate(item.employeeId)" [title]="'Sửa'">
                             <i class="pi pi-pencil"></i></a>
                     </td>
-
                     <!-- Delete -->
                     <td class="vt-align-center">
                         <a class="btn-table delete" (click)="processDelete(item.employeeId)" [title]="'Xóa'">
                             <i class="pi pi-trash"></i></a>
                     </td>
-
-                    <!-- Code -->
-                    <td class="vt-align-center">{{item.employeeCode}}</td>
-
                     <!-- Name -->
-                    <td>{{item.employeeName}}</td>
+                    <td>
+                        <div class="d-flex p-l-10">
+                            <img class="mat-card-avatar" src="assets/images/users/2.jpg">
+                            <div class="m-l-15">
+                                <p class="font-medium m-b-0 m-t-0">{{item.employeeName}}</p>
+                                <small class="text-muted" style="white-space: break-spaces;">{{item.positionName}} - {{item.departmentName}}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <!-- Code -->
+                    <td class="vt-align-center">
+                        {{item.employeeCode}}
+                    </td>
                     <td class="vt-align-center" *ngIf="item.gender == 1">Nam</td>
                     <td class="vt-align-center" *ngIf="item.gender == 2">Nữ</td>
                     <td *ngIf="item.gender != 1 && item.gender != 2"></td>
                     <td>{{item.email}}</td>
                     <td class="vt-align-center">{{item.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
                     <td>{{item.phoneNumber}}</td>
-                    <td *ngIf="item.status == 1">Đang hoạt động</td>
-                    <td *ngIf="item.status == 2">Không hoạt động</td>
+                    <td class="vt-align-center" *ngIf="item.status == 1"><span class="customer-badge status-qualified">Đang hoạt động</span></td>
+                    <td class="vt-align-center" *ngIf="item.status == 2"><span class="customer-badge status-unqualified">Không hoạt động</span></td>
                     <td *ngIf="item.status != 1 && item.status != 2"></td>
                 </tr>
 

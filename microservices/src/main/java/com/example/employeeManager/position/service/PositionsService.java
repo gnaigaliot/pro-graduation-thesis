@@ -5,6 +5,8 @@
 
 package com.example.employeeManager.position.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,15 +15,10 @@ import org.springframework.stereotype.Service;
 import com.example.common.DataTableResults;
 import com.example.common.VfData;
 import com.example.employeeManager.position.bean.PositionsBean;
-import com.example.employeeManager.position.form.PositionsForm;
 import com.example.employeeManager.position.bo.PositionsBO;
 import com.example.employeeManager.position.dao.PositionsDAO;
+import com.example.employeeManager.position.form.PositionsForm;
 
-/**
- * @author d2tsoftware
- * @since 23/04/2021
- * @version 1.0
- */
 @Service
 public class PositionsService {
 
@@ -63,5 +60,9 @@ public class PositionsService {
      */
     public void delete(PositionsBO entity) {
         positionsdao.delete(entity);
+    }
+    
+    public List<PositionsBO> getAll() {
+        return positionsdao.findAll();
     }
 }

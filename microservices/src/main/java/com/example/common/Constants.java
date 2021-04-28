@@ -67,4 +67,9 @@ public class Constants {
         public static final int EFFECTIVE = 1;
         public static final int NOT_EFFECTIVE = 2;
     }
+    
+    public interface STATUS {
+        public static final int EFFECTIVE = 1;
+        public static final int NOT_EFFECTIVE = 2;
+    }
 }

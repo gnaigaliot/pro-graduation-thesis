@@ -4,6 +4,8 @@
  */
 package com.example.employeeManager.position.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -123,5 +125,10 @@ public class PositionsController extends BaseController {
         } else {
             return Response.error(Constants.RESPONSE_CODE.ERROR);
         }
+    }
+    
+    @GetMapping(path = "/get-all")
+    public @ResponseBody List<PositionsBO> getAll(HttpServletRequest req){
+        return positionsService.getAll();
     }
 }

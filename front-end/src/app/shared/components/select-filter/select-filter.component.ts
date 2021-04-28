@@ -58,7 +58,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
     this.emptyFilterMessage = 'Không tìm thấy dữ liệu.';
   }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges): void {
     const options: SimpleChange = changes.options;
     const property: SimpleChange = changes.property;
 
@@ -70,7 +70,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
     this.validateSeletedValue();
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     // Sửa bug đối với form không phải là popup và lỗi tự động scrolldown khi hiển thị popup
     if (this.dropDown && this.autofocus === 'autofocus') {
       setTimeout(() => {
@@ -79,7 +79,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.property.valueChanges.subscribe(
       (value) => {
         this.selectedValue = value;
@@ -101,7 +101,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
     });
     };
   }
-  initDropdown(data?: any) {
+  initDropdown(data?: any): void {
     if (data) {
       if (!this.group) {
         this.listData = [];
@@ -114,13 +114,13 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
       }
     }
   }
-  selectedChange() {
+  selectedChange(): void {
     this.checkShowClear = (this.selectedValue === null || this.selectedValue === '') ? false : true;
     this.property.setValue(this.selectedValue);
     this.onChange.emit(this.selectedValue);
   }
 
-  changeIndex(index) { // tính index của element đang focus
+  changeIndex(index): void { // tính index của element đang focus
     let currentIndex = -1; // chưa có item nào được focus
     for (let i = 0; i < this.btnItems._results.length; i++) {
       const item = this.btnItems._results[i];
@@ -140,7 +140,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
     nextIndex = (nextIndex <= 0) ? 0 : (nextIndex >= this.btnItems._results.length ? this.btnItems._results.length - 1 : nextIndex);
     this.btnItems._results[nextIndex].nativeElement.classList.add('focus');
   }
-  focusElement() { // focus vào element để scroll down up
+  focusElement(): void { // focus vào element để scroll down up
     for (const item of this.btnItems._results) {
       if (item.nativeElement.className.includes('focus')) {
         item.nativeElement.focus();
@@ -149,12 +149,12 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
       }
     }
   }
-  focusInputSearch() {
+  focusInputSearch(): void {
     setTimeout(() => {
       this.inputSearch.first.nativeElement.focus();
     }, 400);
   }
-  choseFocusNation() {
+  choseFocusNation(): void {
     // chọn element đang focus
     for (const item of this.btnItems._results) {
       if (item.nativeElement.className.includes('focus')) {
@@ -173,7 +173,7 @@ export class SelectFilterComponent implements OnChanges, OnInit, AfterViewInit {
   }
 
   // Validate gia tri combobox co ton tai hay khong
-  private validateSeletedValue() {
+  private validateSeletedValue(): void {
     if (!this.selectedValue || this.listData.length === 0) {
       return;
     }

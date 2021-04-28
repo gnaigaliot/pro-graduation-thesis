@@ -1,5 +1,7 @@
 package com.example.employeeManager.employee.controller;
 
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,11 +85,17 @@ public class EmployeeController extends BaseController {
             if(employeeBO == null){
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
+            employeeBO.setModifiedDate(new Date());
+            employeeBO.setModifiedBy(CommonUtil.getUserLoginName(req));
+            employeeBO.setStatus(form.getStatus());
         } else {
 //            if (!permissionChecker.hasPermission("action.insert", adResourceKey, req)) {
 //                return Response.invalidPermission();
 //            }
             employeeBO = new EmployeeBO();
+            employeeBO.setCreatedDate(new Date());
+            employeeBO.setCreatedBy(CommonUtil.getUserLoginName(req));
+            employeeBO.setStatus(Constants.STATUS.EFFECTIVE);
         }
         employeeBO.setEmployeeCode(form.getEmployeeCode());
         employeeBO.setEmployeeName(form.getEmployeeName());
@@ -95,8 +103,9 @@ public class EmployeeController extends BaseController {
         employeeBO.setGender(form.getGender());
         employeeBO.setEmail(form.getEmail());
         employeeBO.setPhoneNumber(form.getPhoneNumber());
-        employeeBO.setStatus(form.getStatus());
         employeeBO.setUserId(form.getUserId());
+        employeeBO.setDepartmentId(form.getDepartmentId());
+        employeeBO.setPositionId(form.getPositionId());
         employeeService.saveOrUpdate(employeeBO);
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(employeeBO);
     }

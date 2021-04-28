@@ -6026,6 +6026,7 @@ input:checked + .slider .off{
 .size-11 { width: 175px !important;}
 .size-12 { width: 190px !important;}
 .size-00 { width: 100%;}
+.size-1.col-feature { width: 20px !important;}
 
 .modal-content{
   position: relative;

@@ -24,7 +24,8 @@ public class EmployeeForm {
     private String     createdBy;
     private String     modifiedBy;
     private Long       userId;
-
+    private Long       departmentId;
+    private Long       positionId;
 
     /**
      * Set the "employeeId" field value
@@ -245,5 +246,36 @@ public class EmployeeForm {
     public Long getUserId() {
         return this.userId;
     }
+    /**
+     * Set the "departmentId" field value
+     * @param departmentId
+     */
+    public void setDepartmentId(Long departmentId) {
+        this.departmentId = departmentId;
+    }
 
+    /**
+     * Get the "departmentId" field value
+     * @return the field value
+     */
+    public Long getDepartmentId() {
+        return this.departmentId;
+    }
+
+
+    /**
+     * Set the "positionId" field value
+     * @param positionId
+     */
+    public void setPositionId(Long positionId) {
+        this.positionId = positionId;
+    }
+
+    /**
+     * Get the "positionId" field value
+     * @return the field value
+     */
+    public Long getPositionId() {
+        return this.positionId;
+    }
 }

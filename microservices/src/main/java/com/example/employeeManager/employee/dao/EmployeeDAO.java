@@ -44,20 +44,26 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
         List<Object> paramList = new ArrayList<>();
 
         String sql = " SELECT ";
-        sql += "        employee_id As employeeId   ";
-        sql += "       ,employee_code As employeeCode ";
-        sql += "       ,employee_name As employeeName ";
-        sql += "       ,date_of_birth As dateOfBirth  ";
-        sql += "       ,gender As gender       ";
-        sql += "       ,email As email        ";
-        sql += "       ,phone_number As phoneNumber  ";
-        sql += "       ,status As status       ";
-        sql += "       ,created_date As createdDate  ";
-        sql += "       ,modified_date As modifiedDate ";
-        sql += "       ,created_by As createdBy    ";
-        sql += "       ,modified_by As modifiedBy   ";
-        sql += "       ,user_id As userId       ";
-        sql += "       FROM employee ";
+        sql += "        e.employee_id As employeeId   ";
+        sql += "       ,e.employee_code As employeeCode ";
+        sql += "       ,e.employee_name As employeeName ";
+        sql += "       ,e.date_of_birth As dateOfBirth  ";
+        sql += "       ,e.gender As gender       ";
+        sql += "       ,e.email As email        ";
+        sql += "       ,e.phone_number As phoneNumber  ";
+        sql += "       ,e.status As status       ";
+        sql += "       ,e.created_date As createdDate  ";
+        sql += "       ,e.modified_date As modifiedDate ";
+        sql += "       ,e.created_by As createdBy    ";
+        sql += "       ,e.modified_by As modifiedBy   ";
+        sql += "       ,e.user_id As userId       ";
+        sql += "       ,e.department_id As departmentId ";
+        sql += "       ,e.position_id As positionId   ";
+        sql += "       ,p.position_name As positionName   ";
+        sql += "       ,d.department_name As departmentName   ";
+        sql += "       FROM employee e ";
+        sql += "       LEFT JOIN positions p ON e.position_id = p.position_id ";
+        sql += "       LEFT JOIN department d ON e.department_id = d.department_id ";
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 ");
 

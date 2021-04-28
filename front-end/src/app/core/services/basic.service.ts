@@ -1,11 +1,11 @@
-import { CommonUtils } from "../../shared/service/common-utils.service";
-import { Injectable } from "@angular/core";
-import { CONFIG } from "../app-config";
-import { environment } from "../../../environments/environment";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
-import { HelperService } from "../../shared/service/helper.service";
+import { CommonUtils } from '../../shared/service/common-utils.service';
+import { Injectable } from '@angular/core';
+import { CONFIG } from '../app-config';
+import { environment } from '../../../environments/environment';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
+import { HelperService } from '../../shared/service/helper.service';
 import { Storage } from '../../shared/service/storage.service';
 @Injectable()
 export class BasicService {
@@ -48,7 +48,7 @@ export class BasicService {
    * set SystemCode
    * param systemCode
    */
-  public setSystemCode(systemCode: string) {
+  public setSystemCode(systemCode: string): void {
     this.systemCode = systemCode;
     const API_URL = environment.serverUrl[this.systemCode];
     const API_PATH = CONFIG.API_PATH[this.module];
@@ -138,12 +138,13 @@ export class BasicService {
   /**
    * handleError
    */
+  // tslint:disable-next-line:typedef
   public handleError(error: any) {
     const errorMsg = error.message
       ? error.message
       : error.status
       ? `${error.status} - ${error.statusText}`
-      : "Server error";
+      : 'Server error';
     return throwError(errorMsg);
   }
   /**
@@ -155,12 +156,12 @@ export class BasicService {
     if (!options){
       options = {
         headers: {'Authorization':  Storage.getUserToken().access_token, 'Content-Type': 'application/json' },
-      }
+      };
     }
     else {
-      options.headers = {'Authorization': Storage.getUserToken().access_token, 'Content-Type': 'application/json'}
+      options.headers = {'Authorization': Storage.getUserToken().access_token, 'Content-Type': 'application/json'};
     }
- 
+
     return this.httpClient.get(url, options).pipe(
       tap(
         // Log the result or error
@@ -187,7 +188,7 @@ export class BasicService {
       'Authorization': Storage.getUserToken().access_token,
       'Content-Type': 'application/json'
     });
-    return this.httpClient.post(url, data,{headers: headers}).pipe(
+    return this.httpClient.post(url, data, {headers: headers}).pipe(
       tap(
         // Log the result or error
         res => {
@@ -241,7 +242,7 @@ export class BasicService {
     if (!data) {
       isSuccess = false;
     }
-    if (data.type === "SUCCESS") {
+    if (data.type === 'SUCCESS') {
       isSuccess = true;
     } else {
       isSuccess = false;
@@ -256,7 +257,7 @@ export class BasicService {
     if (!data) {
       isConfirm = false;
     }
-    if (data.type === "CONFIRM") {
+    if (data.type === 'CONFIRM') {
       isConfirm = true;
     } else {
       isConfirm = false;
