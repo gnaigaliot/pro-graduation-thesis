@@ -17,12 +17,13 @@ import { DemoMaterialModule } from './demo-material-module';
 import { SharedModule } from './shared/shared.module';
 import { SpinnerComponent } from './shared/spinner.component';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MatIconModule } from '@angular/material/icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './core/guards';
+import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AuthGuard } from './core/guards';
     NgbModule,
     NgbToastModule,
     ToastModule,
-    MatIconModule
+    MatIconModule,
+    WebcamModule
   ],
   providers: [
     AuthGuard,

@@ -47,6 +47,8 @@
     "jquery": "^3.6.0",
     "lodash-es": "^4.17.21",
     "ng-chartist": "^4.1.0",
+    "ng-open-cv": "^0.3.1",
+    "ngx-webcam": "^0.3.2",
     "node-sass": "^5.0.0",
     "primeicons": "^4.1.0",
     "primeng": "^11.4.0",

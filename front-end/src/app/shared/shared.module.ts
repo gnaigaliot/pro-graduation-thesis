@@ -45,6 +45,7 @@ import { ImportErrorComponent } from './components/import-error/import-error.com
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import {ProgressBarModule} from 'primeng/progressbar';
 
 @NgModule({
   declarations: [
@@ -95,7 +96,8 @@ import { Table } from 'primeng/table';
     MultiSelectModule,
     FullCalendarModule,
     DragDropModule,
-    EditorModule
+    EditorModule,
+    ProgressBarModule
   ],
   providers: [
     ConfirmationService,
@@ -147,7 +149,8 @@ import { Table } from 'primeng/table';
     FontAwesomeModule,
     DragDropModule,
     EditorModule,
-    ChartModule
+    ChartModule,
+    ProgressBarModule
    ]
 })
 export class SharedModule { }

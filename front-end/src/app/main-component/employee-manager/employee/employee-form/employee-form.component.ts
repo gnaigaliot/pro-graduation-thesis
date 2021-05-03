@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subject, timer } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { AppComponent } from 'src/app/app.component';
 import { DepartmentService } from 'src/app/core/services/department/department.service';
 import { EmployeeService } from 'src/app/core/services/employee/employee.service';
@@ -18,6 +20,11 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
   public listDepartment: any = [];
   public listPositions: any = [];
   public idEmployee: any;
+  public listImageFace: string[] = [];
+  // face = 'assets/images/face-Iris-capture.jpg';
+  private trigger: Subject<void> = new Subject<void>();
+  // tslint:disable-next-line: no-inferrable-types
+  public percentCapture: number = 0;
 
   formConfig = {
     employeeId: [''],
@@ -29,7 +36,8 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     phoneNumber: ['', [Validators.required]],
     status: [''],
     departmentId: ['', [Validators.required]],
-    positionId: ['', [Validators.required]]
+    positionId: ['', [Validators.required]],
+    employeeImgUrl: ['', [Validators.required]]
   };
   constructor(
     private app: AppComponent,
@@ -39,19 +47,22 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     private positionService: PositionService
   ) {
     super(null);
-    this.departmentService.getAllWithoutPagination().subscribe(res => {
-      this.listDepartment = res;
-    });
-
-    this.positionService.getAllWithoutPagination().subscribe(data => {
-      this.listPositions = data;
-    });
     this.formSave = this.buildForm({}, this.formConfig);
   }
 
   ngOnInit(): void {
+    // tslint:disable-next-line: deprecation
+    this.departmentService.getAllWithoutPagination().subscribe(res => {
+      this.listDepartment = res;
+    });
+
+    // tslint:disable-next-line: deprecation
+    this.positionService.getAllWithoutPagination().subscribe(data => {
+      this.listPositions = data;
+    });
   }
 
+  // tslint:disable-next-line: typedef
   get f() {
     return this.formSave.controls;
   }
@@ -73,6 +84,7 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     }
     this.app.confirmMessage(null, () => {// on accepted
       this.employeeService.saveOrUpdate(this.formSave.value)
+      // tslint:disable-next-line: deprecation
       .subscribe(res => {
         if (this.employeeService.requestIsSuccess(res)) {
           this.activeModal.close(res);
@@ -82,4 +94,23 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
    });
   }
 
+  public get triggerObservable(): Observable<void> {
+    return this.trigger.asObservable();
+  }
+
+  public viewChange(event): void {
+    this.listImageFace.push(event.face);
+    this.formSave.controls.employeeImgUrl.setValue(this.listImageFace);
+    // this.face = event.face;
+  }
+
+  public triggerSnapshot(): void {
+    timer(0, 200).pipe(
+      take(100)
+    // tslint:disable-next-line: deprecation
+    ).subscribe(() => {
+      this.trigger.next();
+      this.percentCapture = this.percentCapture + 1;
+    });
+  }
 }

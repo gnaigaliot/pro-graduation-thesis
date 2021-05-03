@@ -1,6 +1,7 @@
 package com.example.employeeManager.employee.form;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * EmployeeForm class
@@ -26,6 +27,7 @@ public class EmployeeForm {
     private Long       userId;
     private Long       departmentId;
     private Long       positionId;
+    private List<String> employeeImgUrl;
 
     /**
      * Set the "employeeId" field value
@@ -277,5 +279,13 @@ public class EmployeeForm {
      */
     public Long getPositionId() {
         return this.positionId;
+    }
+
+    public List<String> getEmployeeImgUrl() {
+        return employeeImgUrl;
+    }
+
+    public void setEmployeeImgUrl(List<String> employeeImgUrl) {
+        this.employeeImgUrl = employeeImgUrl;
     }
 }

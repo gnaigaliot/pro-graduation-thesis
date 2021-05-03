@@ -3337,3 +3337,22 @@ Custom status start
   background-color: #eccfff;
   color: #694382;
 }
+.btn-gen-image {
+  text-align: center;
+  border-radius: 0.25rem;
+  margin: 0px 15px;
+  font-size: 13px !important;
+}
+.camera {
+  text-align: center;
+}
+.list-image-model::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.image-item {
+  float: left;
+  width: 10%;
+  padding: 2px;
+}

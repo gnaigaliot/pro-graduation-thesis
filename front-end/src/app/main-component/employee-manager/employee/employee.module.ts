@@ -6,6 +6,7 @@ import { EmployeeIndexComponent } from './employee-index/employee-index.componen
 import { EmployeeSearchComponent } from './employee-search/employee-search.component';
 import { EmployeeFormComponent } from './employee-form/employee-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { FaceDetectModule } from 'projects/face-detect/src/public-api';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   imports: [
     CommonModule,
     EmployeeRoutingModule,
-    SharedModule
+    SharedModule,
+    FaceDetectModule
   ],
   entryComponents: [
     EmployeeFormComponent
