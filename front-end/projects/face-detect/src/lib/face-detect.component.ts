@@ -1,4 +1,4 @@
-import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild} from '@angular/core';
 import {BehaviorSubject, forkJoin, Observable, Subject, Subscription} from 'rxjs';
 import {NgOpenCVService, OpenCVLoadResult} from 'ng-open-cv';
 import {filter, switchMap, tap} from 'rxjs/operators';
@@ -28,7 +28,7 @@ declare var cv: any;
   `,
   styles: []
 })
-export class FaceDetectComponent implements OnInit {
+export class FaceDetectComponent implements OnInit, OnDestroy {
   private static DEFAULT_VIDEO_OPTIONS: MediaTrackConstraints = {facingMode: 'environment'};
   private static DEFAULT_IMAGE_TYPE: string = 'image/jpeg';
   private static DEFAULT_IMAGE_QUALITY: number = 0.92;
@@ -270,4 +270,7 @@ export class FaceDetectComponent implements OnInit {
     this.isCaptured = false;
   }
 
+  ngOnDestroy(): void {
+    this.trigger.complete();
+  }
 }

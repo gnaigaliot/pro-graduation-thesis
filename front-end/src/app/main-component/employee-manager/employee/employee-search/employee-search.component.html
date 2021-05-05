@@ -139,8 +139,8 @@
                     <td>{{item.email}}</td>
                     <td class="vt-align-center">{{item.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
                     <td>{{item.phoneNumber}}</td>
-                    <td class="vt-align-center" *ngIf="item.status == 1"><span class="customer-badge status-qualified">Đang hoạt động</span></td>
-                    <td class="vt-align-center" *ngIf="item.status == 2"><span class="customer-badge status-unqualified">Không hoạt động</span></td>
+                    <td class="vt-align-center" style="white-space: break-spaces;" *ngIf="item.status == 1"><span class="customer-badge status-qualified">Đang hoạt động</span></td>
+                    <td class="vt-align-center" style="white-space: break-spaces;" *ngIf="item.status == 2"><span class="customer-badge status-unqualified">Không hoạt động</span></td>
                     <td *ngIf="item.status != 1 && item.status != 2"></td>
                 </tr>
 

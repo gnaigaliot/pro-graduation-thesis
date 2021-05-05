@@ -1,6 +1,7 @@
 package com.example.employeeManager.employee.bo;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "employee")
@@ -59,6 +61,9 @@ public class EmployeeBO {
 
     @Column(name = "position_id")
     private Long positionId;
+    
+    @Transient
+    private List<String> employeeImgUrl;
     
     /**
      * Set the "employeeId" field value
@@ -284,5 +289,13 @@ public class EmployeeBO {
      */
     public Long getPositionId() {
         return this.positionId;
+    }
+
+    public List<String> getEmployeeImgUrl() {
+        return employeeImgUrl;
+    }
+
+    public void setEmployeeImgUrl(List<String> employeeImgUrl) {
+        this.employeeImgUrl = employeeImgUrl;
     }
 }

@@ -163,7 +163,7 @@ public class UserMainController {
             if (userService.checkLogin(user)) {
                 result = jwtService.generateTokenLogin(user.getUserName());
                 httpStatus = HttpStatus.OK;
-                UserBean userBean =userService.loadUserByUsername(user.getUserName());
+                UserBean userBean = userService.loadUserByUsername(user.getUserName());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(
                         userBean, null,
                         AuthorityUtils.createAuthorityList(userBean.getRole()));

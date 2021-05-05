@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.SQLQuery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -53,5 +54,16 @@ public interface EmployeeImagesDAO extends CrudRepository<EmployeeImagesBO, Long
 
         String orderBy = " ORDER BY employeeImageId DESC";
         return vfData.findPaginationQuery(sql + strCondition.toString(), orderBy, paramList, EmployeeImagesBean.class);
+    }
+    
+    public default List<String> getUrlImageByEmployeeId(VfData vfData, Long employeeId) {
+        String sql = " SELECT "
+                + " ei.employee_img_url "
+                + " FROM employee_images ei "
+                + " WHERE 1=1 AND ei.employee_id = :employeeId "
+                + " ORDER BY ei.employee_image_id ASC ";
+        SQLQuery query = vfData.createSQLQuery(sql);
+        query.setParameter("employeeId", employeeId);
+        return query.list();
     }
 }

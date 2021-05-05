@@ -1,6 +1,8 @@
 package com.example.employeeManager.employee.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +27,8 @@ import com.example.employeeManager.employee.bean.EmployeeBean;
 import com.example.employeeManager.employee.bo.EmployeeBO;
 import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
+import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
+import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
 
 @Controller
 @RequestMapping("/v1/employee-manager/employee")
@@ -34,6 +38,9 @@ public class EmployeeController extends BaseController {
 
     @Autowired
     private EmployeeService employeeService;
+    
+    @Autowired
+    private EmployeeImagesService employeeImagesService;
 
     /**
      * findById
@@ -49,6 +56,7 @@ public class EmployeeController extends BaseController {
         if(employeeBO == null) {
             return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
         }
+        employeeBO.setEmployeeImgUrl(employeeImagesService.getListImgUrlByEmplId(employeeId));
         return Response.success().withData(employeeBO);
     }
 
@@ -107,6 +115,19 @@ public class EmployeeController extends BaseController {
         employeeBO.setDepartmentId(form.getDepartmentId());
         employeeBO.setPositionId(form.getPositionId());
         employeeService.saveOrUpdate(employeeBO);
+        if(employeeId == null || employeeId.equals(0L)) {
+            List<EmployeeImagesBO> listEmplImages = new ArrayList<EmployeeImagesBO>();
+            if(form.getEmployeeImgUrl() != null || form.getEmployeeImgUrl().size() > 0) {
+                for (String item : form.getEmployeeImgUrl()) {
+                    EmployeeImagesBO bo = new EmployeeImagesBO();
+                    bo.setEmployeeId(employeeBO.getEmployeeId());
+                    bo.setEmployeeImgUrl(item);
+                    listEmplImages.add(bo);
+                }
+                employeeImagesService.saveAll(listEmplImages);
+            }
+        }
+        
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(employeeBO);
     }
 

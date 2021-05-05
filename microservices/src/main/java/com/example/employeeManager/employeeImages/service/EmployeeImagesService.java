@@ -1,5 +1,7 @@
 package com.example.employeeManager.employeeImages.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +55,13 @@ public class EmployeeImagesService {
      */
     public void delete(EmployeeImagesBO entity) {
         employeeImagesdao.delete(entity);
+    }
+    
+    public void saveAll(List<EmployeeImagesBO> listEmployeeImages) {
+        employeeImagesdao.saveAll(listEmployeeImages);
+    }
+    
+    public List<String> getListImgUrlByEmplId(Long employeeId) {
+        return employeeImagesdao.getUrlImageByEmployeeId(vfData, employeeId);
     }
 }

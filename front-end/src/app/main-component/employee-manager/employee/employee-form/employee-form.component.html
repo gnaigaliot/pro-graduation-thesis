@@ -16,7 +16,7 @@
                 <div class="ui-g-12">
                     <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Mã nhân viên <font size="2" color="red">* </font></label>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
-                        <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="employeeCode" maxlength="10">
+                        <input [disabled]="!isShow" class="form-control ng-pristine ng-invalid ng-touched" formControlName="employeeCode" maxlength="10">
                         <app-control-messages [control]="f['employeeCode']"></app-control-messages>
                     </div>
 
@@ -103,12 +103,13 @@
                 <strong class="text-u-c">
                     <span>Dữ liệu nhận dạng <font size="2" color="red">* </font></span>
                 </strong>
-                <button *ngIf="!formSave.get('employeeId').value" type="button" (click)="triggerSnapshot()" class="btn btn-sm btn-info btn-gen-image"> <i class="pi pi-camera"></i> Tạo dữ liệu</button>
+                <button *ngIf="isShow" type="button" (click)="triggerSnapshot()" class="btn btn-sm btn-info btn-gen-image"> <i class="pi pi-camera"></i> Tạo dữ liệu</button>
+                <button *ngIf="formSave.get('employeeId').value" type="button" (click)="updateSnapshot()" class="btn btn-sm btn-info btn-gen-image"> <i class="pi pi-camera"></i>Cập nhật khuôn mặt</button>
                 <app-control-messages [control]="f['employeeImgUrl']"></app-control-messages>
-                <div class="card m-t-15 m-b-15" *ngIf="!formSave.get('employeeId').value">
+                <div class="card m-t-15 m-b-15" *ngIf="isShow">
                     <p-progressBar [value]="percentCapture"></p-progressBar>
                 </div>
-                <div class="camera" *ngIf="!formSave.get('employeeId').value">
+                <div class="camera" *ngIf="isShow">
                     <face-detect [width]="640" [height]="380" [triggerFace]="triggerObservable" (imageCapture)="viewChange($event)"></face-detect>
                 </div>
                 <div class="list-image-model m-t-15">

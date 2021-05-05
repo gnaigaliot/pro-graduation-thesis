@@ -3831,10 +3831,10 @@
                       return 0
                   }),
                   mayCreate: (function(dir, name) {
-                      try {
-                          var node = FS.lookupNode(dir, name);
-                          return ERRNO_CODES.EEXIST
-                      } catch (e) {}
+                    //   try {
+                    //       var node = FS.lookupNode(dir, name);
+                    //       return ERRNO_CODES.EEXIST
+                    //   } catch (e) {}
                       return FS.nodePermissions(dir, "wx")
                   }),
                   mayDelete: (function(dir, name, isdir) {

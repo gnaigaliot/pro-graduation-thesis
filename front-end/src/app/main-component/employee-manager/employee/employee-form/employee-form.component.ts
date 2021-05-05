@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, timer } from 'rxjs';
@@ -15,7 +15,7 @@ import { CommonUtils } from 'src/app/shared/service/common-utils.service';
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.css']
 })
-export class EmployeeFormComponent extends BaseComponent implements OnInit {
+export class EmployeeFormComponent extends BaseComponent implements OnInit, OnDestroy {
   formSave: FormGroup;
   public listDepartment: any = [];
   public listPositions: any = [];
@@ -25,6 +25,8 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
   private trigger: Subject<void> = new Subject<void>();
   // tslint:disable-next-line: no-inferrable-types
   public percentCapture: number = 0;
+  // tslint:disable-next-line: no-inferrable-types
+  public isShow: boolean = true;
 
   formConfig = {
     employeeId: [''],
@@ -74,7 +76,9 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
    public setFormValue(propertyConfigs: any, data?: any): void {
     this.propertyConfigs = propertyConfigs;
     if (data && data.employeeId > 0) {
+      this.listImageFace = data.employeeImgUrl;
       this.formSave = this.buildForm(data, this.formConfig);
+      this.isShow = false;
     }
   }
 
@@ -112,5 +116,14 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
       this.trigger.next();
       this.percentCapture = this.percentCapture + 1;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.trigger.complete();
+  }
+
+  public updateSnapshot(): void {
+    this.listImageFace = [];
+    this.isShow = true;
   }
 }

@@ -3831,6 +3831,7 @@
                       return 0
                   }),
                   mayCreate: (function(dir, name) {
+                      debugger
                       try {
                           var node = FS.lookupNode(dir, name);
                           return ERRNO_CODES.EEXIST
@@ -4105,6 +4106,7 @@
                       return FS.mknod(path, mode, 0)
                   }),
                   mkdirTree: (function(path, mode) {
+                      debugger
                       var dirs = path.split("/");
                       var d = "";
                       for (var i = 0; i < dirs.length; ++i) {
@@ -4113,6 +4115,7 @@
                           try {
                               FS.mkdir(d, mode)
                           } catch (e) {
+                              console.log("exist detect")
                               if (e.errno != ERRNO_CODES.EEXIST) throw e
                           }
                       }
@@ -4433,6 +4436,7 @@
                       })
                   }),
                   open: (function(path, flags, mode, fd_start, fd_end) {
+                      debugger
                       if (path === "") {
                           throw new FS.ErrnoError(ERRNO_CODES.ENOENT)
                       }
