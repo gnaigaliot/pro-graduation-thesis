@@ -204,9 +204,9 @@ export class FaceDetectComponent implements OnInit, OnDestroy {
       const context = canvas.getContext('2d');
       const imageObj = new Image();
       // @ts-ignore
-      canvas.width = 400;
+      canvas.width = 200;
       // @ts-ignore
-      canvas.height = 400;
+      canvas.height = 200;
       imageObj.onload = function () {
         const sourceX = point1.x;
         const sourceY = point1.y;

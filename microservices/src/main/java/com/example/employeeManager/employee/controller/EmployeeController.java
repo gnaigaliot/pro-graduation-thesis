@@ -1,10 +1,16 @@
 package com.example.employeeManager.employee.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -118,11 +124,45 @@ public class EmployeeController extends BaseController {
         if(employeeId == null || employeeId.equals(0L)) {
             List<EmployeeImagesBO> listEmplImages = new ArrayList<EmployeeImagesBO>();
             if(form.getEmployeeImgUrl() != null || form.getEmployeeImgUrl().size() > 0) {
+                // tao folder chua anh
+                File f = new File("../train-model-image/" + employeeBO.getEmployeeCode());
+                if (f.mkdir()) {
+                    System.out.println("Directory is created");
+                }
+                else {
+                    System.out.println("Directory cannot be created");
+                }
+                // end tao folder
+                int count = 0;
                 for (String item : form.getEmployeeImgUrl()) {
                     EmployeeImagesBO bo = new EmployeeImagesBO();
                     bo.setEmployeeId(employeeBO.getEmployeeId());
                     bo.setEmployeeImgUrl(item);
                     listEmplImages.add(bo);
+                    // save string base64 as a file to folder start
+                    String base64String = item;
+                    String[] strings = base64String.split(",");
+                    String extension;
+                    switch (strings[0]) {//check image's extension
+                        case "data:image/jpeg;base64":
+                            extension = "jpeg";
+                            break;
+                        case "data:image/png;base64":
+                            extension = "png";
+                            break;
+                        default://should write cases for more images types
+                            extension = "jpg";
+                            break;
+                    }
+                    //convert base64 string to binary data
+                    byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+                    String path = "../train-model-image/" + employeeBO.getEmployeeCode() + "/" + String.valueOf(count++) + "." + extension;
+                    File file = new File(path);
+                    try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+                        outputStream.write(data);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 employeeImagesService.saveAll(listEmplImages);
             }
