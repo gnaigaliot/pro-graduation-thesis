@@ -125,7 +125,7 @@ public class EmployeeController extends BaseController {
         employeeService.saveOrUpdate(employeeBO);
         EmployeeImagesBO employeeImageBo;
         if(employeeId > 0L) {
-            employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeId(employeeId);
+            employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
             if(!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
                 employeeImagesService.saveOrUpdate(employeeImageBo);
@@ -144,7 +144,7 @@ public class EmployeeController extends BaseController {
                         extension = "jpg";
                         break;
                 }
-                String path = "../assets/img/user/" + employeeBO.getEmployeeCode() + "." + extension;
+                String path = "../assets/img/users/" + employeeBO.getEmployeeCode() + "." + extension;
                 try
                 {
                     File f= new File(path);

@@ -3315,7 +3315,7 @@ Custom status start
   padding: .25em .5rem;
   text-transform: uppercase;
   font-weight: 650;
-  font-size: 12px;
+  font-size: 11px;
 }
 .customer-badge.status-unqualified {
   background-color: #ffcdd2;

@@ -67,8 +67,12 @@ public class EmployeeImagesService {
         employeeImagesdao.saveAll(listEmployeeImages);
     }
     
-    public EmployeeImagesBO getEmployeeImageByEmployeeId(Long employeeId) {
+    public EmployeeImagesBean getEmployeeImageByEmployeeId(Long employeeId) {
         return employeeImagesdao.getUrlImageByEmployeeId(vfData, employeeId);
+    }
+    
+    public EmployeeImagesBO getEmployeeImageByEmployeeIdBO(Long employeeId) {
+        return employeeImagesdao.getUrlImageByEmployeeIdBO(vfData, employeeId);
     }
     
     public void saveImageToDirectory(String employeeImageUrl, String employeeCode) {
@@ -89,7 +93,7 @@ public class EmployeeImagesService {
         }
         //convert base64 string to binary data
         byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
-        String path = "../assets/img/user/" + employeeCode + "." + extension;
+        String path = "../assets/img/users/" + employeeCode + "." + extension;
         File file = new File(path);
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
             outputStream.write(data);

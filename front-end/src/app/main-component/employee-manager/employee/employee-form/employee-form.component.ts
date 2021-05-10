@@ -82,7 +82,7 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     if (data && data.employeeId > 0) {
       this.cardImageBase64 = data.employeeImgUrl;
       this.formSave = this.buildForm(data, this.formConfig);
-      this.isShow = false;
+      this.isImageSaved = true;
     }
   }
 

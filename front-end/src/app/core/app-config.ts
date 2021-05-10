@@ -10,7 +10,8 @@ export const CONFIG: any = {
     position: '/v1/employee-manager/position',
     employee: '/v1/employee-manager/employee',
     report: '/report',
-    department: '/v1/employee-manager/department'
+    department: '/v1/employee-manager/department',
+    timekeeping: '/v1/timekeeping'
   }
 };
 
