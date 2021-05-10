@@ -1,8 +1,14 @@
 package com.example.employeeManager.employeeImages.service;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,7 +67,34 @@ public class EmployeeImagesService {
         employeeImagesdao.saveAll(listEmployeeImages);
     }
     
-    public List<String> getListImgUrlByEmplId(Long employeeId) {
+    public EmployeeImagesBO getEmployeeImageByEmployeeId(Long employeeId) {
         return employeeImagesdao.getUrlImageByEmployeeId(vfData, employeeId);
+    }
+    
+    public void saveImageToDirectory(String employeeImageUrl, String employeeCode) {
+        // save string base64 as a file to folder start
+        String base64String = employeeImageUrl;
+        String[] strings = base64String.split(",");
+        String extension;
+        switch (strings[0]) {//check image's extension
+            case "data:image/jpeg;base64":
+                extension = "jpeg";
+                break;
+            case "data:image/png;base64":
+                extension = "png";
+                break;
+            default://should write cases for more images types
+                extension = "jpg";
+                break;
+        }
+        //convert base64 string to binary data
+        byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
+        String path = "../assets/img/user/" + employeeCode + "." + extension;
+        File file = new File(path);
+        try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
+            outputStream.write(data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

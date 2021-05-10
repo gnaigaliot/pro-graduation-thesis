@@ -61,9 +61,11 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
         sql += "       ,e.position_id As positionId   ";
         sql += "       ,p.position_name As positionName   ";
         sql += "       ,d.department_name As departmentName   ";
+        sql += "       ,ei.employee_img_url As employeeImgUrl   ";
         sql += "       FROM employee e ";
         sql += "       LEFT JOIN positions p ON e.position_id = p.position_id ";
         sql += "       LEFT JOIN department d ON e.department_id = d.department_id ";
+        sql += "       LEFT JOIN employee_images ei ON e.employee_id = ei.employee_id ";
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 ");
 

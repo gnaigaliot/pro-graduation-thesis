@@ -9,24 +9,28 @@ import { EmployeeService } from 'src/app/core/services/employee/employee.service
 import { PositionService } from 'src/app/core/services/position/position.service';
 import { BaseComponent } from 'src/app/shared/components/base-component/base-component.component';
 import { CommonUtils } from 'src/app/shared/service/common-utils.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.component.html',
   styleUrls: ['./employee-form.component.css']
 })
-export class EmployeeFormComponent extends BaseComponent implements OnInit, OnDestroy {
+export class EmployeeFormComponent extends BaseComponent implements OnInit {
   formSave: FormGroup;
   public listDepartment: any = [];
   public listPositions: any = [];
   public idEmployee: any;
   public listImageFace: string[] = [];
-  // face = 'assets/images/face-Iris-capture.jpg';
-  private trigger: Subject<void> = new Subject<void>();
   // tslint:disable-next-line: no-inferrable-types
   public percentCapture: number = 0;
   // tslint:disable-next-line: no-inferrable-types
   public isShow: boolean = true;
+
+  isImageSaved: boolean;
+  cardImageBase64: string;
+  imageError: string;
+
 
   formConfig = {
     employeeId: [''],
@@ -76,7 +80,7 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit, OnDe
    public setFormValue(propertyConfigs: any, data?: any): void {
     this.propertyConfigs = propertyConfigs;
     if (data && data.employeeId > 0) {
-      this.listImageFace = data.employeeImgUrl;
+      this.cardImageBase64 = data.employeeImgUrl;
       this.formSave = this.buildForm(data, this.formConfig);
       this.isShow = false;
     }
@@ -98,32 +102,83 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit, OnDe
    });
   }
 
-  public get triggerObservable(): Observable<void> {
-    return this.trigger.asObservable();
-  }
+  // public get triggerObservable(): Observable<void> {
+  //   return this.trigger.asObservable();
+  // }
 
-  public viewChange(event): void {
-    this.listImageFace.push(event.face);
-    this.formSave.controls.employeeImgUrl.setValue(this.listImageFace);
-    // this.face = event.face;
-  }
+  // public viewChange(event): void {
+  //   this.listImageFace.push(event.face);
+  //   this.formSave.controls.employeeImgUrl.setValue(this.listImageFace);
+  //   // this.face = event.face;
+  // }
 
-  public triggerSnapshot(): void {
-    timer(0, 200).pipe(
-      take(100)
-    // tslint:disable-next-line: deprecation
-    ).subscribe(() => {
-      this.trigger.next();
-      this.percentCapture = this.percentCapture + 1;
-    });
-  }
+  // public triggerSnapshot(): void {
+  //   timer(0, 200).pipe(
+  //     take(100)
+  //   // tslint:disable-next-line: deprecation
+  //   ).subscribe(() => {
+  //     this.trigger.next();
+  //     this.percentCapture = this.percentCapture + 1;
+  //   });
+  // }
 
-  ngOnDestroy(): void {
-    this.trigger.complete();
-  }
+  // ngOnDestroy(): void {
+  //   this.trigger.complete();
+  // }
 
-  public updateSnapshot(): void {
-    this.listImageFace = [];
-    this.isShow = true;
+  // public updateSnapshot(): void {
+  //   this.listImageFace = [];
+  //   this.isShow = true;
+  // }
+
+  fileChangeEvent(fileInput: any): boolean {
+    this.imageError = null;
+    if (fileInput.target.files && fileInput.target.files[0]) {
+        // Size Filter Bytes
+        const maxSize = 20971520;
+        const allowedTypes = ['image/png', 'image/jpeg'];
+        const maxHeight = 15200;
+        const maxWidth = 25600;
+
+        if (fileInput.target.files[0].size > maxSize) {
+            this.imageError =
+                'Maximum size allowed is ' + maxSize / 1000 + 'Mb';
+
+            return false;
+        }
+
+        if (!_.includes(allowedTypes, fileInput.target.files[0].type)) {
+            this.imageError = 'Only Images are allowed ( JPG | PNG )';
+            return false;
+        }
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            const image = new Image();
+            image.src = e.target.result;
+            image.onload = rs => {
+                // tslint:disable-next-line: no-string-literal
+                const imgHeight = rs.currentTarget['height'];
+                // tslint:disable-next-line: no-string-literal
+                const imgWidth = rs.currentTarget['width'];
+
+                if (imgHeight > maxHeight && imgWidth > maxWidth) {
+                    this.imageError =
+                        'Maximum dimentions allowed ' +
+                        maxHeight +
+                        '*' +
+                        maxWidth +
+                        'px';
+                    return false;
+                } else {
+                    const imgBase64Path = e.target.result;
+                    this.cardImageBase64 = imgBase64Path;
+                    this.formSave.controls.employeeImgUrl.setValue(imgBase64Path);
+                    this.isImageSaved = true;
+                    // this.previewImagePath = imgBase64Path;
+                }
+            };
+        };
+        reader.readAsDataURL(fileInput.target.files[0]);
+    }
   }
 }

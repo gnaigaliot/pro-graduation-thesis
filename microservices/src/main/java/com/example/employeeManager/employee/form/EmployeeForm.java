@@ -27,7 +27,7 @@ public class EmployeeForm {
     private Long       userId;
     private Long       departmentId;
     private Long       positionId;
-    private List<String> employeeImgUrl;
+    private String employeeImgUrl;
 
     /**
      * Set the "employeeId" field value
@@ -281,11 +281,11 @@ public class EmployeeForm {
         return this.positionId;
     }
 
-    public List<String> getEmployeeImgUrl() {
+    public String getEmployeeImgUrl() {
         return employeeImgUrl;
     }
 
-    public void setEmployeeImgUrl(List<String> employeeImgUrl) {
+    public void setEmployeeImgUrl(String employeeImgUrl) {
         this.employeeImgUrl = employeeImgUrl;
     }
 }

@@ -122,7 +122,12 @@
                     <!-- Name -->
                     <td>
                         <div class="d-flex p-l-10">
-                            <img class="mat-card-avatar" src="assets/images/users/2.jpg">
+                            <ng-container *ngIf="item.employeeImgUrl; else elseTemplate">
+                                <img class="mat-card-avatar" [src]="item.employeeImgUrl" >
+                            </ng-container>
+                            <ng-template #elseTemplate>
+                                <img class="mat-card-avatar" src="../../../../../assets/images/no-user-image-square.jpg">
+                            </ng-template>
                             <div class="m-l-15">
                                 <p class="font-medium m-b-0 m-t-0">{{item.employeeName}}</p>
                                 <small class="text-muted" style="white-space: break-spaces;">{{item.positionName}} - {{item.departmentName}}</small>

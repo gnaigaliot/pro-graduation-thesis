@@ -1,131 +1,112 @@
-from flask import *
-from flask_socketio import SocketIO, emit
-from bson.objectid import ObjectId
-import json
-import cv2
-import shutil
+from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
-import train_face
-import time
+import cv2
 import numpy as np
-import datetime
-import torch
-from facenet_pytorch import MTCNN
-import random
-import pickle
-import string
+import mysql.connector
 
+# Get the relative path to this file (we will use it later)
+FILE_PATH = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+
+# * ---------- Create App --------- *
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins="*")
-camera_one = cv2.VideoCapture(0)
-device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-print('Running on device: {}'.format(device))
-mtcnn = MTCNN(keep_all=True, device=device)
-MODEL = True
-model_predict = pickle.load(open("model_face_train.sav", "rb"))
-value_face = []
+CORS(app, support_credentials=True)
+
+# * ---------- DATABASE CONFIG --------- *
+DATABASE_USER = 'root'
+DATABASE_PASSWORD = '123456'
+DATABASE_HOST = 'localhost'
+DATABASE_PORT = '3306'
+DATABASE_NAME = 'timekeeping-manager'
 
 
-def gen_frames():
-    while True:
-        # Capture frame-by-frame
-        success, frame = camera_one.read()  # read the camera frame
-        if not success:
-            break
-        else:
-            cv2.setNumThreads(8)
-            frame = cv2.resize(frame, (1280, 720))
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame_bytes = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+def database_connection():
+    return mysql.connector.connect(user=DATABASE_USER,
+                                   password=DATABASE_PASSWORD,
+                                   host=DATABASE_HOST,
+                                   port=DATABASE_PORT,
+                                   database=DATABASE_NAME)
 
 
-@socketio.on("total_face_detection")
-def send_total_face_detection():
-    emit("result_face_detection", {"total_employee": 1, "total_guest": 1})
+# * --------------------  ROUTES ------------------- *
+# * ---------- Get data from the face recognition ---------- *
+@app.route('/receive_data', methods=['POST'])
+def get_receive_data():
+    if request.method == 'POST':
+        json_data = request.get_json()
 
+        # Check if the user is already in the DB
+        connection = database_connection()
+        try:
+            # Connect to the DB
+            cursor = connection.cursor()
 
-@socketio.on("start_detection")
-def detection_model():
-    set_fps = 0
-    while MODEL:
-        ret, frame = camera_one.read()
-        if not ret:
-            break
-        else:
-            if set_fps == 5 or set_fps == 10 or set_fps == 15 or set_fps == 20 or set_fps == 25:
-                detection_face(frame)
-                set_fps += 1
-                if set_fps > 25:
-                    set_fps = 1
+            # Get employee_id by employee_code from json data
+            employee_id_query = \
+                f"SELECT employee_id FROM employee WHERE 1=1 AND employee_code = '{json_data['employeeCode']}'"
+            cursor.execute(employee_id_query)
+            employee_id = cursor.fetchone()
+
+            cursor = connection.cursor()
+            # Query to check if the user as been saw by the camera today
+            user_saw_today_sql_query = \
+                f"SELECT * FROM timekeeping WHERE 1=1 AND DATE(date_timekeeping) = '{json_data['date']}' " \
+                f"AND employee_id = {employee_id[0]}"
+            cursor.execute(user_saw_today_sql_query)
+            result = cursor.fetchall()
+            print(result)
+            connection.commit()
+            # If use is already in the DB for today:
+            if result:
+                print('User OUT')
+                image_path = f"{FILE_PATH}/assets/img/{json_data['date']}/{json_data['employeeCode']}/departure.jpg"
+
+                # Save image
+                os.makedirs(f"{FILE_PATH}/assets/img/{json_data['date']}/{json_data['employeeCode']}", exist_ok=True)
+                cv2.imwrite(image_path, np.array(json_data['picture_array']))
+                json_data['picture_path'] = image_path
+
+                # Update timekeeping in the DB
+                update_timekeeping_query = \
+                    f"UPDATE timekeeping SET departure_time = '{json_data['hour']}', " \
+                    f"departure_picture = '{json_data['picture_path']}', left_early = {json_data['left_early']} " \
+                    f"WHERE employee_id = {employee_id[0]} " \
+                    f"AND DATE(date_timekeeping) = '{json_data['date']}'"
+                cursor.execute(update_timekeeping_query)
             else:
-                set_fps += 1
+                print("User IN")
+                # Save image
+                image_path = \
+                    f"{FILE_PATH}/assets/img/history/{json_data['date']}/{json_data['employeeCode']}/arrival.jpg"
+                os.makedirs(f"{FILE_PATH}/assets/img/history/{json_data['date']}/{json_data['employeeCode']}",
+                            exist_ok=True)
+                cv2.imwrite(image_path, np.array(json_data['picture_array']))
+                json_data['picture_path'] = image_path
 
+                # Create a new row for the user today:
+                insert_user_query = f"INSERT INTO timekeeping " \
+                                    f"(employee_id, date_timekeeping, arrival_time, arrival_picture, is_late) VALUES " \
+                                    f"({employee_id[0]}, " \
+                                    f"'{json_data['date']}', " \
+                                    f"'{json_data['hour']}', " \
+                                    f"'{json_data['picture_path']}', " \
+                                    f"{json_data['is_late']})"
+                cursor.execute(insert_user_query)
 
-def detection_face(frame):
-    list_predict_name = []
-    boxes, _ = mtcnn.detect(frame)
-    if boxes is not None:
-        for box in boxes:
-            if box[0] < 0 or box[1] < 0 or box[2] < 0 or box[3] < 0:
-                continue
-            if abs(int(box[1]) - int(box[3])) < 40 or abs(int(box[0]) - int(box[2])) < 40:
-                continue
-            image_face = cv2.resize(frame[int(box[1]) - 3:int(box[3] + 3), int(box[0] - 3):int(box[2] + 3)],
-                                    (128, 128))
-            faces, acc = mtcnn.detect(image_face)
-            if faces is None:
-                continue
-            if acc[0] * 100 < 95:
-                continue
-            # cv2.imwrite(os.path.join("static/face", id_generator(6) + ".jpg"), image_face)
-            list_predict = model_predict.predict_proba(np.array(image_face).flatten().reshape(1, -1)).flatten()
-            best_predict = np.argmax(list_predict, axis=0)
-            value_predict = -1
-            if int(list_predict[best_predict] * 100) > 75:
-                value_predict = best_predict
-            if value_predict == -1:
-                list_predict_name.append(-1)
-            else:
-                list_predict_name.append(value_predict)
+        except (Exception, mysql.connector.DatabaseError) as error:
+            print("ERROR DB: ", error)
+        finally:
+            connection.commit()
 
-            cv2.imwrite("detection.jpg", image_face)
-            if value_predict == -1:
-                with open("detection.jpg", 'rb') as file_image:
-                    image_data = file_image.read()
-                emit("face_detection_check_in", {"name": "Nguoi La",
-                                                 "time": datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                                                 "image_data": image_data})
+            # closing database connection.
+            if connection:
+                cursor.close()
+                connection.close()
+                print("MySQL connection is closed")
 
-
-@socketio.on("path_from_id")
-def send_total_face_detection(path):
-    list_file = []
-    for file in os.listdir(path["path"]):
-        list_file.append(os.path.join(path["path"], file))
-    emit("result_path_file", {"path_file": list_file})
-
-
-@app.route('/render_camera_one')
-def render_camera_one():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-@app.route("/train-face")
-def train_face():
-    train_face.train_main()
-    render_template("index.html")
-
-
-@app.route('/')
-def home():
-    for root, dirs, files in os.walk("../train-model-image", topdown=False):
-        for name in dirs:
-            value_face.append(name)
-    return render_template("index.html")
+            # Return user's data to the front
+        return jsonify(json_data)
 
 
 if __name__ == '__main__':
-    socketio.run(app.run())
+    app.run(host='127.0.0.1', port=5000, debug=True)

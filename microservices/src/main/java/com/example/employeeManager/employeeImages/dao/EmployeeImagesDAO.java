@@ -56,14 +56,14 @@ public interface EmployeeImagesDAO extends CrudRepository<EmployeeImagesBO, Long
         return vfData.findPaginationQuery(sql + strCondition.toString(), orderBy, paramList, EmployeeImagesBean.class);
     }
     
-    public default List<String> getUrlImageByEmployeeId(VfData vfData, Long employeeId) {
+    public default EmployeeImagesBO getUrlImageByEmployeeId(VfData vfData, Long employeeId) {
         String sql = " SELECT "
                 + " ei.employee_img_url "
                 + " FROM employee_images ei "
-                + " WHERE 1=1 AND ei.employee_id = :employeeId "
-                + " ORDER BY ei.employee_image_id ASC ";
+                + " WHERE 1=1 AND ei.employee_id = :employeeId ";
         SQLQuery query = vfData.createSQLQuery(sql);
         query.setParameter("employeeId", employeeId);
-        return query.list();
+        vfData.setResultTransformer(query, EmployeeImagesBO.class);
+        return (EmployeeImagesBO) query.uniqueResult();
     }
 }

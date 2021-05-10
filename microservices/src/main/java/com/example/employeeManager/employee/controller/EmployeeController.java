@@ -62,7 +62,9 @@ public class EmployeeController extends BaseController {
         if(employeeBO == null) {
             return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
         }
-        employeeBO.setEmployeeImgUrl(employeeImagesService.getListImgUrlByEmplId(employeeId));
+        if(employeeImagesService.getEmployeeImageByEmployeeId(employeeId) != null) {
+            employeeBO.setEmployeeImgUrl(employeeImagesService.getEmployeeImageByEmployeeId(employeeId).getEmployeeImgUrl());
+        }
         return Response.success().withData(employeeBO);
     }
 
@@ -121,50 +123,53 @@ public class EmployeeController extends BaseController {
         employeeBO.setDepartmentId(form.getDepartmentId());
         employeeBO.setPositionId(form.getPositionId());
         employeeService.saveOrUpdate(employeeBO);
-        if(employeeId == null || employeeId.equals(0L)) {
-            List<EmployeeImagesBO> listEmplImages = new ArrayList<EmployeeImagesBO>();
-            if(form.getEmployeeImgUrl() != null || form.getEmployeeImgUrl().size() > 0) {
-                // tao folder chua anh
-                File f = new File("../train-model-image/" + employeeBO.getEmployeeCode());
-                if (f.mkdir()) {
-                    System.out.println("Directory is created");
+        EmployeeImagesBO employeeImageBo;
+        if(employeeId > 0L) {
+            employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeId(employeeId);
+            if(!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
+                employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
+                employeeImagesService.saveOrUpdate(employeeImageBo);
+                // delete old file and add new file
+                String base64String = employeeImageBo.getEmployeeImgUrl();
+                String[] strings = base64String.split(",");
+                String extension;
+                switch (strings[0]) {//check image's extension
+                    case "data:image/jpeg;base64":
+                        extension = "jpeg";
+                        break;
+                    case "data:image/png;base64":
+                        extension = "png";
+                        break;
+                    default://should write cases for more images types
+                        extension = "jpg";
+                        break;
                 }
-                else {
-                    System.out.println("Directory cannot be created");
-                }
-                // end tao folder
-                int count = 0;
-                for (String item : form.getEmployeeImgUrl()) {
-                    EmployeeImagesBO bo = new EmployeeImagesBO();
-                    bo.setEmployeeId(employeeBO.getEmployeeId());
-                    bo.setEmployeeImgUrl(item);
-                    listEmplImages.add(bo);
-                    // save string base64 as a file to folder start
-                    String base64String = item;
-                    String[] strings = base64String.split(",");
-                    String extension;
-                    switch (strings[0]) {//check image's extension
-                        case "data:image/jpeg;base64":
-                            extension = "jpeg";
-                            break;
-                        case "data:image/png;base64":
-                            extension = "png";
-                            break;
-                        default://should write cases for more images types
-                            extension = "jpg";
-                            break;
+                String path = "../assets/img/user/" + employeeBO.getEmployeeCode() + "." + extension;
+                try
+                {
+                    File f= new File(path);
+                    if(f.delete())
+                    {
+                        System.out.println(f.getName() + " deleted");
+                        employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
+                    }  
+                    else
+                    {
+                        System.out.println("failed");  
                     }
-                    //convert base64 string to binary data
-                    byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
-                    String path = "../train-model-image/" + employeeBO.getEmployeeCode() + "/" + String.valueOf(count++) + "." + extension;
-                    File file = new File(path);
-                    try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
-                        outputStream.write(data);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                employeeImagesService.saveAll(listEmplImages);
+                }  
+                catch(Exception e)
+                {  
+                e.printStackTrace();
+                } 
+            }
+        } else {
+            if(!CommonUtil.isNullOrEmpty(form.getEmployeeImgUrl())) {
+                employeeImageBo = new EmployeeImagesBO();
+                employeeImageBo.setEmployeeId(employeeBO.getEmployeeId());
+                employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
+                employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
+                employeeImagesService.saveOrUpdate(employeeImageBo);
             }
         }
         

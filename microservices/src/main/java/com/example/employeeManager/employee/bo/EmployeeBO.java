@@ -63,7 +63,7 @@ public class EmployeeBO {
     private Long positionId;
     
     @Transient
-    private List<String> employeeImgUrl;
+    private String employeeImgUrl;
     
     /**
      * Set the "employeeId" field value
@@ -291,11 +291,11 @@ public class EmployeeBO {
         return this.positionId;
     }
 
-    public List<String> getEmployeeImgUrl() {
+    public String getEmployeeImgUrl() {
         return employeeImgUrl;
     }
 
-    public void setEmployeeImgUrl(List<String> employeeImgUrl) {
+    public void setEmployeeImgUrl(String employeeImgUrl) {
         this.employeeImgUrl = employeeImgUrl;
     }
 }

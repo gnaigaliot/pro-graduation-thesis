@@ -79,6 +79,24 @@
                         <app-control-messages [control]="f['positionId']"></app-control-messages>
                     </div>
                 </div>
+                <div class="ui-g-12">
+                    <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Dữ liệu nhận dạng <font size="2" color="red">* </font></label>
+                    <div class="ui-g-12 ui-md-6 ui-lg-3 nowrap">
+                        <!-- <input type="file" (change)="handleUploadAvt($event.target.files)" accept="image/*"> -->
+                        <div class="custom-file file-input-profile-wrap">
+                            <input type="file" (change)="fileChangeEvent($event)" accept="image/*" class="file-input-profile">
+                            <div class="img-space">
+                                <ng-container *ngIf="isImageSaved; else elseTemplate">
+                                    <img [src]="cardImageBase64" />
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <img src="../../../../../assets/images/placeholder.jpg" class="img-responsive">
+                                </ng-template>
+                            </div>
+                        </div>
+                        <app-control-messages [control]="f['employeeImgUrl']"></app-control-messages>
+                    </div>
+                </div>
                 <div class="ui-g-12" *ngIf="formSave.get('employeeId').value">
                     <!-- salary -->
                     <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Trạng thái</label>
@@ -96,25 +114,6 @@
                             </label>
                         </div>
                         <app-control-messages [control]="f['status']"></app-control-messages>
-                    </div>
-                </div>
-            </div>
-            <div class="p-l-15 p-r-15">
-                <strong class="text-u-c">
-                    <span>Dữ liệu nhận dạng <font size="2" color="red">* </font></span>
-                </strong>
-                <button *ngIf="isShow" type="button" (click)="triggerSnapshot()" class="btn btn-sm btn-info btn-gen-image"> <i class="pi pi-camera"></i> Tạo dữ liệu</button>
-                <button *ngIf="formSave.get('employeeId').value" type="button" (click)="updateSnapshot()" class="btn btn-sm btn-info btn-gen-image"> <i class="pi pi-camera"></i>Cập nhật khuôn mặt</button>
-                <app-control-messages [control]="f['employeeImgUrl']"></app-control-messages>
-                <div class="card m-t-15 m-b-15" *ngIf="isShow">
-                    <p-progressBar [value]="percentCapture"></p-progressBar>
-                </div>
-                <div class="camera" *ngIf="isShow">
-                    <face-detect [width]="640" [height]="380" [triggerFace]="triggerObservable" (imageCapture)="viewChange($event)"></face-detect>
-                </div>
-                <div class="list-image-model m-t-15">
-                    <div class="image-item" *ngFor="let imgSrc of listImageFace">
-                        <img [src]="imgSrc" alt="None image" style="width:100%">
                     </div>
                 </div>
             </div>

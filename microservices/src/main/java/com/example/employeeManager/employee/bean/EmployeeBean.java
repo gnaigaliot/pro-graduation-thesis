@@ -28,6 +28,7 @@ public class EmployeeBean {
     private Long       positionId;
     private String departmentName;
     private String positionName;
+    private String employeeImgUrl;
 
     /**
      * Set the "employeeId" field value
@@ -295,5 +296,13 @@ public class EmployeeBean {
 
     public void setPositionName(String positionName) {
         this.positionName = positionName;
+    }
+
+    public String getEmployeeImgUrl() {
+        return employeeImgUrl;
+    }
+
+    public void setEmployeeImgUrl(String employeeImgUrl) {
+        this.employeeImgUrl = employeeImgUrl;
     }
 }
