@@ -68,4 +68,8 @@ export class UserService extends BasicService {
     return this.getRequest(url, {params: buildParams});
   }
 
+  public saveOrUpdateInfo(item: any): Observable<any> {
+    const url = `${this.serviceUrl}/update-info`;
+    return this.postRequest(url, CommonUtils.convertData(item));
+  }
 }

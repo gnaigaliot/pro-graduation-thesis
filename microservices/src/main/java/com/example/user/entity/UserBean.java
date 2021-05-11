@@ -33,6 +33,7 @@ public class UserBean implements UserDetails{
     private String     role;
     private String     roleName;
     private List<String>     lstRoleCode;
+    private Long employeeId;
     
     @Override
     public List<GrantedAuthority> getAuthorities() {
@@ -51,23 +52,23 @@ public class UserBean implements UserDetails{
     
 
 
-	@Override
+    @Override
     public String getPassword() {
         // TODO Auto-generated method stub
         return password;
     }
     
     public List<String> getLstRoleCode() {
-		return lstRoleCode;
-	}
+        return lstRoleCode;
+    }
 
 
-	public void setLstRoleCode(List<String> lstRoleCode) {
-		this.lstRoleCode = lstRoleCode;
-	}
+    public void setLstRoleCode(List<String> lstRoleCode) {
+        this.lstRoleCode = lstRoleCode;
+    }
 
 
-	@Override
+    @Override
     public String getUsername() {
         // TODO Auto-generated method stub
         return userName;
@@ -347,5 +348,12 @@ public class UserBean implements UserDetails{
     public void setPositionId(Long positionId) {
         this.positionId = positionId;
     }
-    
+
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
 }

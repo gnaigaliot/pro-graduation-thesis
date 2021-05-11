@@ -13,6 +13,10 @@ const routes: Routes = [
   {
     path: 'timekeeping-manager',
     loadChildren: () => import('./timekeeping/timekeeping.module').then(m => m.TimekeepingModule)
+  },
+  {
+    path: 'user-info',
+    loadChildren: () => import('./user-info/user-info.module').then(m => m.UserInfoModule)
   }
 ];
 

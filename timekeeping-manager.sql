@@ -11,7 +11,7 @@
  Target Server Version : 80021
  File Encoding         : 65001
 
- Date: 05/05/2021 14:09:52
+ Date: 12/05/2021 01:07:59
 */
 
 SET NAMES utf8mb4;
@@ -55,7 +55,7 @@ CREATE TABLE `employee`  (
   `department_id` bigint(0) NULL DEFAULT NULL,
   `position_id` bigint(0) NULL DEFAULT NULL,
   PRIMARY KEY (`employee_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 10 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for employee_images
@@ -68,7 +68,7 @@ CREATE TABLE `employee_images`  (
   PRIMARY KEY (`employee_image_id`) USING BTREE,
   INDEX `employee_id`(`employee_id`) USING BTREE,
   CONSTRAINT `employee_images_ibfk_1` FOREIGN KEY (`employee_id`) REFERENCES `employee` (`employee_id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE = InnoDB AUTO_INCREMENT = 300 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for positions
@@ -96,7 +96,7 @@ CREATE TABLE `roles`  (
   `role` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `role_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for timekeeping
@@ -105,13 +105,17 @@ DROP TABLE IF EXISTS `timekeeping`;
 CREATE TABLE `timekeeping`  (
   `timekeeping_id` bigint(0) NOT NULL AUTO_INCREMENT,
   `employee_id` bigint(0) NOT NULL,
-  `time_in` datetime(0) NULL DEFAULT NULL,
-  `time_out` datetime(0) NULL DEFAULT NULL,
-  `is_late` tinyint(0) NULL DEFAULT NULL,
-  `time_in_late` int(0) NULL DEFAULT NULL,
-  `time_out_soon` int(0) NULL DEFAULT NULL,
+  `is_late` int(0) NULL DEFAULT NULL COMMENT '0: không muộn, 1: muộn',
+  `left_early` int(0) NULL DEFAULT NULL COMMENT '0: không sớm, 1: sớm',
+  `date_timekeeping` date NULL DEFAULT NULL,
+  `departure_time` time(0) NULL DEFAULT NULL,
+  `departure_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `arrival_time` time(0) NULL DEFAULT NULL,
+  `arrival_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `arrival_late_time` time(0) NULL DEFAULT NULL,
+  `departure_early_time` time(0) NULL DEFAULT NULL,
   PRIMARY KEY (`timekeeping_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for user_role
@@ -122,7 +126,7 @@ CREATE TABLE `user_role`  (
   `user_id` int(0) NOT NULL,
   `role_id` int(0) NOT NULL,
   PRIMARY KEY (`user_role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for users
@@ -144,6 +148,7 @@ CREATE TABLE `users`  (
   `modified_date` datetime(0) NULL DEFAULT NULL,
   `modified_by` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `role_id` bigint(0) NULL DEFAULT NULL,
+  `employee_id` bigint(0) NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 

@@ -40,21 +40,10 @@ class UserDetailsServiceImpl implements  UserService {
     @Autowired
     private VfData uttData;
     
-    public DataTableResults<UserBean> getStudentList(UserForm userForm, HttpServletRequest req) {
-        return userDAO.getStudentList(uttData, userForm, req);
-    }
-    
     public DataTableResults<UserBean> getDatatable(UserForm userForm, HttpServletRequest req) {
         return userDAO.getDatatable(uttData, userForm, req);
     }
     
-    // Lấy danh sách sinh viên theo lớp
-    public List<UserBO> getListStudentByPositionId(Long positionId) {
-        return userDAO.findByPositionId(positionId);
-    }
-    
-    
-    // 
     public UserBO getUserByCode(String userCode) {
         return userDAO.findByUserCode(userCode);
     }

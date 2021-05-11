@@ -19,9 +19,7 @@ public interface UserService {
     UserBean loadUserByUsername(String username);
     UserBean getUserByUsername(String username);
     UserBean getUserInfoById(Long userId);
-    DataTableResults<UserBean> getStudentList(UserForm userForm, HttpServletRequest req);
     DataTableResults<UserBean> getDatatable(UserForm userForm, HttpServletRequest req);
-    List<UserBO> getListStudentByPositionId(Long positionId);
     UserBO getUserByCode(String userCode);
     boolean checkLogin(UserForm user);
     public List<RoleBO> findAllRole();

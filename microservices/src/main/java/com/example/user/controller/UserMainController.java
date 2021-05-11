@@ -27,6 +27,11 @@ import com.example.common.CommonUtil;
 import com.example.common.Constants;
 import com.example.common.DataTableResults;
 import com.example.common.Response;
+import com.example.employeeManager.employee.bo.EmployeeBO;
+import com.example.employeeManager.employee.form.EmployeeForm;
+import com.example.employeeManager.employee.service.EmployeeService;
+import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
+import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
 import com.example.exception.SysException;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
@@ -52,21 +57,22 @@ public class UserMainController {
     
     @Autowired
     AuthenticationManager authenticationManager;
+    
+    @Autowired
+    private EmployeeService employeeService;
+    
+    @Autowired
+    private EmployeeImagesService employeeImagesService;
 
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public List<UserBO> listUser(){
         return userService.findAll();
-    }
-    @GetMapping(path = "/search")
-    public @ResponseBody DataTableResults<UserBean> listStudents(HttpServletRequest req,UserForm user){
-        return userService.getStudentList(user, req);
     }
     
     @GetMapping(path = "/search-user")
     public @ResponseBody DataTableResults<UserBean> getDatatables(HttpServletRequest req,UserForm user){
         return userService.getDatatable(user, req);
     }
-    
     
     @GetMapping(path = "/get-roles")
     public List<RoleBO> getAllRole(){
@@ -83,6 +89,12 @@ public class UserMainController {
         UserForm userForm = new UserForm();
         CommonUtil.copyProperties(userForm, bo);
         userForm.setLstRoleId(lstRoleId);
+        if (bo.getEmployeeId() != null && bo.getEmployeeId() > 0L) {
+            EmployeeImagesBO employeeImgBO = employeeImagesService.getEmployeeImageByEmployeeIdBO(bo.getEmployeeId());
+            if (employeeImgBO != null) {
+                userForm.setEmployeeImgUrl(employeeImgBO.getEmployeeImgUrl());
+            }
+        }
         return Response.success().withData(userForm);
     }
     
@@ -97,14 +109,8 @@ public class UserMainController {
             if(bo == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
-//            if (!permissionChecker.hasPermission("action.update", adResouceKey, req)) {
-//                return Response.invalidPermission();
-//            }
         } else {
             bo = new UserBO();
-//            if (!permissionChecker.hasPermission("action.insert", adResouceKey, req)) {
-//                return Response.invalidPermission();
-//            }
             bo.setCreatedDate(new Date());
             bo.setCreatedBy(jwtService.getUsernameFromRequest(req));
         }
@@ -115,7 +121,6 @@ public class UserMainController {
         bo.setGender(form.getGender());
         bo.setEmail(form.getEmail());
         bo.setMobileNumber(form.getMobileNumber());
-        bo.setPositionId(form.getPositionId());
         bo.setUserCode(form.getUserCode());
         bo.setRoleId(1L); // chỗ này phải sửa
         // phaan quyen
@@ -125,13 +130,11 @@ public class UserMainController {
         /// Them quyen moi
         List<Long> lstRole = form.getLstRoleId();
         for (Long roleId : lstRole) {
-        	UserRoleBO userRoleBO = new UserRoleBO();
-        	userRoleBO.setUserId(bo.getUserId());
-        	userRoleBO.setRoleId(roleId);
-        	userRoleService.saveOrUpdate(userRoleBO);
-		}
-        //
-        
+            UserRoleBO userRoleBO = new UserRoleBO();
+            userRoleBO.setUserId(bo.getUserId());
+            userRoleBO.setRoleId(roleId);
+            userRoleService.saveOrUpdate(userRoleBO);
+        }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
     }
 
@@ -181,10 +184,6 @@ public class UserMainController {
 
     @RequestMapping(value = "/currentUserInfo", method = RequestMethod.GET)
     public UserBean getCurrentUserInfo() {
-//        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication()
-//                .getPrincipal();
-//        return userService.getUserByUsername(userDetails.getUsername());
-        
         String userName = (String) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         return userService.getUserByUsername(userName);
@@ -195,5 +194,32 @@ public class UserMainController {
         return userService.getUserInfoById(userId);
     }
 
-    
+    @PostMapping(path = "/update-info")
+    @ResponseStatus(HttpStatus.CREATED)
+    public @ResponseBody Response saveOrUpdateInfo(HttpServletRequest req, @RequestBody UserForm form) throws Exception {
+        Long userId = CommonUtil.NVL(form.getUserId());
+        UserBO bo = userService.findById(userId);
+        if (bo != null) {
+            bo.setUserName(form.getUserName());
+            bo.setPassword(form.getPassword());
+            bo.setFullName(form.getFullName());
+            bo.setDateOfBirth(form.getDateOfBirth());
+            bo.setGender(form.getGender());
+            bo.setEmail(form.getEmail());
+            bo.setMobileNumber(form.getMobileNumber());
+            userService.saveOrUpdate(bo);
+            if (bo.getEmployeeId() != null || bo.getEmployeeId() > 0L) {
+                EmployeeBO empBO = employeeService.findById(bo.getEmployeeId());
+                if(empBO != null) {
+                    empBO.setEmployeeName(form.getFullName());
+                    empBO.setDateOfBirth(form.getDateOfBirth());
+                    empBO.setGender(form.getGender().intValue());
+                    empBO.setEmail(form.getEmail());
+                    empBO.setPhoneNumber(form.getMobileNumber());
+                    employeeService.saveOrUpdate(empBO);
+                }
+            }
+        }
+        return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
+    }
 }

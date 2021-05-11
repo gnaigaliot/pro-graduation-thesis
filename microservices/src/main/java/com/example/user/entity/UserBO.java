@@ -41,9 +41,6 @@ public class UserBO  implements Serializable{
 
     @Column(name = "mobile_number")
     private String mobileNumber;
-
-    @Column(name = "position_id")
-    private Long positionId;
     
     @Column(name = "user_code")
     private String userCode;
@@ -56,6 +53,9 @@ public class UserBO  implements Serializable{
 
     @Column(name = "created_by")
     private String createdBy;
+    
+    @Column(name = "employee_id")
+    private Long employeeId;
 
     public UserBO() {
     }
@@ -123,13 +123,6 @@ public class UserBO  implements Serializable{
     }
     
     /**
-     * @return the positionId
-     */
-    public Long getPositionId() {
-        return positionId;
-    }
-    
-    /**
      * @param userId the userId to set
      */
     public void setUserId(Long userId) {
@@ -183,13 +176,6 @@ public class UserBO  implements Serializable{
      */
     public void setMobileNumber(String mobileNumber) {
         this.mobileNumber = mobileNumber;
-    }
-    
-    /**
-     * @param positionId the positionId to set
-     */
-    public void setPositionId(Long positionId) {
-        this.positionId = positionId;
     }
     
     /**
@@ -247,5 +233,10 @@ public class UserBO  implements Serializable{
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
     }
-
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
+    }
 }

@@ -3399,3 +3399,34 @@ Custom status start
   pointer-events: none;
   cursor: not-allowed!important;
 }
+.div-center-avt {
+  display: block;
+  text-align: -webkit-center;
+}
+.card-subtitle {
+  margin-bottom: 10px;
+  font-weight: 300;
+  color: #a1aab2;
+}
+.form-material .form-control {
+  background-color: rgba(0,0,0,0);
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: 0 2px,100% 1px;
+  padding: 0;
+  transition: background 0s ease-out 0s;
+  height: calc(2.25rem + 2px);
+}
+.form-material .form-control, .form-material .form-control.focus, .form-material .form-control:focus {
+  background-image: linear-gradient(#1e88e5,#1e88e5),linear-gradient(#e9ecef,#e9ecef);
+  border: 0 none;
+  border-radius: 0;
+  box-shadow: none!important;
+  float: none;
+  background-position: bottom;
+}
+.form-material .form-control.focus, .form-material .form-control:focus {
+  background-size: 100% 2px,100% 1px;
+  outline: 0 none;
+  transition-duration: .3s;
+}

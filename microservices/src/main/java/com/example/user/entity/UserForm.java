@@ -22,7 +22,8 @@ public class UserForm {
     private String     year;
     private String     semester;
     private Long       roleId;
-    private  List<Long> lstRoleId;
+    private List<Long> lstRoleId;
+    private String employeeImgUrl;
     
 //    /**
 //     * @return the userId
@@ -446,11 +447,19 @@ public class UserForm {
         this.roleId = roleId;
     }
 
-	public List<Long> getLstRoleId() {
-		return lstRoleId;
-	}
+    public List<Long> getLstRoleId() {
+        return lstRoleId;
+    }
 
-	public void setLstRoleId(List<Long> lstRoleId) {
-		this.lstRoleId = lstRoleId;
-	}
+    public void setLstRoleId(List<Long> lstRoleId) {
+        this.lstRoleId = lstRoleId;
+    }
+
+    public String getEmployeeImgUrl() {
+        return employeeImgUrl;
+    }
+
+    public void setEmployeeImgUrl(String employeeImgUrl) {
+        this.employeeImgUrl = employeeImgUrl;
+    }
 }

@@ -45,6 +45,8 @@ export class DatePickerComponent implements OnInit, OnChanges {
     if (this.view === 'month') {
       this.placeholder = 'MM/yyyy';
       this.dateFormat = 'mm/yy';
+    } else {
+      this.placeholder = 'dd/MM/yyyy';
     }
   }
   onBlur(event) {
