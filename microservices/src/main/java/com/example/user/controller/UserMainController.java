@@ -27,11 +27,15 @@ import com.example.common.CommonUtil;
 import com.example.common.Constants;
 import com.example.common.DataTableResults;
 import com.example.common.Response;
+import com.example.employeeManager.department.bo.DepartmentBO;
+import com.example.employeeManager.department.service.DepartmentService;
 import com.example.employeeManager.employee.bo.EmployeeBO;
 import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
 import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
+import com.example.employeeManager.position.bo.PositionsBO;
+import com.example.employeeManager.position.service.PositionsService;
 import com.example.exception.SysException;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
@@ -63,6 +67,12 @@ public class UserMainController {
     
     @Autowired
     private EmployeeImagesService employeeImagesService;
+    
+    @Autowired
+    private PositionsService positionsService;
+    
+    @Autowired
+    private DepartmentService departmentService;
 
     @RequestMapping(value="/users", method = RequestMethod.GET)
     public List<UserBO> listUser(){
@@ -91,8 +101,16 @@ public class UserMainController {
         userForm.setLstRoleId(lstRoleId);
         if (bo.getEmployeeId() != null && bo.getEmployeeId() > 0L) {
             EmployeeImagesBO employeeImgBO = employeeImagesService.getEmployeeImageByEmployeeIdBO(bo.getEmployeeId());
+            EmployeeBO empBO = employeeService.findById(bo.getEmployeeId());
             if (employeeImgBO != null) {
                 userForm.setEmployeeImgUrl(employeeImgBO.getEmployeeImgUrl());
+            }
+            if (empBO != null) {
+                userForm.setEmployeeCode(empBO.getEmployeeCode());
+                PositionsBO posBO = positionsService.findById(empBO.getPositionId());
+                DepartmentBO departBO = departmentService.findById(empBO.getDepartmentId());
+                userForm.setPositionName(posBO.getPositionName());
+                userForm.setDepartmentName(departBO.getDepartmentName());
             }
         }
         return Response.success().withData(userForm);

@@ -59,6 +59,7 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
         sql += "       ,e.user_id As userId       ";
         sql += "       ,e.department_id As departmentId ";
         sql += "       ,e.position_id As positionId   ";
+        sql += "       ,e.address As address ";
         sql += "       ,p.position_name As positionName   ";
         sql += "       ,d.department_name As departmentName   ";
         sql += "       ,ei.employee_img_url As employeeImgUrl   ";

@@ -13,8 +13,8 @@
     </div>
     <button mat-menu-item>
         <mat-icon>settings</mat-icon> Đổi mật khẩu </button>
-    <button mat-menu-item>
-        <mat-icon>account_box</mat-icon> Thông tin cơ bản </button>
+    <button (click)="userInformation()" mat-menu-item>
+        <mat-icon>account_box</mat-icon> Thông tin cá nhân </button>
     <button mat-menu-item (click)="logout($event)">
         <mat-icon>exit_to_app</mat-icon> Đăng xuất </button>
 </mat-menu> 

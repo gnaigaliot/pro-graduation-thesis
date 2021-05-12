@@ -65,6 +65,9 @@ public class EmployeeBO {
     @Transient
     private String employeeImgUrl;
     
+    @Column(name = "address")
+    private String address;
+    
     /**
      * Set the "employeeId" field value
      * @param employeeId
@@ -297,5 +300,13 @@ public class EmployeeBO {
 
     public void setEmployeeImgUrl(String employeeImgUrl) {
         this.employeeImgUrl = employeeImgUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

@@ -28,6 +28,7 @@ public class EmployeeForm {
     private Long       departmentId;
     private Long       positionId;
     private String employeeImgUrl;
+    private String address;
 
     /**
      * Set the "employeeId" field value
@@ -287,5 +288,13 @@ public class EmployeeForm {
 
     public void setEmployeeImgUrl(String employeeImgUrl) {
         this.employeeImgUrl = employeeImgUrl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

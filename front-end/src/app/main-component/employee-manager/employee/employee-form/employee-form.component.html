@@ -68,6 +68,13 @@
                     </div>
                 </div>
                 <div class="ui-g-12">
+                    <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Địa chỉ</label>
+                    <div class="ui-g-12 ui-md-6 ui-lg-9">
+                        <textarea class="form-control ng-pristine ng-invalid ng-touched" formControlName="address" maxlength="255"></textarea>
+                        <app-control-messages [control]="f['address']"></app-control-messages>
+                    </div>
+                </div>
+                <div class="ui-g-12">
                     <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Phòng ban <font size="2" color="red">* </font></label>
                     <div class="ui-g-12 ui-md-6 ui-lg-3">
                         <app-select-filter [options]="listDepartment" [placeHolder]="'Chọn phòng ban'" [property]="f['departmentId']" optionLabel="departmentName" optionValue="departmentId"></app-select-filter>

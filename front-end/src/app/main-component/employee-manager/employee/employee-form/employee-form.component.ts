@@ -43,7 +43,8 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     status: [''],
     departmentId: ['', [Validators.required]],
     positionId: ['', [Validators.required]],
-    employeeImgUrl: ['', [Validators.required]]
+    employeeImgUrl: ['', [Validators.required]],
+    address: ['']
   };
   constructor(
     private app: AppComponent,

@@ -36,9 +36,6 @@ export class AppComponent {
     return this.confirmationService;
   }
 
-   /**
-   * confirmMessage
-   */
   confirmMessage(messageCode: string, accept: Function, reject?: Function) {
     const message = 'Bạn có muốn lưu thông tin?';
     const header = 'Xác nhận';
@@ -97,7 +94,7 @@ export class AppComponent {
    * param errorType
    * param errorCode
    */
-  successMessage(code: string, message?: string) {
+  successMessage(code: string, message?: string): void {
     this.toastMessage('SUCCESS', code, message);
   }
   /**
@@ -105,7 +102,7 @@ export class AppComponent {
    * param errorType
    * param errorCode
    */
-  errorMessage(code: string, message?: string) {
+  errorMessage(code: string, message?: string): void {
     this.toastMessage('ERROR', code, message);
   }
   /**
@@ -113,7 +110,7 @@ export class AppComponent {
    * param errorType
    * param errorCode
    */
-  warningMessage(code: string, message?: string) {
+  warningMessage(code: string, message?: string): void {
     this.toastMessage('WARNING', code, message);
   }
 
@@ -123,7 +120,7 @@ export class AppComponent {
    * param errorType
    * param errorCode
    */
-  public toastMessage(severity: string, code: string, message?: string) {
+  public toastMessage(severity: string, code: string, message?: string): void {
     let detail;
     message = severity === 'CONFIRM' ? null : message;
     severity = severity === 'CONFIRM' ? 'WARNING' : severity;
@@ -137,11 +134,11 @@ export class AppComponent {
     this.messageService.add({severity: severity.toLowerCase(), summary: summary, detail: detail});
   }
 
-  public message(severity: string, text: string) {
+  public message(severity: string, text: string): void {
     this.messageService.add({severity: severity.toLowerCase(), summary: 'Thông báo', detail: text});
   }
 
-  public messageError(severity: string, text: string, value: any) {
+  public messageError(severity: string, text: string, value: any): void {
     const message = text;
     const textDetail = message + ' ' + value;
     this.messageService.add({severity: severity.toLowerCase()
@@ -149,7 +146,7 @@ export class AppComponent {
                         , detail: textDetail});
   }
 
-  public messError(severity: string, text: string, valueError?: any) {
+  public messError(severity: string, text: string, valueError?: any): void {
     const message = text;
     const textDetail = valueError + ' ' + message;
     this.messageService.add({severity: severity.toLowerCase()
@@ -161,7 +158,7 @@ export class AppComponent {
    * process return message
    * param serviceResponse
    */
-  public processReturnMessage(serviceResponse: any) {
+  public processReturnMessage(serviceResponse: any): void {
     if (!serviceResponse) {
       return;
     }
@@ -180,7 +177,8 @@ export class AppComponent {
   public requestIsError(): void {
     this.toastMessage('ERROR', 'Có lỗi xảy ra');
   }
-  public isProcessing(isProcessing: boolean) {
+
+  public isProcessing(isProcessing: boolean): void {
     if (this.blocked && !isProcessing ) {
       setTimeout(() => {
         this.blocked = isProcessing;
@@ -191,7 +189,7 @@ export class AppComponent {
       this.updateViewChange();
     }
   }
-  private updateViewChange() {
+  private updateViewChange(): void {
     const progressSpinnerCheck = document.getElementById('progressSpinnerCheck');
     if (progressSpinnerCheck) {
       document.getElementById('progressSpinnerCheck').className = this.blocked ? 'progressing' : '';

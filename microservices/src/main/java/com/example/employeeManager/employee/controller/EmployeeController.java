@@ -115,6 +115,7 @@ public class EmployeeController extends BaseController {
         employeeBO.setUserId(form.getUserId());
         employeeBO.setDepartmentId(form.getDepartmentId());
         employeeBO.setPositionId(form.getPositionId());
+        employeeBO.setAddress(form.getAddress());
         employeeService.saveOrUpdate(employeeBO);
         EmployeeImagesBO employeeImageBo;
         if(employeeId > 0L) {
