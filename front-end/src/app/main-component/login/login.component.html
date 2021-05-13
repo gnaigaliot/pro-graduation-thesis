@@ -11,7 +11,7 @@
             <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
                 fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100" ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
               <mat-form-field>
-                <input matInput placeholder="Username" type="userName" formControlName="userName">
+                <input matInput placeholder="Username" type="text" formControlName="userName">
               </mat-form-field>
               <app-control-messages [control]="f['userName']"></app-control-messages>
             </div>
@@ -40,10 +40,10 @@
                 <div class="mat-button-focus-overlay"></div>
               </button>
             </div>
-            <div class="text-center" style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+            <!-- <div class="text-center" style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
               <span>Don't have an account? </span>
               <a routerLink="/register" class="text-info link">Signup</a>
-            </div>
+            </div> -->
           </div>
         </form>
       </mat-card-content>

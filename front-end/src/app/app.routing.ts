@@ -4,6 +4,7 @@ import { AuthGuard } from './core/guards';
 
 import { FullComponent } from './layouts/full/full.component';
 import { LoginComponent } from './main-component/login/login.component';
+import { RegisterComponent } from './main-component/register/register.component';
 
 export const AppRoutes: Routes = [
   {
@@ -34,6 +35,10 @@ export const AppRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   }
 ];
 

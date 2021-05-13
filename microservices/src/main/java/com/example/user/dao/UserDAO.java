@@ -24,10 +24,6 @@ import com.example.user.entity.UserForm;
 public interface UserDAO extends CrudRepository<UserBO, Long> {
     UserBO findByUserName(String username);
     
-    //Lấy ra UserBO bởi userCode
-    @Query("SELECT u FROM UserBO u WHERE LOWER(u.userCode) = LOWER(:userCode)")
-    public UserBO findByUserCode(@Param("userCode")String userCode);
-
     public default UserBean getUserWithRole(VfData uttData, String userName) {
         String hql = "SELECT " 
                 + "     usr.user_id AS userId " 
@@ -53,11 +49,12 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     ,usr.date_of_birth AS dateOfBirth "
                 + "     ,usr.email AS email "
                 + "     ,usr.mobile_number AS mobileNumber "
-                + "     ,usr.user_code AS userCode "
                 + "     , rls.role as role"
                 + "     , rls.role_id as roleId"
                 + "     , rls.role_name as roleName"
+                + "     , e.employee_img_url as employeeImgUrl "
                 + " FROM users usr "
+                + " LEFT JOIN employee_images e ON usr.employee_id = e.employee_id "
                 + " INNER JOIN roles rls ON usr.role_id = rls.role_id "
                 + " WHERE 1 = 1 AND LOWER(usr.user_name) = :username";
         SQLQuery query = uttData.createSQLQuery(hql);
@@ -83,7 +80,6 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     , usr.date_of_birth AS dateOfBirth "
                 + "     , usr.email AS email "
                 + "     , usr.mobile_number AS mobileNumber "
-                + "     , usr.user_code AS userCode "
                 + "     , usr.employee_id As employeeId "
                 + "     , rls.role as role"
                 + "     , rls.role_name as roleName"
@@ -92,7 +88,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1");
         
-        CommonUtil.filter(userForm.getUserCode(), strCondition, paramList, "usr.user_code");
+        CommonUtil.filter(userForm.getUserName(), strCondition, paramList, "usr.user_name");
         CommonUtil.filter(userForm.getFullName(), strCondition, paramList, "usr.full_name");
 
         String orderBy = " ORDER BY userId DESC ";
@@ -110,7 +106,6 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     ,usr.date_of_birth AS dateOfBirth "
                 + "     ,usr.email AS email "
                 + "     ,usr.mobile_number AS mobileNumber "
-                + "     ,usr.user_code AS userCode "
                 + "     , rls.role as role"
                 + "     , rls.role_name as roleName"
                 + " FROM users usr "

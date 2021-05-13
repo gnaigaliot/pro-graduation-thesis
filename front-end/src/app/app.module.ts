@@ -23,7 +23,6 @@ import { ToastModule } from 'primeng/toast';
 import { MatIconModule } from '@angular/material/icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './core/guards';
-import { WebcamModule } from 'ngx-webcam';
 
 @NgModule({
   declarations: [
@@ -47,8 +46,7 @@ import { WebcamModule } from 'ngx-webcam';
     NgbModule,
     NgbToastModule,
     ToastModule,
-    MatIconModule,
-    WebcamModule
+    MatIconModule
   ],
   providers: [
     AuthGuard,

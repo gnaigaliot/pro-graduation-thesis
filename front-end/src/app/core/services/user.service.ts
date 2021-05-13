@@ -72,4 +72,14 @@ export class UserService extends BasicService {
     const url = `${this.serviceUrl}/update-info`;
     return this.postRequest(url, CommonUtils.convertData(item));
   }
+
+  public changePassword(item: any): Observable<any> {
+    const url = `${this.serviceUrl}/change-password`;
+    return this.postRequest(url, CommonUtils.convertData(item));
+  }
+
+  public signUp(item: any): Observable<any> {
+    const url = `${this.serviceUrl}`;
+    return this.postRequest(url, CommonUtils.convertData(item));
+  }
 }

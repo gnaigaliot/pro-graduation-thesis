@@ -30,7 +30,6 @@ import com.example.common.Response;
 import com.example.employeeManager.department.bo.DepartmentBO;
 import com.example.employeeManager.department.service.DepartmentService;
 import com.example.employeeManager.employee.bo.EmployeeBO;
-import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
 import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
@@ -129,6 +128,7 @@ public class UserMainController {
             }
         } else {
             bo = new UserBO();
+            form.setPassword("123456aA@");
             bo.setCreatedDate(new Date());
             bo.setCreatedBy(jwtService.getUsernameFromRequest(req));
         }
@@ -139,7 +139,6 @@ public class UserMainController {
         bo.setGender(form.getGender());
         bo.setEmail(form.getEmail());
         bo.setMobileNumber(form.getMobileNumber());
-        bo.setUserCode(form.getUserCode());
         bo.setRoleId(1L); // chỗ này phải sửa
         // phaan quyen
         /// xoa quyen cu
@@ -237,6 +236,17 @@ public class UserMainController {
                     employeeService.saveOrUpdate(empBO);
                 }
             }
+        }
+        return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
+    }
+    
+    @PostMapping(path = "/change-password")
+    public @ResponseBody Response changePassword(HttpServletRequest req, @RequestBody UserForm form) throws Exception {
+        Long userId = CommonUtil.NVL(form.getUserId());
+        UserBO bo = userService.findById(userId);
+        if (bo != null) {
+            bo.setPassword(form.getNewPassword().split(" ").toString());
+            userService.saveOrUpdate(bo);
         }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
     }

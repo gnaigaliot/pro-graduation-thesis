@@ -14,59 +14,47 @@ import org.springframework.security.core.userdetails.UserDetails;
  * @since 1.0
  * @version 1.0
  */
-public class UserBean implements UserDetails{
+public class UserBean implements UserDetails {
 
-    private Long       userId;
-    private String     userName;
-    private String     password;
-    private String     fullName;
-    private String     dateOfBirth;
-    private Long       gender;
-    private String     email;
-    private String     mobileNumber;
-    private Long       positionId;
-    private Long       roleId;
-    private String     className;
-    private String     majorName;
-    private String     departmentName;
-    private String     userCode;
-    private String     role;
-    private String     roleName;
-    private List<String>     lstRoleCode;
+    private Long userId;
+    private String userName;
+    private String password;
+    private String fullName;
+    private String dateOfBirth;
+    private Long gender;
+    private String email;
+    private String mobileNumber;
+    private Long positionId;
+    private Long roleId;
+    private String className;
+    private String majorName;
+    private String departmentName;
+    private String role;
+    private String roleName;
+    private List<String> lstRoleCode;
     private Long employeeId;
-    
+    private String employeeImgUrl;
+
     @Override
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-          authorities.add(new SimpleGrantedAuthority(role));
+        authorities.add(new SimpleGrantedAuthority(role));
         return authorities;
-      }
-    
-    
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        // TODO Auto-generated method stub
-//        return listGrantedAuthoritys;
-//    }
-    
-    
-
+    }
 
     @Override
     public String getPassword() {
         // TODO Auto-generated method stub
         return password;
     }
-    
+
     public List<String> getLstRoleCode() {
         return lstRoleCode;
     }
 
-
     public void setLstRoleCode(List<String> lstRoleCode) {
         this.lstRoleCode = lstRoleCode;
     }
-
 
     @Override
     public String getUsername() {
@@ -91,7 +79,7 @@ public class UserBean implements UserDetails{
         // TODO Auto-generated method stub
         return true;
     }
-    
+
     /**
      * @return the userId
      */
@@ -99,7 +87,6 @@ public class UserBean implements UserDetails{
         return userId;
     }
 
-    
     /**
      * @return the userName
      */
@@ -107,9 +94,6 @@ public class UserBean implements UserDetails{
         return userName;
     }
 
-    
-
-    
     /**
      * @return the fullName
      */
@@ -117,7 +101,6 @@ public class UserBean implements UserDetails{
         return fullName;
     }
 
-    
     /**
      * @return the gender
      */
@@ -125,7 +108,6 @@ public class UserBean implements UserDetails{
         return gender;
     }
 
-    
     /**
      * @return the email
      */
@@ -133,7 +115,6 @@ public class UserBean implements UserDetails{
         return email;
     }
 
-    
     /**
      * @return the mobileNumber
      */
@@ -141,7 +122,6 @@ public class UserBean implements UserDetails{
         return mobileNumber;
     }
 
-    
     /**
      * @return the className
      */
@@ -149,7 +129,6 @@ public class UserBean implements UserDetails{
         return className;
     }
 
-    
     /**
      * @return the majorName
      */
@@ -157,7 +136,6 @@ public class UserBean implements UserDetails{
         return majorName;
     }
 
-    
     /**
      * @return the departmentName
      */
@@ -165,15 +143,6 @@ public class UserBean implements UserDetails{
         return departmentName;
     }
 
-    
-    /**
-     * @return the userCode
-     */
-    public String getUserCode() {
-        return userCode;
-    }
-
-    
     /**
      * @param userId the userId to set
      */
@@ -181,7 +150,6 @@ public class UserBean implements UserDetails{
         this.userId = userId;
     }
 
-    
     /**
      * @param userName the userName to set
      */
@@ -189,7 +157,6 @@ public class UserBean implements UserDetails{
         this.userName = userName;
     }
 
-    
     /**
      * @param password the password to set
      */
@@ -197,7 +164,6 @@ public class UserBean implements UserDetails{
         this.password = password;
     }
 
-    
     /**
      * @param fullName the fullName to set
      */
@@ -205,7 +171,6 @@ public class UserBean implements UserDetails{
         this.fullName = fullName;
     }
 
-    
     /**
      * @param gender the gender to set
      */
@@ -213,8 +178,6 @@ public class UserBean implements UserDetails{
         this.gender = gender;
     }
 
-    
-    
     /**
      * @return the dateOfBirth
      */
@@ -222,7 +185,6 @@ public class UserBean implements UserDetails{
         return dateOfBirth;
     }
 
-    
     /**
      * @param dateOfBirth the dateOfBirth to set
      */
@@ -237,7 +199,6 @@ public class UserBean implements UserDetails{
         this.email = email;
     }
 
-    
     /**
      * @param mobileNumber the mobileNumber to set
      */
@@ -245,7 +206,6 @@ public class UserBean implements UserDetails{
         this.mobileNumber = mobileNumber;
     }
 
-    
     /**
      * @param className the className to set
      */
@@ -253,7 +213,6 @@ public class UserBean implements UserDetails{
         this.className = className;
     }
 
-    
     /**
      * @param majorName the majorName to set
      */
@@ -261,7 +220,6 @@ public class UserBean implements UserDetails{
         this.majorName = majorName;
     }
 
-    
     /**
      * @param departmentName the departmentName to set
      */
@@ -269,17 +227,6 @@ public class UserBean implements UserDetails{
         this.departmentName = departmentName;
     }
 
-    
-    /**
-     * @param userCode the userCode to set
-     */
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
-
-    
-
-    
     /**
      * @return the roleId
      */
@@ -287,7 +234,6 @@ public class UserBean implements UserDetails{
         return roleId;
     }
 
-    
     /**
      * @return the role
      */
@@ -295,7 +241,6 @@ public class UserBean implements UserDetails{
         return role;
     }
 
-    
     /**
      * @param roleId the roleId to set
      */
@@ -303,7 +248,6 @@ public class UserBean implements UserDetails{
         this.roleId = roleId;
     }
 
-    
     /**
      * @param role the role to set
      */
@@ -317,7 +261,6 @@ public class UserBean implements UserDetails{
         return false;
     }
 
-    
     /**
      * @return the roleName
      */
@@ -325,7 +268,6 @@ public class UserBean implements UserDetails{
         return roleName;
     }
 
-    
     /**
      * @param roleName the roleName to set
      */
@@ -333,7 +275,6 @@ public class UserBean implements UserDetails{
         this.roleName = roleName;
     }
 
-    
     /**
      * @return the postisionId
      */
@@ -341,7 +282,6 @@ public class UserBean implements UserDetails{
         return positionId;
     }
 
-    
     /**
      * @param postisionId the postisionId to set
      */
@@ -356,4 +296,12 @@ public class UserBean implements UserDetails{
     public void setEmployeeId(Long employeeId) {
         this.employeeId = employeeId;
     }
+
+	public String getEmployeeImgUrl() {
+		return employeeImgUrl;
+	}
+
+	public void setEmployeeImgUrl(String employeeImgUrl) {
+		this.employeeImgUrl = employeeImgUrl;
+	}
 }

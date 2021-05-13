@@ -18,7 +18,6 @@ public class UserForm {
     private String     course;
     private Long       majorId;
     private Long       departmentId;
-    private String     userCode;
     private String     year;
     private String     semester;
     private Long       roleId;
@@ -27,6 +26,7 @@ public class UserForm {
     private String positionName;
     private String departmentName;
     private String employeeCode;
+    private String newPassword;
 
     public Long getUserId() {
         return userId;
@@ -106,12 +106,6 @@ public class UserForm {
     public void setDepartmentId(Long departmentId) {
         this.departmentId = departmentId;
     }
-    public String getUserCode() {
-        return userCode;
-    }
-    public void setUserCode(String userCode) {
-        this.userCode = userCode;
-    }
     public String getYear() {
         return year;
     }
@@ -159,5 +153,11 @@ public class UserForm {
     }
     public void setEmployeeCode(String employeeCode) {
         this.employeeCode = employeeCode;
+    }
+    public String getNewPassword() {
+        return newPassword;
+    }
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
     }
 }

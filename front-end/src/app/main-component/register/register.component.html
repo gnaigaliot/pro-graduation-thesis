@@ -1,0 +1,75 @@
+<div class="login-register" style="background-image: url(../../../assets/images/background/3546.jpg);">
+    <div class="login-register-box">
+        <mat-card class="mat-card mat-focus-indicator">
+            <mat-card-content class="mat-card-content">
+                <form [formGroup]="formSave" (ngSubmit)="processSaveOrUpdate()" action="POST"
+                    class="ng-untouched ng-pristine ng-invalid">
+                    <div class="text-center">
+                        <img src="../../../assets/images/logo-icon.png" alt="">
+                        <h4 class="m-t-0">Đăng ký tài khoản</h4>
+                    </div>
+                    <div style="flex-flow: row wrap;box-sizing: border-box;display: flex;" fxlayout="row wrap"
+                        ng-reflect-fx-layout="row wrap">
+                        <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
+                            fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
+                            <mat-form-field>
+                                <input matInput placeholder="Full name" type="text" formControlName="fullName">
+                            </mat-form-field>
+                            <app-control-messages [control]="f['fullName']"></app-control-messages>
+                        </div>
+                        <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
+                            fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
+                            <mat-form-field>
+                                <input matInput placeholder="Email" type="email" formControlName="email">
+                            </mat-form-field>
+                            <app-control-messages [control]="f['email']"></app-control-messages>
+                        </div>
+                        <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
+                            fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
+                            <mat-form-field>
+                                <input matInput placeholder="Username" type="text" formControlName="userName">
+                            </mat-form-field>
+                            <app-control-messages [control]="f['userName']"></app-control-messages>
+                        </div>
+                        <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
+                            fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
+                            <mat-form-field>
+                                <input matInput placeholder="Password" type="password" formControlName="password">
+                            </mat-form-field>
+                            <app-control-messages [control]="f['password']"></app-control-messages>
+                        </div>
+                        <div style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;" fxflex.gt-sm="100"
+                            fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100">
+                            <mat-form-field>
+                                <input matInput placeholder="Confirm Password" type="password" formControlName="confirmPassword">
+                            </mat-form-field>
+                            <app-control-messages [control]="f['confirmPassword']"></app-control-messages>
+                        </div>
+                        <div class="alert alert-danger" [hidden]="!error" style="margin-bottom: 0; display: contents;">
+                            {{error}}
+                        </div>
+                        <div fxflex.gt-sm="100" fxflex.gt-xs="100" fxflex="100" ng-reflect-fx-flex.gt-sm="100"
+                            ng-reflect-fx-flex.gt-xs="100" ng-reflect-fx-flex="100"
+                            style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+                            <button mat-raised-button color="primary" type="submit"
+                                class="mat-focus-indicator btn-block btn-lg m-t-20 m-b-20 mat-raised-button mat-button-base mat-primary"
+                                [disabled]="formSave.invalid">
+                                <span class="mat-button-wrapper">Đăng ký</span>
+                                <div class="mat-button-focus-overlay"></div>
+                            </button>
+                        </div>
+                        <div class="text-center" style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">
+                            <span>Đã có tài khoản? </span>
+                            <a routerLink="/login" class="text-info link">Đăng nhập ngay</a>
+                        </div>
+                    </div>
+                </form>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

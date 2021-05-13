@@ -7,9 +7,10 @@ import { RequestResetComponent } from './request-reset/request-reset.component';
 import { DemoMaterialModule } from '../demo-material-module';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [LoginComponent, RequestResetComponent],
+  declarations: [LoginComponent, RequestResetComponent, RegisterComponent],
   imports: [
     CommonModule,
     MainComponentRoutingModule,

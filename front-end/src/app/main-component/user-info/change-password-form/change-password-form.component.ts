@@ -73,7 +73,7 @@ export class ChangePasswordFormComponent extends BaseComponent implements OnInit
       return;
     }
     this.app.confirmMessage(null, () => {// on accepted
-      this.userService.saveOrUpdate(this.formSave.value)
+      this.userService.changePassword(this.formSave.value)
       .subscribe(res => {
         this.formSave = this.buildForm(res.data, this.formConfig);
       });

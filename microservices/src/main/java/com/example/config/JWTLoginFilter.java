@@ -30,7 +30,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
         String password = request.getParameter("password");
  
         System.out.printf("JWTLoginFilter.attemptAuthentication: username/password= %s,%s", username, password);
-        System.out.println();
  
         return getAuthenticationManager()
                 .authenticate(new UsernamePasswordAuthenticationToken(username, password, Collections.emptyList()));

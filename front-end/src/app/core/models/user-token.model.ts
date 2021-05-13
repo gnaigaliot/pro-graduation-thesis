@@ -32,4 +32,5 @@ export class UserToken {
   lstRoleCode: String[];
   // userMenuList: UserMenu[];
   userInfo: any;
+  employeeImgUrl: string;
 }
