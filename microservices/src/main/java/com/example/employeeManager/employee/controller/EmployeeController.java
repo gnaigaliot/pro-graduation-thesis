@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,8 @@ import com.example.common.Constants;
 import com.example.common.DataTableResults;
 import com.example.common.Response;
 import com.example.controller.BaseController;
+import com.example.email.model.UserEmail;
+import com.example.email.service.MailService;
 import com.example.employeeManager.employee.bean.EmployeeBean;
 import com.example.employeeManager.employee.bo.EmployeeBO;
 import com.example.employeeManager.employee.form.EmployeeForm;
@@ -39,15 +42,19 @@ public class EmployeeController extends BaseController {
 
     @Autowired
     private EmployeeService employeeService;
-    
+
     @Autowired
     private EmployeeImagesService employeeImagesService;
-    
+
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private MailService mailService;
+
     /**
      * findById
+     * 
      * @param employeeId
      * @return
      */
@@ -57,17 +64,19 @@ public class EmployeeController extends BaseController {
 //            return Response.invalidPermission();
 //        }
         EmployeeBO employeeBO = employeeService.findById(employeeId);
-        if(employeeBO == null) {
+        if (employeeBO == null) {
             return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
         }
-        if(employeeImagesService.getEmployeeImageByEmployeeId(employeeId) != null) {
-            employeeBO.setEmployeeImgUrl(employeeImagesService.getEmployeeImageByEmployeeId(employeeId).getEmployeeImgUrl());
+        if (employeeImagesService.getEmployeeImageByEmployeeId(employeeId) != null) {
+            employeeBO.setEmployeeImgUrl(
+                    employeeImagesService.getEmployeeImageByEmployeeId(employeeId).getEmployeeImgUrl());
         }
         return Response.success().withData(employeeBO);
     }
 
     /**
      * processSearch
+     * 
      * @param EmployeeForm form
      * @return DataTableResults
      */
@@ -81,6 +90,7 @@ public class EmployeeController extends BaseController {
 
     /**
      * saveOrUpdate EmployeeBO
+     * 
      * @param req
      * @param form
      * @return
@@ -88,12 +98,13 @@ public class EmployeeController extends BaseController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public @ResponseBody Response saveOrUpdate(HttpServletRequest req, @RequestBody EmployeeForm form) throws Exception {
+    public @ResponseBody Response saveOrUpdate(HttpServletRequest req, @RequestBody EmployeeForm form)
+            throws Exception {
         Long employeeId = CommonUtil.NVL(form.getEmployeeId());
         EmployeeBO employeeBO;
-        if(employeeId > 0L) {
+        if (employeeId > 0L) {
             employeeBO = employeeService.findById(employeeId);
-            if(employeeBO == null){
+            if (employeeBO == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
             employeeBO.setModifiedDate(new Date());
@@ -117,47 +128,42 @@ public class EmployeeController extends BaseController {
         employeeBO.setAddress(form.getAddress());
         employeeService.saveOrUpdate(employeeBO);
         EmployeeImagesBO employeeImageBo;
-        if(employeeId > 0L) {
+        if (employeeId > 0L) {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
-            if(!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
+            if (!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
                 employeeImagesService.saveOrUpdate(employeeImageBo);
                 // delete old file and add new file
                 String base64String = employeeImageBo.getEmployeeImgUrl();
                 String[] strings = base64String.split(",");
                 String extension;
-                switch (strings[0]) {//check image's extension
-                    case "data:image/jpeg;base64":
-                        extension = "jpeg";
-                        break;
-                    case "data:image/png;base64":
-                        extension = "png";
-                        break;
-                    default://should write cases for more images types
-                        extension = "jpg";
-                        break;
+                switch (strings[0]) {// check image's extension
+                case "data:image/jpeg;base64":
+                    extension = "jpeg";
+                    break;
+                case "data:image/png;base64":
+                    extension = "png";
+                    break;
+                default:// should write cases for more images types
+                    extension = "jpg";
+                    break;
                 }
                 String path = "../assets/img/users/" + employeeBO.getEmployeeCode() + "." + extension;
-                try
-                {
-                    File f= new File(path);
-                    if(f.delete())
-                    {
+                try {
+                    File f = new File(path);
+                    if (f.delete()) {
                         System.out.println(f.getName() + " deleted");
-                        employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
-                    }  
-                    else
-                    {
-                        System.out.println("failed");  
+                        employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(),
+                                employeeBO.getEmployeeCode());
+                    } else {
+                        System.out.println("failed");
                     }
-                }  
-                catch(Exception e)
-                {  
-                e.printStackTrace();
-                } 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else {
-            if(!CommonUtil.isNullOrEmpty(form.getEmployeeImgUrl())) {
+            if (!CommonUtil.isNullOrEmpty(form.getEmployeeImgUrl())) {
                 employeeImageBo = new EmployeeImagesBO();
                 employeeImageBo.setEmployeeId(employeeBO.getEmployeeId());
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
@@ -178,25 +184,38 @@ public class EmployeeController extends BaseController {
             userBO.setCreatedDate(new Date());
             userBO.setEmployeeId(employeeBO.getEmployeeId());
             userService.saveOrUpdate(userBO);
+            UserEmail userEmail = new UserEmail();
+            userEmail.setLastName(userBO.getFullName());
+            userEmail.setEmailAddress(employeeBO.getEmail());
+            String msg = String.format("Chào mừng %s đến với công ty!\n"
+                    + "Tài khoản và mật khẩu hệ thống chấm công DHRM của bạn như sau: \n"
+                    + "Tài khoản: %s \n"
+                    + "Mật khẩu: %s \n"
+                    + "Bạn hãy tiến hành đổi mật khẩu để bảo mật tài khoản.\n"
+                    + "Xin trân trọng cảm ơn.", 
+                    employeeBO.getEmployeeName(), userBO.getUserName(), userBO.getPassword());
+            try {
+                mailService.sendEmail(userEmail);
+            } catch (MailException e) {
+                System.out.println(e);
+            }
         }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(employeeBO);
     }
 
     /**
      * delete
+     * 
      * @param employeeId
      * @return
      */
     @DeleteMapping(path = "/{employeeId}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long employeeId) {
-//        if (! permissionChecker.hasPermission("action.delete", adResourceKey, req)) {
-//            return Response.invalidPermission();
-//        }
-        EmployeeBO bo ;
-        if(employeeId > 0L) {
+        EmployeeBO bo;
+        if (employeeId > 0L) {
             bo = employeeService.findById(employeeId);
-            if(bo == null) {
+            if (bo == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
             employeeService.delete(bo);
