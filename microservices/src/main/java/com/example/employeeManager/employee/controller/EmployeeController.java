@@ -28,6 +28,8 @@ import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
 import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
+import com.example.user.entity.UserBO;
+import com.example.user.service.UserService;
 
 @Controller
 @RequestMapping("/v1/employee-manager/employee")
@@ -40,6 +42,9 @@ public class EmployeeController extends BaseController {
     
     @Autowired
     private EmployeeImagesService employeeImagesService;
+    
+    @Autowired
+    private UserService userService;
 
     /**
      * findById
@@ -87,9 +92,6 @@ public class EmployeeController extends BaseController {
         Long employeeId = CommonUtil.NVL(form.getEmployeeId());
         EmployeeBO employeeBO;
         if(employeeId > 0L) {
-//            if (!permissionChecker.hasPermission("action.update", adResourceKey, req)) {
-//                return Response.invalidPermission();
-//            }
             employeeBO = employeeService.findById(employeeId);
             if(employeeBO == null){
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
@@ -98,9 +100,6 @@ public class EmployeeController extends BaseController {
             employeeBO.setModifiedBy(CommonUtil.getUserLoginName(req));
             employeeBO.setStatus(form.getStatus());
         } else {
-//            if (!permissionChecker.hasPermission("action.insert", adResourceKey, req)) {
-//                return Response.invalidPermission();
-//            }
             employeeBO = new EmployeeBO();
             employeeBO.setCreatedDate(new Date());
             employeeBO.setCreatedBy(CommonUtil.getUserLoginName(req));
@@ -166,7 +165,20 @@ public class EmployeeController extends BaseController {
                 employeeImagesService.saveOrUpdate(employeeImageBo);
             }
         }
-        
+        // tạo user
+        if (employeeId == 0L) {
+            UserBO userBO = new UserBO();
+            userBO.setUserName(employeeBO.getEmail());
+            userBO.setPassword("123456a@A");
+            userBO.setFullName(employeeBO.getEmployeeName());
+            userBO.setDateOfBirth(employeeBO.getDateOfBirth());
+            userBO.setGender(employeeBO.getGender().longValue());
+            userBO.setEmail(employeeBO.getEmail());
+            userBO.setMobileNumber(employeeBO.getPhoneNumber());
+            userBO.setCreatedDate(new Date());
+            userBO.setEmployeeId(employeeBO.getEmployeeId());
+            userService.saveOrUpdate(userBO);
+        }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(employeeBO);
     }
 
