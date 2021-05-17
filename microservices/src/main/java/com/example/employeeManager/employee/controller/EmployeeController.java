@@ -2,6 +2,7 @@ package com.example.employeeManager.employee.controller;
 
 import java.io.File;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,7 +32,11 @@ import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
 import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
+import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
+import com.example.user.entity.UserRoleBO;
+import com.example.user.service.RoleService;
+import com.example.user.service.UserRoleService;
 import com.example.user.service.UserService;
 
 @Controller
@@ -51,6 +56,12 @@ public class EmployeeController extends BaseController {
 
     @Autowired
     private MailService mailService;
+    
+    @Autowired
+    private RoleService roleService;
+    
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * findById
@@ -87,6 +98,11 @@ public class EmployeeController extends BaseController {
 //        }
         return employeeService.getDatatables(form);
     }
+    
+    @GetMapping
+    public @ResponseBody List<EmployeeBO> getAll(HttpServletRequest req) {
+      return employeeService.findAll();
+  } 
 
     /**
      * saveOrUpdate EmployeeBO
@@ -171,6 +187,13 @@ public class EmployeeController extends BaseController {
                 employeeImagesService.saveOrUpdate(employeeImageBo);
             }
         }
+        Long roleId = null;
+        List<RoleBO> roleBO = roleService.findAll();
+        for (RoleBO bo : roleBO) {
+            if ("ROLE_NV".equals(bo.getRole())) {
+                roleId = bo.getRoleId();
+            }
+        }
         // tạo user
         if (employeeId == 0L) {
             UserBO userBO = new UserBO();
@@ -183,7 +206,13 @@ public class EmployeeController extends BaseController {
             userBO.setMobileNumber(employeeBO.getPhoneNumber());
             userBO.setCreatedDate(new Date());
             userBO.setEmployeeId(employeeBO.getEmployeeId());
+            userBO.setRoleId(roleId);
             userService.saveOrUpdate(userBO);
+            // set to user_role
+            UserRoleBO userRoleBO = new UserRoleBO();
+            userRoleBO.setRoleId(roleId);
+            userRoleBO.setUserId(userBO.getUserId());
+            userRoleService.saveOrUpdate(userRoleBO);
             UserEmail userEmail = new UserEmail();
             userEmail.setLastName(userBO.getFullName());
             userEmail.setEmailAddress(employeeBO.getEmail());
@@ -195,7 +224,7 @@ public class EmployeeController extends BaseController {
                     + "Xin trân trọng cảm ơn.", 
                     employeeBO.getEmployeeName(), userBO.getUserName(), userBO.getPassword());
             try {
-                mailService.sendEmail(userEmail);
+                mailService.sendEmail(userEmail, msg, "Thông báo tài khoản hệ thống chấm công");
             } catch (MailException e) {
                 System.out.println(e);
             }

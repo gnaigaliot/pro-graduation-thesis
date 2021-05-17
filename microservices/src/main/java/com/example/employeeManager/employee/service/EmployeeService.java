@@ -1,5 +1,7 @@
 package com.example.employeeManager.employee.service;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +59,9 @@ public class EmployeeService {
      */
     public void delete(EmployeeBO entity) {
         employeedao.delete(entity);
+    }
+    
+    public List<EmployeeBO> findAll() {
+        return employeedao.findAll();
     }
 }

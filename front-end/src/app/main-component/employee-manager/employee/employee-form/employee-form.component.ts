@@ -20,17 +20,10 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
   formSave: FormGroup;
   public listDepartment: any = [];
   public listPositions: any = [];
-  public idEmployee: any;
-  public listImageFace: string[] = [];
-  // tslint:disable-next-line: no-inferrable-types
-  public percentCapture: number = 0;
-  // tslint:disable-next-line: no-inferrable-types
-  public isShow: boolean = true;
 
   isImageSaved: boolean;
   cardImageBase64: string;
   imageError: string;
-
 
   formConfig = {
     employeeId: [''],
@@ -102,35 +95,6 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
      }, () => {// on rejected
    });
   }
-
-  // public get triggerObservable(): Observable<void> {
-  //   return this.trigger.asObservable();
-  // }
-
-  // public viewChange(event): void {
-  //   this.listImageFace.push(event.face);
-  //   this.formSave.controls.employeeImgUrl.setValue(this.listImageFace);
-  //   // this.face = event.face;
-  // }
-
-  // public triggerSnapshot(): void {
-  //   timer(0, 200).pipe(
-  //     take(100)
-  //   // tslint:disable-next-line: deprecation
-  //   ).subscribe(() => {
-  //     this.trigger.next();
-  //     this.percentCapture = this.percentCapture + 1;
-  //   });
-  // }
-
-  // ngOnDestroy(): void {
-  //   this.trigger.complete();
-  // }
-
-  // public updateSnapshot(): void {
-  //   this.listImageFace = [];
-  //   this.isShow = true;
-  // }
 
   fileChangeEvent(fileInput: any): boolean {
     this.imageError = null;
