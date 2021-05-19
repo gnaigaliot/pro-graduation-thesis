@@ -45,7 +45,7 @@ import { ImportErrorComponent } from './components/import-error/import-error.com
 import { DatePickerComponent } from './components/date-picker/date-picker.component';
 import { ConfirmationService } from 'primeng/api';
 import { Table } from 'primeng/table';
-import {ProgressBarModule} from 'primeng/progressbar';
+import { ProgressBarModule } from 'primeng/progressbar';
 
 @NgModule({
   declarations: [

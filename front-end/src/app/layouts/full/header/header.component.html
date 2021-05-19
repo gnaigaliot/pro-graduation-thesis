@@ -2,13 +2,20 @@
 <!-- ============================================================== -->
 <!-- Profile - style you can find in header.scss -->
 <!-- ============================================================== -->
-<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> <img src="assets/images/users/1.jpg" alt="user" class="profile-pic"> </button>
+<button [matMenuTriggerFor]="profile" mat-icon-button class="m-r-5"> 
+    <!-- <img src="assets/images/users/1.jpg" alt="user" class="profile-pic"> -->
+    <img *ngIf="!userInfo.employeeImgUrl" src="assets/images/users/profile.png" alt="user" class="profile-pic">
+    <img *ngIf="userInfo.employeeImgUrl" [src]="userInfo.employeeImgUrl" alt="user" class="profile-pic">
+</button>
 <mat-menu #profile="matMenu" class="mymegamenu">
     <div class="d-flex no-block align-items-center p-3 bg-info text-white mb-2">
-        <div class=""><img src="../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="60"></div>
+        <div class="">
+            <img *ngIf="!userInfo.employeeImgUrl" src="assets/images/users/profile.png" alt="user" class="rounded-circle" width="60">
+            <img *ngIf="userInfo.employeeImgUrl" [src]="userInfo.employeeImgUrl" alt="user" class="rounded-circle" width="60" height="60">
+        </div>
         <div class="ms-2">
-            <h4 class="mb-0 text-white">Steave Jobs</h4>
-            <p class=" mb-0">varun@gmail.com</p>
+            <h4 class="mb-0 text-white">{{userInfo.fullName}}</h4>
+            <p class=" mb-0">{{userInfo.email}}</p>
         </div>
     </div>
     <button mat-menu-item>

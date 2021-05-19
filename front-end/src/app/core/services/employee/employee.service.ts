@@ -16,4 +16,17 @@ export class EmployeeService extends BasicService {
   ) {
     super('ess', 'employee', httpClient, helperService);
   }
+
+  public processExport(data?: any, event?: any): Observable<any> {
+    if (!event) {
+      this.credentials = Object.assign({}, data);
+    }
+    const searchData = CommonUtils.convertData(this.credentials);
+    if (event) {
+      searchData._search = event;
+    }
+    const buildParams = CommonUtils.buildParams(searchData);
+    const url = `${this.serviceUrl}/export`;
+    return this.getRequest(url, {params: buildParams, responseType: 'blob'});
+  }
 }

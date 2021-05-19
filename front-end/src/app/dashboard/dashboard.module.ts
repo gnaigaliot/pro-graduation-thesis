@@ -22,6 +22,13 @@ import { SharedModule } from '../shared/shared.module';
     RouterModule.forChild(DashboardRoutes),
     SharedModule
   ],
-  declarations: [DashboardComponent, SalesOverviewGrapComponent, VisiterGraphComponent, StickerComponent, ContactsComponent, ActivityComponent]
+  declarations: [
+    DashboardComponent,
+    SalesOverviewGrapComponent,
+    VisiterGraphComponent,
+    StickerComponent,
+    ContactsComponent,
+    ActivityComponent
+  ]
 })
 export class DashboardModule {}

@@ -31,6 +31,7 @@ export class EmployeeSearchComponent extends BaseComponent implements OnInit {
     this.processSearch();
   }
 
+  // tslint:disable-next-line:typedef
   get f() {
     return this.formSearch.controls;
   }

@@ -3430,3 +3430,6 @@ Custom status start
   outline: 0 none;
   transition-duration: .3s;
 }
+.canvas-pie-1 canvas {
+  margin: auto;
+}
