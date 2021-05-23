@@ -18,13 +18,13 @@
             <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Tên đăng nhập <font size="2"
                 color="red">*</font></label>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
-              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="userName" maxlength="100">
+              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="userName" maxlength="100" [attr.readonly]="formSave.get('userId').value ? true : null">
               <app-control-messages [control]="f['userName']"></app-control-messages>
             </div>
             <label class="ui-g-12 ui-md-6 ui-lg-3 control-label vt-align-right">Họ và tên <font size="2" color="red">* </font> </label>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
-              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="fullName" maxlength="100">
-              <app-control-messages [control]="f['fullName']"></app-control-messages>
+              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="employeeName" maxlength="100">
+              <app-control-messages [control]="f['employeeName']"></app-control-messages>
             </div>
             <!-- <label class="ui-g-12 ui-md-6 ui-lg-3 control-label vt-align-right">Mật khẩu <font size="2" color="red">*
               </font></label>
@@ -50,9 +50,9 @@
           <div class="ui-g-12">
             <label class="ui-g-12 ui-md-6 ui-lg-2 control-label vt-align-right">Số điện thoại </label>
             <div class="ui-g-12 ui-md-6 ui-lg-3">
-              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="mobileNumber"
+              <input class="form-control ng-pristine ng-invalid ng-touched" formControlName="phoneNumber"
                 maxlength="50">
-              <app-control-messages [control]="f['mobileNumber']"></app-control-messages>
+              <app-control-messages [control]="f['phoneNumber']"></app-control-messages>
             </div>
             <label class="ui-g-12 ui-md-6 ui-lg-3 control-label vt-align-right">Giới tính </label>
             <div class="ui-g-12 ui-md-6 ui-lg-3 nowrap">

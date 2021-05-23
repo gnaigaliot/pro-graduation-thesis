@@ -21,11 +21,11 @@ export class UserFormComponent extends BaseComponent implements OnInit {
     userId: [''],
     userName: ['', [Validators.required, Validators.maxLength(100)]],
     password: [''],
-    fullName: ['', [Validators.required, Validators.maxLength(200)]],
+    employeeName: ['', [Validators.required, Validators.maxLength(200)]],
     dateOfBirth: [''],
     gender: [1],
     email: ['', [Validators.maxLength(50), Validators.required]],
-    mobileNumber: ['', [Validators.maxLength(50)]],
+    phoneNumber: ['', [Validators.maxLength(50)]],
     roleId: [''],
     lstRoleId: ['', [Validators.required]]
   };

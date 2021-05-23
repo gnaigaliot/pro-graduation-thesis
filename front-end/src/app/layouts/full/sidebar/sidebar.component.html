@@ -3,7 +3,7 @@
         <img *ngIf="!userInfo.employeeImgUrl" src="assets/images/users/profile.png" alt="user">
         <img *ngIf="userInfo.employeeImgUrl" [src]="userInfo.employeeImgUrl" alt="user" style="height: 50px;">
     </div>
-    <div class="profile-text"><a [matMenuTriggerFor]="sdprofile" class=""> Xin chào {{userInfo.fullName}}<i class="ti-angle-down font-12 m-l-5"></i></a></div>
+    <div class="profile-text"><a [matMenuTriggerFor]="sdprofile" class=""> Xin chào {{userInfo.employeeName}}<i class="ti-angle-down font-12 m-l-5"></i></a></div>
     <mat-menu #sdprofile="matMenu" class="mymegamenu">
         <button (click)="changePassword()" mat-menu-item>
             <mat-icon>settings</mat-icon> Đổi mật khẩu

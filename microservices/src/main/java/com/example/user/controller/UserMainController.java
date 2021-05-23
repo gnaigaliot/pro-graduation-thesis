@@ -110,6 +110,12 @@ public class UserMainController {
                 DepartmentBO departBO = departmentService.findById(empBO.getDepartmentId());
                 userForm.setPositionName(posBO.getPositionName());
                 userForm.setDepartmentName(departBO.getDepartmentName());
+                userForm.setEmployeeName(empBO.getEmployeeName());
+                userForm.setEmail(empBO.getEmail());
+                userForm.setPhoneNumber(empBO.getPhoneNumber());
+                userForm.setDateOfBirth(empBO.getDateOfBirth());
+                userForm.setGender(empBO.getGender().longValue());
+                userForm.setEmployeeId(empBO.getEmployeeId());
             }
         }
         return Response.success().withData(userForm);
@@ -134,11 +140,6 @@ public class UserMainController {
         }
         bo.setUserName(form.getUserName());
         bo.setPassword(form.getPassword());
-        bo.setFullName(form.getFullName());
-        bo.setDateOfBirth(form.getDateOfBirth());
-        bo.setGender(form.getGender());
-        bo.setEmail(form.getEmail());
-        bo.setMobileNumber(form.getMobileNumber());
         bo.setRoleId(1L); // chỗ này phải sửa
         // phaan quyen
         /// xoa quyen cu
@@ -151,6 +152,17 @@ public class UserMainController {
             userRoleBO.setUserId(bo.getUserId());
             userRoleBO.setRoleId(roleId);
             userRoleService.saveOrUpdate(userRoleBO);
+        }
+        if (bo.getEmployeeId() != null || bo.getEmployeeId() > 0L) {
+            EmployeeBO empBO = employeeService.findById(bo.getEmployeeId());
+            if(empBO != null) {
+                empBO.setEmployeeName(form.getEmployeeName());
+                empBO.setDateOfBirth(form.getDateOfBirth());
+                empBO.setGender(form.getGender().intValue());
+                empBO.setEmail(form.getEmail());
+                empBO.setPhoneNumber(form.getPhoneNumber());
+                employeeService.saveOrUpdate(empBO);
+            }
         }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
     }
@@ -219,20 +231,15 @@ public class UserMainController {
         if (bo != null) {
             bo.setUserName(form.getUserName());
             bo.setPassword(form.getPassword());
-            bo.setFullName(form.getFullName());
-            bo.setDateOfBirth(form.getDateOfBirth());
-            bo.setGender(form.getGender());
-            bo.setEmail(form.getEmail());
-            bo.setMobileNumber(form.getMobileNumber());
             userService.saveOrUpdate(bo);
             if (bo.getEmployeeId() != null || bo.getEmployeeId() > 0L) {
                 EmployeeBO empBO = employeeService.findById(bo.getEmployeeId());
                 if(empBO != null) {
-                    empBO.setEmployeeName(form.getFullName());
+                    empBO.setEmployeeName(form.getEmployeeName());
                     empBO.setDateOfBirth(form.getDateOfBirth());
                     empBO.setGender(form.getGender().intValue());
                     empBO.setEmail(form.getEmail());
-                    empBO.setPhoneNumber(form.getMobileNumber());
+                    empBO.setPhoneNumber(form.getPhoneNumber());
                     employeeService.saveOrUpdate(empBO);
                 }
             }

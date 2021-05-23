@@ -27,21 +27,6 @@ public class UserBO implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "full_name")
-    private String fullName;
-
-    @Column(name = "date_of_birth")
-    private Date dateOfBirth;
-
-    @Column(name = "gender")
-    private Long gender;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "mobile_number")
-    private String mobileNumber;
-
     @Column(name = "role_id")
     private Long roleId;
 
@@ -86,41 +71,6 @@ public class UserBO implements Serializable {
     }
 
     /**
-     * @return the fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
-     * @return the dateOfBirth
-     */
-    public Date getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    /**
-     * @return the gender
-     */
-    public Long getGender() {
-        return gender;
-    }
-
-    /**
-     * @return the email
-     */
-    public String getEmail() {
-        return email;
-    }
-
-    /**
-     * @return the mobileNumber
-     */
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    /**
      * @param userId the userId to set
      */
     public void setUserId(Long userId) {
@@ -139,41 +89,6 @@ public class UserBO implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    /**
-     * @param fullName the fullName to set
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
-     * @param dateOfBirth the dateOfBirth to set
-     */
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    /**
-     * @param gender the gender to set
-     */
-    public void setGender(Long gender) {
-        this.gender = gender;
-    }
-
-    /**
-     * @param email the email to set
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @param mobileNumber the mobileNumber to set
-     */
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
     }
 
     /**

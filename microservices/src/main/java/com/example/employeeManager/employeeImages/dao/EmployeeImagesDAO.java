@@ -58,7 +58,8 @@ public interface EmployeeImagesDAO extends CrudRepository<EmployeeImagesBO, Long
     
     public default EmployeeImagesBean getUrlImageByEmployeeId(VfData vfData, Long employeeId) {
         String sql = " SELECT "
-                + " ei.employee_img_url As employeeImgUrl "
+                + " ei.employee_img_url As employeeImgUrl, "
+                + " ei.employee_image_id As employeeImageId "
                 + " FROM employee_images ei "
                 + " WHERE 1=1 AND ei.employee_id = :employeeId ";
         SQLQuery query = vfData.createSQLQuery(sql);
@@ -69,7 +70,8 @@ public interface EmployeeImagesDAO extends CrudRepository<EmployeeImagesBO, Long
     
     public default EmployeeImagesBO getUrlImageByEmployeeIdBO(VfData vfData, Long employeeId) {
         String sql = " SELECT "
-                + " ei.employee_img_url As employeeImgUrl "
+                + " ei.employee_img_url As employeeImgUrl, "
+                + " ei.employee_image_id As employeeImageId "
                 + " FROM employee_images ei "
                 + " WHERE 1=1 AND ei.employee_id = :employeeId ";
         SQLQuery query = vfData.createSQLQuery(sql);

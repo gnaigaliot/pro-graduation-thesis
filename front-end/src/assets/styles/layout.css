@@ -1250,7 +1250,7 @@ body .ui-organizationchart .ui-organizationchart-node-content .ui-node-toggler {
 .result-info {
   padding-left: 10px;
 }
-.result-info .fullName {
+.result-info .employeeName {
   font-weight: bold;
   font-size: 13px;
   margin-bottom: 6px;

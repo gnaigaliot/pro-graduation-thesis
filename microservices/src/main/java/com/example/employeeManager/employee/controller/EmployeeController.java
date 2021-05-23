@@ -34,6 +34,7 @@ import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
+import com.example.user.entity.UserForm;
 import com.example.user.entity.UserRoleBO;
 import com.example.user.service.RoleService;
 import com.example.user.service.UserRoleService;
@@ -148,6 +149,7 @@ public class EmployeeController extends BaseController {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
             if (!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
+                employeeImageBo.setEmployeeId(employeeId);
                 employeeImagesService.saveOrUpdate(employeeImageBo);
                 // delete old file and add new file
                 String base64String = employeeImageBo.getEmployeeImgUrl();
@@ -199,11 +201,6 @@ public class EmployeeController extends BaseController {
             UserBO userBO = new UserBO();
             userBO.setUserName(employeeBO.getEmail());
             userBO.setPassword("123456a@A");
-            userBO.setFullName(employeeBO.getEmployeeName());
-            userBO.setDateOfBirth(employeeBO.getDateOfBirth());
-            userBO.setGender(employeeBO.getGender().longValue());
-            userBO.setEmail(employeeBO.getEmail());
-            userBO.setMobileNumber(employeeBO.getPhoneNumber());
             userBO.setCreatedDate(new Date());
             userBO.setEmployeeId(employeeBO.getEmployeeId());
             userBO.setRoleId(roleId);
@@ -214,7 +211,7 @@ public class EmployeeController extends BaseController {
             userRoleBO.setUserId(userBO.getUserId());
             userRoleService.saveOrUpdate(userRoleBO);
             UserEmail userEmail = new UserEmail();
-            userEmail.setLastName(userBO.getFullName());
+            userEmail.setLastName(employeeBO.getEmployeeName());
             userEmail.setEmailAddress(employeeBO.getEmail());
             String msg = String.format("Chào mừng %s đến với công ty!\n"
                     + "Tài khoản và mật khẩu hệ thống chấm công DHRM của bạn như sau: \n"
@@ -242,15 +239,65 @@ public class EmployeeController extends BaseController {
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long employeeId) {
         EmployeeBO bo;
+        EmployeeImagesBO employeeImageBO;
         if (employeeId > 0L) {
             bo = employeeService.findById(employeeId);
             if (bo == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
+            employeeImageBO = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
+            if (employeeImageBO == null) {
+                return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
+            }
+            employeeImagesService.delete(employeeImageBO);
             employeeService.delete(bo);
             return Response.success(Constants.RESPONSE_CODE.DELETE_SUCCESS);
         } else {
             return Response.error(Constants.RESPONSE_CODE.ERROR);
         }
+    }
+    
+    @PostMapping(path = "change-avatar")
+    public @ResponseBody Response changeAvatar(HttpServletRequest req, @RequestBody UserForm form)
+            throws Exception {
+        Long employeeId = CommonUtil.NVL(form.getEmployeeId());
+        EmployeeImagesBO bo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
+        if (bo != null) {
+            bo.setEmployeeImgUrl(form.getEmployeeImgUrl());
+            bo.setEmployeeId(employeeId);
+            employeeImagesService.saveOrUpdate(bo);
+            
+            EmployeeBO employeeBO = employeeService.findById(employeeId);
+            
+            // delete old file and add new file
+            String base64String = form.getEmployeeImgUrl();
+            String[] strings = base64String.split(",");
+            String extension;
+            switch (strings[0]) {// check image's extension
+            case "data:image/jpeg;base64":
+                extension = "jpeg";
+                break;
+            case "data:image/png;base64":
+                extension = "png";
+                break;
+            default:// should write cases for more images types
+                extension = "jpg";
+                break;
+            }
+            String path = "../assets/img/users/" + employeeBO.getEmployeeCode() + "." + extension;
+            try {
+                File f = new File(path);
+                if (f.delete()) {
+                    System.out.println(f.getName() + " deleted");
+                    employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(),
+                            employeeBO.getEmployeeCode());
+                } else {
+                    System.out.println("failed");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
     }
 }

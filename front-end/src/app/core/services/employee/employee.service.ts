@@ -29,4 +29,9 @@ export class EmployeeService extends BasicService {
     const url = `${this.serviceUrl}/export`;
     return this.getRequest(url, {params: buildParams, responseType: 'blob'});
   }
+
+  public changeAvatar(data: any): Observable<any> {
+    const url = `${this.serviceUrl}/change-avatar`;
+    return this.postRequest(url, CommonUtils.convertData(data));
+  }
 }

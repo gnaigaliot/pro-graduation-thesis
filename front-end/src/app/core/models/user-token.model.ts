@@ -19,9 +19,9 @@ export class UserToken {
   email: string;
   userCode: string;
   expires_in: number;
-  fullName: string;
+  employeeName: string;
   userName: string;
-  mobileNumber: string;
+  phoneNumber: string;
   userId: number;
   loginTime: number;
   tokenExpiresIn: number;
@@ -29,7 +29,7 @@ export class UserToken {
   role: string;
   roleName: string;
   userPermissionList: UserPermission[];
-  lstRoleCode: String[];
+  lstRoleCode: string[];
   // userMenuList: UserMenu[];
   userInfo: any;
   employeeImgUrl: string;

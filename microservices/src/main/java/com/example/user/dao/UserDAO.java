@@ -44,17 +44,18 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 
                 + "     , usr.password as password "
-                + "     ,usr.full_name as fullName "
-                + "     ,usr.gender as gender "
-                + "     ,usr.date_of_birth AS dateOfBirth "
-                + "     ,usr.email AS email "
-                + "     ,usr.mobile_number AS mobileNumber "
+                + "     , ep.employee_name as employeeName "
+                + "     , ep.gender as gender "
+                + "     , ep.date_of_birth AS dateOfBirth "
+                + "     , ep.email AS email "
+                + "     , ep.phone_number AS phoneNumber "
                 + "     , rls.role as role"
                 + "     , rls.role_id as roleId"
                 + "     , rls.role_name as roleName"
                 + "     , e.employee_img_url as employeeImgUrl "
                 + " FROM users usr "
                 + " LEFT JOIN employee_images e ON usr.employee_id = e.employee_id "
+                + " LEFT JOIN employee ep ON usr.employee_id = ep.employee_id "
                 + " INNER JOIN roles rls ON usr.role_id = rls.role_id "
                 + " WHERE 1 = 1 AND LOWER(usr.user_name) = :username";
         SQLQuery query = uttData.createSQLQuery(hql);
@@ -75,21 +76,22 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 
                 + "     , usr.password as password "
-                + "     , usr.full_name as fullName "
-                + "     , usr.gender as gender "
-                + "     , usr.date_of_birth AS dateOfBirth "
-                + "     , usr.email AS email "
-                + "     , usr.mobile_number AS mobileNumber "
+                + "     , e.employee_name as employeeName "
+                + "     , e.gender as gender "
+                + "     , e.date_of_birth AS dateOfBirth "
+                + "     , e.email AS email "
+                + "     , e.phone_number AS phoneNumber "
                 + "     , usr.employee_id As employeeId "
                 + "     , rls.role as role"
                 + "     , rls.role_name as roleName"
                 + " FROM users usr "
+                + " LEFT JOIN employee e ON usr.employee_id = e.employee_id "
                 + " INNER JOIN roles rls ON usr.role_id = rls.role_id ";
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1");
         
         CommonUtil.filter(userForm.getUserName(), strCondition, paramList, "usr.user_name");
-        CommonUtil.filter(userForm.getFullName(), strCondition, paramList, "usr.full_name");
+        CommonUtil.filter(userForm.getEmployeeName(), strCondition, paramList, "e.employee_name");
 
         String orderBy = " ORDER BY userId DESC ";
         return uttData.findPaginationQuery(nativeSQL + strCondition.toString(), orderBy, paramList, UserBean.class);
@@ -101,14 +103,15 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     usr.user_id AS userId " 
                 + "     , usr.user_name as userName " 
                 + "     , usr.password as password "
-                + "     ,usr.full_name as fullName "
-                + "     ,usr.gender as gender "
-                + "     ,usr.date_of_birth AS dateOfBirth "
-                + "     ,usr.email AS email "
-                + "     ,usr.mobile_number AS mobileNumber "
+                + "     , e.employee_name as employeeName "
+                + "     , e.gender as gender "
+                + "     , e.date_of_birth AS dateOfBirth "
+                + "     , e.email AS email "
+                + "     , e.phone_number AS phoneNumber "
                 + "     , rls.role as role"
                 + "     , rls.role_name as roleName"
                 + " FROM users usr "
+                + " LEFT JOIN employee e ON usr.employee_id = e.employee_id "
                 + " INNER JOIN roles rls ON usr.role_id = rls.role_id "
                 + " WHERE 1 = 1 AND usr.user_id = :userId";
         SQLQuery query = uttData.createSQLQuery(hql);

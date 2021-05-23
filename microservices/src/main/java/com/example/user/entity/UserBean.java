@@ -19,11 +19,11 @@ public class UserBean implements UserDetails {
     private Long userId;
     private String userName;
     private String password;
-    private String fullName;
+    private String employeeName;
     private String dateOfBirth;
     private Long gender;
     private String email;
-    private String mobileNumber;
+    private String phoneNumber;
     private Long positionId;
     private Long roleId;
     private String className;
@@ -44,7 +44,6 @@ public class UserBean implements UserDetails {
 
     @Override
     public String getPassword() {
-        // TODO Auto-generated method stub
         return password;
     }
 
@@ -58,25 +57,21 @@ public class UserBean implements UserDetails {
 
     @Override
     public String getUsername() {
-        // TODO Auto-generated method stub
         return userName;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        // TODO Auto-generated method stub
         return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        // TODO Auto-generated method stub
         return true;
     }
 
@@ -95,13 +90,6 @@ public class UserBean implements UserDetails {
     }
 
     /**
-     * @return the fullName
-     */
-    public String getFullName() {
-        return fullName;
-    }
-
-    /**
      * @return the gender
      */
     public Long getGender() {
@@ -113,13 +101,6 @@ public class UserBean implements UserDetails {
      */
     public String getEmail() {
         return email;
-    }
-
-    /**
-     * @return the mobileNumber
-     */
-    public String getMobileNumber() {
-        return mobileNumber;
     }
 
     /**
@@ -165,13 +146,6 @@ public class UserBean implements UserDetails {
     }
 
     /**
-     * @param fullName the fullName to set
-     */
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    /**
      * @param gender the gender to set
      */
     public void setGender(Long gender) {
@@ -197,13 +171,6 @@ public class UserBean implements UserDetails {
      */
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    /**
-     * @param mobileNumber the mobileNumber to set
-     */
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
     }
 
     /**
@@ -257,7 +224,6 @@ public class UserBean implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -297,11 +263,27 @@ public class UserBean implements UserDetails {
         this.employeeId = employeeId;
     }
 
-	public String getEmployeeImgUrl() {
-		return employeeImgUrl;
-	}
+    public String getEmployeeImgUrl() {
+        return employeeImgUrl;
+    }
 
-	public void setEmployeeImgUrl(String employeeImgUrl) {
-		this.employeeImgUrl = employeeImgUrl;
-	}
+    public void setEmployeeImgUrl(String employeeImgUrl) {
+        this.employeeImgUrl = employeeImgUrl;
+    }
+
+    public String getEmployeeName() {
+        return employeeName;
+    }
+
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

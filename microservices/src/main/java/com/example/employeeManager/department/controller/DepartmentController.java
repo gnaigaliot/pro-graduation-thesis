@@ -88,18 +88,12 @@ public class DepartmentController extends BaseController {
         Long departmentId = CommonUtil.NVL(form.getDepartmentId());
         DepartmentBO departmentBO;
         if(departmentId > 0L) {
-//            if (!permissionChecker.hasPermission("action.update", adResourceKey, req)) {
-//                return Response.invalidPermission();
-//            }
             departmentBO = departmentService.findById(departmentId);
             if(departmentBO == null){
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
             }
             departmentBO.setStatusDepartment(form.getStatusDepartment());
         } else {
-//            if (!permissionChecker.hasPermission("action.insert", adResourceKey, req)) {
-//                return Response.invalidPermission();
-//            }
             departmentBO = new DepartmentBO();
             departmentBO.setStatusDepartment(Constants.STATUS_DEPARTMENT.EFFECTIVE);
         }
@@ -117,9 +111,6 @@ public class DepartmentController extends BaseController {
     @DeleteMapping(path = "/{departmentId}")
     @ResponseStatus(HttpStatus.OK)
     public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long departmentId) {
-//        if (! permissionChecker.hasPermission("action.delete", adResourceKey, req)) {
-//            return Response.invalidPermission();
-//        }
         DepartmentBO bo ;
         if(departmentId > 0L) {
             bo = departmentService.findById(departmentId);

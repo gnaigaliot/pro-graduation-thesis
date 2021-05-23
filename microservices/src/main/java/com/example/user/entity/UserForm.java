@@ -8,13 +8,13 @@ public class UserForm {
     private Long       userId;
     private String     userName;
     private String     password;
-    private String     fullName;
+    private String     employeeName;
     private Date       dateOfBirth;
     private Long       positionId;
     private Long       gender;
     private String     className;
     private String     email;
-    private String     mobileNumber;
+    private String     phoneNumber;
     private String     course;
     private Long       majorId;
     private Long       departmentId;
@@ -27,6 +27,7 @@ public class UserForm {
     private String departmentName;
     private String employeeCode;
     private String newPassword;
+    private Long employeeId;
 
     public Long getUserId() {
         return userId;
@@ -46,11 +47,13 @@ public class UserForm {
     public void setPassword(String password) {
         this.password = password;
     }
-    public String getFullName() {
-        return fullName;
+    
+    public String getEmployeeName() {
+        return employeeName;
     }
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    
+    public void setEmployeeName(String employeeName) {
+        this.employeeName = employeeName;
     }
     public Date getDateOfBirth() {
         return dateOfBirth;
@@ -82,11 +85,13 @@ public class UserForm {
     public void setEmail(String email) {
         this.email = email;
     }
-    public String getMobileNumber() {
-        return mobileNumber;
+    
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
     public String getCourse() {
         return course;
@@ -159,5 +164,13 @@ public class UserForm {
     }
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+    
+    public Long getEmployeeId() {
+        return employeeId;
+    }
+    
+    public void setEmployeeId(Long employeeId) {
+        this.employeeId = employeeId;
     }
 }

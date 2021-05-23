@@ -18,7 +18,7 @@ export class ChangePasswordFormComponent extends BaseComponent implements OnInit
   passwordCompare: string;
   formConfig = {
     userId: [''],
-    userName: ['', [Validators.required, Validators.maxLength(100)]],
+    userName: ['', [Validators.maxLength(100)]],
     newPassword: ['', [Validators.required]],
     oldPassword: ['', [Validators.required]],
     repeatPassword: ['', [Validators.required]]

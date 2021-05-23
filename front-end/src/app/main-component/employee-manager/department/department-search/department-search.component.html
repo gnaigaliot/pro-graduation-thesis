@@ -96,8 +96,8 @@
 
                     <!-- Name -->
                     <td>{{item.departmentName}}</td>
-                    <td *ngIf="item.statusDepartment == 1">Đang hoạt động</td>
-                    <td *ngIf="item.statusDepartment == 2">Không hoạt động</td>
+                    <td class="vt-align-center" *ngIf="item.statusDepartment == 1" style="white-space: break-spaces;"><span class="customer-badge status-qualified">Đang hoạt động</span></td>
+                    <td class="vt-align-center" *ngIf="item.statusDepartment == 2" style="white-space: break-spaces;"><span class="customer-badge status-unqualified">Không hoạt động</span></td>
                     <td *ngIf="item.statusDepartment != 1 && item.statusDepartment != 2"></td>
                 </tr>
 

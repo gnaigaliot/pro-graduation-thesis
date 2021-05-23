@@ -17,9 +17,10 @@ import { UserFormComponent } from '../user-form/user-form.component';
 export class UserSearchComponent extends BaseComponent implements OnInit {
   formConfig = {
     userCode: ['', [Validators.maxLength(50)]],
-    fullName: ['', [Validators.maxLength(200)]],
-  }
-  
+    employeeName: ['', [Validators.maxLength(200)]],
+    userName: ['']
+  };
+
   constructor(
     public actr: ActivatedRoute,
     public router: Router,
@@ -32,7 +33,7 @@ export class UserSearchComponent extends BaseComponent implements OnInit {
     this.formSearch = this.buildForm({}, this.formConfig);
    }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.processSearch();
   }
 
@@ -51,13 +52,11 @@ export class UserSearchComponent extends BaseComponent implements OnInit {
     }
   }
 
-  get f () {
+  // tslint:disable-next-line:typedef
+  get f() {
     return this.formSearch.controls;
   }
 
-   /**
-   * prepare insert/update
-   */
   prepareSaveOrUpdate(item?): void {
     if (item && item > 0) {
       this.userService.findOne(item)
