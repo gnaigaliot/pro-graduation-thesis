@@ -13,11 +13,11 @@ export class ReportService extends BasicService {
     public httpClient: HttpClient,
     public helperService: HelperService
   ) {
-    super("ess", "report", httpClient, helperService);
+    super('ess', 'report', httpClient, helperService);
   }
 
-  public getPersonAmountByYear(year: any): Observable<any> {
-    const url = `${this.serviceUrl}/person/${year}`;
+  public getInformationCard(): Observable<any> {
+    const url = `${this.serviceUrl}/get-information-card`;
     return this.getRequest(url);
   }
 

@@ -3433,3 +3433,9 @@ Custom status start
 .canvas-pie-1 canvas {
   margin: auto;
 }
+.span-chart-line {
+  line-height: 22px;
+  font-size: 18px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+}

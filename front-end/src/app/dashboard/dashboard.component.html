@@ -1,27 +1,6 @@
 <form id="formSearch" [formGroup]="formSearch">
     <div class="page-wrapper" style="display: block;">
         <div class="container-fluid">
-
-            <!--     
-        <div fxLayout="row wrap">
-            <div fxFlex.gt-sm="60%">
-                <mat-card>
-                    <mat-card-content>
-                        <div  fxLayout="row">
-                            <div class="col-md-9 col-xl-9">
-                                <mat-card-title>Thống kê cư dân trong năm 123</mat-card-title>
-                            </div>
-                            <div class="col-md-3 col-xl-3">
-                                <p-dropdown [options]="listYear" [virtualScroll]="true" itemSize="30" (onChange)="changeYearPerson()"
-                                formControlName="yearPerson"></p-dropdown>
-                            </div>
-                        </div>
-                        <p-chart #chart type="bar" [data]="data"></p-chart> 
-                        <p-chart type="bar" [data]="data"></p-chart>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div> -->
             <div class="row">
                 <!-- Column -->
                 <div class="col-lg-3 col-md-6">
@@ -87,7 +66,7 @@
                                 </div>
                                 <div class="ms-2 align-self-center">
                                     <h3 class="mb-0">20</h3>
-                                    <h6 class="text-muted mb-0">Chấm công muộn</h6>
+                                    <h6 class="text-muted mb-0" style="font-size: 13px;">Chưa cập nhật thông tin chấm công</h6>
                                 </div>
                             </div>
                         </div>
@@ -109,7 +88,7 @@
                                 </div>
                                 <div class="ms-2 align-self-center">
                                     <h3 class="mb-0">$687</h3>
-                                    <h6 class="text-muted mb-0">Ad. Expense</h6>
+                                    <h6 class="text-muted mb-0">Nhân viên mới trong tháng</h6>
                                 </div>
                             </div>
                         </div>
@@ -121,14 +100,21 @@
                 <div class="col-lg-8 d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body">
-                            
+                            <div>
+                                <span class="card-title span-chart-line">Biến động chấm công theo ngày trong tuần</span>
+                                <div class="ui-g-12 ui-md-6 ui-lg-3" style="float: right;">
+                                    <date-picker [property]="f['dateInWeek']" dateFormat='dd/mm/yy'></date-picker>
+                                </div>
+                            </div>
+                            <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 d-flex align-items-stretch">
                     <div class="card w-100">
                         <div class="card-body canvas-pie-1">
-                            <p-chart type="pie" [data]="data" width="350" height="350" [responsive]="false"></p-chart>
+                            <h4 class="card-title">Thống kê nhân sự theo độ tuổi</h4>
+                            <p-chart type="pie" [data]="data" width="400" height="400" [responsive]="false"></p-chart>
                         </div>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ export const CONFIG: any = {
     user: '/utt-ess/users',
     position: '/v1/employee-manager/position',
     employee: '/v1/employee-manager/employee',
-    report: '/report',
+    report: '/v1/report',
     department: '/v1/employee-manager/department',
     timekeeping: '/v1/timekeeping',
     role: '/v1/role'
