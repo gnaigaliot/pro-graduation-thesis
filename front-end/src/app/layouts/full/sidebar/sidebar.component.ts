@@ -108,6 +108,11 @@ export class AppSidebarComponent extends BaseComponent implements OnInit, OnDest
         label: 'Quản lý chấm công',
         icon: 'pi pi-chart-line',
         routerLink: ['/timekeeping-manager']
+      },
+      {
+        label: 'Quản lý phân quyền',
+        icon: 'pi pi-cog',
+        routerLink: ['/role-manager']
       }
     ];
   }
