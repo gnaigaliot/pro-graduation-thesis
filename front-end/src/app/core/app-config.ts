@@ -12,7 +12,8 @@ export const CONFIG: any = {
     report: '/v1/report',
     department: '/v1/employee-manager/department',
     timekeeping: '/v1/timekeeping',
-    role: '/v1/role'
+    role: '/v1/role',
+    genCode: '/v1/gencode-employee',
   }
 };
 

@@ -10,6 +10,7 @@ import { PositionService } from 'src/app/core/services/position/position.service
 import { BaseComponent } from 'src/app/shared/components/base-component/base-component.component';
 import { CommonUtils } from 'src/app/shared/service/common-utils.service';
 import * as _ from 'lodash';
+import { GenCodeService } from 'src/app/core/services/code/gen-code.service';
 
 @Component({
   selector: 'app-employee-form',
@@ -44,7 +45,8 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     private employeeService: EmployeeService,
     public activeModal: NgbActiveModal,
     private departmentService: DepartmentService,
-    private positionService: PositionService
+    private positionService: PositionService,
+    private genCodeService: GenCodeService
   ) {
     super(null);
     this.formSave = this.buildForm({}, this.formConfig);
@@ -77,6 +79,10 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
       this.cardImageBase64 = data.employeeImgUrl;
       this.formSave = this.buildForm(data, this.formConfig);
       this.isImageSaved = true;
+    } else {
+      this.genCodeService.getLastCodeNumberEmployee().subscribe(res => {
+        this.formSave.controls.employeeCode.setValue('NV-' + (res + 1));
+      });
     }
   }
 

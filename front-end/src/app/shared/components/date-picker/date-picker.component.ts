@@ -1,7 +1,7 @@
 import { BaseControl } from '../../../core/models/base.control';
 import { CommonUtils } from '../../service/common-utils.service';
 import { FormControl } from '@angular/forms';
-import { Component, OnInit, Input, OnChanges, ElementRef, ViewChild, Output } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, ElementRef, ViewChild, Output, EventEmitter } from '@angular/core';
 import { HelperService } from '../../service/helper.service';
 
 @Component({
@@ -27,6 +27,9 @@ export class DatePickerComponent implements OnInit, OnChanges {
   public appendTo = '';
   @Input()
   public view = 'date';
+
+  @Output()
+  public onChanged: EventEmitter<any> = new EventEmitter<any>();
 
   public placeholder: string;
 
@@ -57,6 +60,8 @@ export class DatePickerComponent implements OnInit, OnChanges {
       this.dateValue = null;
       this.onInput(null);
     }*/
+
+    this.onChanged.emit(event);
   }
 
   /**
@@ -95,6 +100,7 @@ export class DatePickerComponent implements OnInit, OnChanges {
     if (this.onChange) {
       this.onChange();
     }
+    this.onChanged.emit(event);
   }
   initDateFormatPosition(dateFormat: string) {
     const maxLength = dateFormat.length;

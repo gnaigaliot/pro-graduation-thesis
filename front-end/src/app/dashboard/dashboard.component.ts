@@ -1,5 +1,7 @@
 import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { UIChart } from 'primeng/chart';
+import { ReportService } from '../core/services/report.service';
 import { BaseComponent } from '../shared/components/base-component/base-component.component';
 
 @Component({
@@ -9,14 +11,17 @@ import { BaseComponent } from '../shared/components/base-component/base-componen
 })
 
 export class DashboardComponent extends BaseComponent implements AfterViewInit, OnInit {
+  formSearch: FormGroup;
   formConfig = {
     dateInWeek: [new Date()]
   };
   data: any;  // pie chart
   basicData: any;   // line chart
   basicOptions: any;
+  rangeDates: Date[];
 
   constructor(
+    public reportService: ReportService
   ) {
     super(null);
     this.formSearch = this.buildForm({}, this.formConfig);
@@ -66,7 +71,21 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
 
   ngOnInit(): void {}
 
-  changeDateOfWeek(data) {
-    console.log(data)
+  getMonday(d: Date) {
+    const date = new Date(d);
+    const day = d.getDay();
+    const diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    return new Date(d.setDate(diff));
+  }
+
+  getSunday(d: Date) {
+    const date = new Date(d);
+    const day = d.getDay();
+    const diff = d.getDate() - day + 7; // adjust when day is sunday
+    return new Date(d.setDate(diff));
+  }
+
+  changeDate(evt) {
+    console.log('ahihi  1', evt);
   }
 }

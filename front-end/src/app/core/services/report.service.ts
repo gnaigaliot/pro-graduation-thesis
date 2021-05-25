@@ -16,23 +16,13 @@ export class ReportService extends BasicService {
     super('ess', 'report', httpClient, helperService);
   }
 
-  public getInformationCard(): Observable<any> {
-    const url = `${this.serviceUrl}/get-information-card`;
+  public getEmployeeByAge(): Observable<any> {
+    const url = `${this.serviceUrl}/get-employee-by-age`;
     return this.getRequest(url);
   }
 
-  public getDashBoard(): Observable<any> {
-    const url = `${this.serviceUrl}/dash-board`;
-    return this.getRequest(url);
-  }
-
-  public getEmployeeAmountByYear(year: any): Observable<any> {
-    const url = `${this.serviceUrl}/employee/${year}`;
-    return this.getRequest(url);
-  }
-
-  public getTotalPriceByYear(year: any, type: any): Observable<any> {
-    const url = `${this.serviceUrl}/bill/${year}/${type}`;
+  public getChart(): Observable<any> {
+    const url = `${this.serviceUrl}/get-chart`;
     return this.getRequest(url);
   }
 }

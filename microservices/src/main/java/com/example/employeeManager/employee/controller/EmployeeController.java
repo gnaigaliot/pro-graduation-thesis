@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +33,8 @@ import com.example.employeeManager.employee.form.EmployeeForm;
 import com.example.employeeManager.employee.service.EmployeeService;
 import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
+import com.example.genCodeEmployee.bo.GenCodeEmployeeBO;
+import com.example.genCodeEmployee.service.GenCodeEmployeeService;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
 import com.example.user.entity.UserForm;
@@ -63,6 +66,9 @@ public class EmployeeController extends BaseController {
     
     @Autowired
     private UserRoleService userRoleService;
+    
+    @Autowired
+    private GenCodeEmployeeService genCodeEmployeeService;
 
     /**
      * findById
@@ -114,6 +120,7 @@ public class EmployeeController extends BaseController {
      * @throws Exception
      */
     @PostMapping
+    @Transactional
     @ResponseStatus(HttpStatus.CREATED)
     public @ResponseBody Response saveOrUpdate(HttpServletRequest req, @RequestBody EmployeeForm form)
             throws Exception {
@@ -144,6 +151,10 @@ public class EmployeeController extends BaseController {
         employeeBO.setPositionId(form.getPositionId());
         employeeBO.setAddress(form.getAddress());
         employeeService.saveOrUpdate(employeeBO);
+        GenCodeEmployeeBO genCodeEmployeeBO = new GenCodeEmployeeBO();
+        Long idCode = Long.valueOf(employeeBO.getEmployeeCode().split("-")[1]);
+        genCodeEmployeeBO.setIdCode(idCode);
+        genCodeEmployeeService.saveOrUpdate(genCodeEmployeeBO);
         EmployeeImagesBO employeeImageBo;
         if (employeeId > 0L) {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);

@@ -11,7 +11,7 @@
  Target Server Version : 80023
  File Encoding         : 65001
 
- Date: 24/05/2021 23:35:14
+ Date: 26/05/2021 01:09:11
 */
 
 SET NAMES utf8mb4;
@@ -75,8 +75,8 @@ CREATE TABLE `employee_images`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_code_employee`;
 CREATE TABLE `gen_code_employee`  (
-  `gen_code_id` bigint(0) NOT NULL,
-  `version` int(0) NULL DEFAULT NULL,
+  `gen_code_id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id_code` bigint(0) NOT NULL,
   PRIMARY KEY (`gen_code_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
@@ -107,7 +107,7 @@ CREATE TABLE `roles`  (
   `role_name` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `description` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`role_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for timekeeping
@@ -116,15 +116,15 @@ DROP TABLE IF EXISTS `timekeeping`;
 CREATE TABLE `timekeeping`  (
   `timekeeping_id` bigint(0) NOT NULL AUTO_INCREMENT,
   `employee_id` bigint(0) NOT NULL,
-  `is_late` int(0) NULL DEFAULT NULL COMMENT '0: không muộn, 1: muộn',
-  `left_early` int(0) NULL DEFAULT NULL COMMENT '0: không sớm, 1: sớm',
+  `is_late` int(0) NULL DEFAULT 0 COMMENT '0: không muộn, 1: muộn',
+  `left_early` int(0) NULL DEFAULT 0 COMMENT '0: không sớm, 1: sớm',
   `date_timekeeping` date NULL DEFAULT NULL,
   `departure_time` time(0) NULL DEFAULT NULL,
   `departure_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `arrival_time` time(0) NULL DEFAULT NULL,
   `arrival_picture` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
-  `arrival_late_time` time(0) NULL DEFAULT NULL,
-  `departure_early_time` time(0) NULL DEFAULT NULL,
+  `arrival_late_time` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `departure_early_time` varchar(0) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   PRIMARY KEY (`timekeeping_id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
