@@ -27,14 +27,14 @@ export class DatePickerComponent implements OnInit, OnChanges {
   public appendTo = '';
   @Input()
   public view = 'date';
-
   @Output()
   public onChanged: EventEmitter<any> = new EventEmitter<any>();
-
   public placeholder: string;
-
+  public minDateValue = new Date(new Date().getFullYear()-100, 0, 1);
+  public maxDateValue = new Date(new Date().getFullYear()+100, 12, 31);
   public dateValue: Date;
   private dateMask: string;
+
   constructor(
     private helperService: HelperService
   ) {
@@ -54,14 +54,16 @@ export class DatePickerComponent implements OnInit, OnChanges {
   }
   onBlur(event) {
     if (!this.dateValue && event.currentTarget.value !== '') {
-      this.helperService.APP_TOAST_MESSAGE.next({type: 'ERROR', code: 'dateInvalid', message: null});
-    }/* else if (this.dateValue && this.dateValue.getTime() < 0) {
-      this.helperService.APP_TOAST_MESSAGE.next({type: 'ERROR', code: 'dateInvalid', message: null});
+      this.helperService.APP_TOAST_MESSAGE.next({ type: 'ERROR', code: 'dateInvalid', message: null });
+    }
+    // Xu ly neu nguoi dung xoa het gia tri ngay thang
+    if (event.currentTarget.value === '' && this.dateValue !== null) {
       this.dateValue = null;
       this.onInput(null);
-    }*/
-
-    this.onChanged.emit(event);
+    }
+    if (event.currentTarget.value === '' && this.dateValue == null) {
+      this.onChanged.emit(event);
+    }
   }
 
   /**
@@ -88,9 +90,8 @@ export class DatePickerComponent implements OnInit, OnChanges {
     if (!this.yearRange) {
       this.initDefaultYear();
     }
-
-
   }
+
   onSelect(event) {
     if (this.dateValue) {
       this.property.setValue(this.dateValue.getTime());

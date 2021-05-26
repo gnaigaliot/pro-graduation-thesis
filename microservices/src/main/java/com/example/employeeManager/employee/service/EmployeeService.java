@@ -13,6 +13,7 @@ import com.example.employeeManager.employee.bean.EmployeeBean;
 import com.example.employeeManager.employee.bo.EmployeeBO;
 import com.example.employeeManager.employee.dao.EmployeeDAO;
 import com.example.employeeManager.employee.form.EmployeeForm;
+import com.example.report.PieChartBean;
 
 @Service
 public class EmployeeService {
@@ -63,5 +64,9 @@ public class EmployeeService {
     
     public List<EmployeeBO> findAll() {
         return employeedao.findAll();
+    }
+    
+    public List<PieChartBean> getPieChartData() {
+        return employeedao.getPieChartData(vfData);
     }
 }

@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.SQLQuery;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,7 @@ import com.example.common.VfData;
 import com.example.employeeManager.employee.bean.EmployeeBean;
 import com.example.employeeManager.employee.bo.EmployeeBO;
 import com.example.employeeManager.employee.form.EmployeeForm;
+import com.example.report.PieChartBean;
 
 /**
  * @author d2tsoftware
@@ -83,5 +85,38 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
 
         String orderBy = " ORDER BY employeeId DESC";
         return vfData.findPaginationQuery(sql + strCondition.toString(), orderBy, paramList, EmployeeBean.class);
+    }
+    
+    public default List<PieChartBean> getPieChartData(VfData vfData) {
+        String withSql = " WITH ageRange AS ( "
+                       + "  SELECT "
+                       + "      e.employee_id, "
+                       + "      CASE "
+                       + "        WHEN (YEAR(CURDATE()) - YEAR(e.date_of_birth)) > 50 THEN 'age50' "
+                       + "        WHEN (YEAR(CURDATE()) - YEAR(e.date_of_birth)) >= 41 AND (YEAR(CURDATE()) - YEAR (e.date_of_birth)) <= 50 THEN 'age4150' "
+                       + "        WHEN (YEAR(CURDATE()) - YEAR(e.date_of_birth)) >= 31 AND (YEAR(CURDATE()) - YEAR (e.date_of_birth)) <= 40 THEN 'age3140' "
+                       + "        WHEN (YEAR(CURDATE()) - YEAR(e.date_of_birth)) >= 18 AND (YEAR(CURDATE()) - YEAR (e.date_of_birth)) <= 30 THEN 'age1830' "
+                       + "        WHEN (YEAR(CURDATE()) - YEAR(e.date_of_birth)) < 18 THEN 'below18' "
+                       + "      END AS 'ageRange' "
+                       + "  FROM employee e "
+                       + ") ";
+        
+        String mainSql = " SELECT "
+                       + "   var.ageRange As ageRange, "
+                       + "   IF(a.totalEmployee > 0, a.totalEmployee, 0) As totalEmployee "
+                       + " FROM v_age_range var "
+                       + " LEFT JOIN ( "
+                       + "   SELECT "
+                       + "      ar.ageRange AS ageRange, "
+                       + "      COUNT(*) AS totalEmployee "
+                       + "   FROM employee emp "
+                       + "   INNER JOIN ageRange ar ON emp.employee_id = ar.employee_id "
+                       + "   GROUP BY ar.ageRange "
+                       + " ) a ON var.ageRange = a.ageRange "
+                       + " ORDER BY var.orderNumber ASC ";
+        String sql = withSql + mainSql;
+        SQLQuery query = vfData.createSQLQuery(sql);
+        vfData.setResultTransformer(query, PieChartBean.class);
+        return query.list();
     }
 }

@@ -17,12 +17,12 @@ export class ReportService extends BasicService {
   }
 
   public getEmployeeByAge(): Observable<any> {
-    const url = `${this.serviceUrl}/get-employee-by-age`;
+    const url = `${this.serviceUrl}/get-pie-chart`;
     return this.getRequest(url);
   }
 
-  public getChart(): Observable<any> {
-    const url = `${this.serviceUrl}/get-chart`;
+  public getChart(firstDate: Date, lastDate: Date): Observable<any> {
+    const url = `${this.serviceUrl}/get-chart/${firstDate}/${lastDate}`;
     return this.getRequest(url);
   }
 }

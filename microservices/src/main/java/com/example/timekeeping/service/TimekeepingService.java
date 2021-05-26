@@ -1,5 +1,8 @@
 package com.example.timekeeping.service;
 
+import java.util.Date;
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.common.DataTableResults;
 import com.example.common.VfData;
+import com.example.report.LineChartBean;
 import com.example.timekeeping.bean.TimekeepingBean;
 import com.example.timekeeping.bo.TimekeepingBO;
 import com.example.timekeeping.dao.TimekeepingDAO;
@@ -45,7 +49,7 @@ public class TimekeepingService {
      */
     @Transactional
     public void saveOrUpdate(TimekeepingBO entity) {
-    	timekeepingdao.save(entity);
+        timekeepingdao.save(entity);
     }
 
     /**
@@ -53,6 +57,10 @@ public class TimekeepingService {
      * @param entity
      */
     public void delete(TimekeepingBO entity) {
-    	timekeepingdao.delete(entity);
+        timekeepingdao.delete(entity);
+    }
+
+    public List<LineChartBean> getLineChartData(Date firstDate, Date lastDate) {
+        return timekeepingdao.getListDataLineChart(vfData, firstDate, lastDate);
     }
 }

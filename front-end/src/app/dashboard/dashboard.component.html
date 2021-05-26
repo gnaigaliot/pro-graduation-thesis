@@ -8,8 +8,9 @@
                             <div>
                                 <span class="card-title span-chart-line">Biến động chấm công theo ngày trong tuần</span>
                                 <div class="ui-g-12 ui-md-6 ui-lg-3" style="float: right;">
-                                    <date-picker [property]="f['dateInWeek']" dateFormat='dd/mm/yy' (onChanged)="changeDate($event)"></date-picker>                                    
+                                    <date-picker [property]="f['dateInWeek']" dateFormat='dd/mm/yy' (onChanged)="changeDate()"></date-picker>                                    
                                 </div>
+                                <p class="card-title" style="font-style: italic;">Từ {{fromDate | date: 'dd/MM/yyyy'}} đến {{toDate | date: 'dd/MM/yyyy'}}</p>
                             </div>
                             <p-chart type="line" [data]="basicData" [options]="basicOptions"></p-chart>
                         </div>
