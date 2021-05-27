@@ -64,6 +64,7 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay'
       },
+      locale: 'vi',
       editable: true
     };
   }
