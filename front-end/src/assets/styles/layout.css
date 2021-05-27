@@ -3439,3 +3439,7 @@ Custom status start
   font-family: "Poppins", sans-serif;
   font-weight: 400;
 }
+/* full-calendar */
+.fc .fc-day-grid .fc-bg .fc-today {
+  background-color: var(--fc-today-bg-color,rgba(255,220,40,.15))!important;
+}

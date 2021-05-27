@@ -23,6 +23,7 @@ import { ToastModule } from 'primeng/toast';
 import { MatIconModule } from '@angular/material/icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthGuard } from './core/guards';
+import { EventService } from './core/services/eventservice';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { AuthGuard } from './core/guards';
     },
     AppComponent,
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    EventService
   ],
   bootstrap: [AppComponent]
 })

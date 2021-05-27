@@ -70,7 +70,7 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
         sql += "       LEFT JOIN department d ON e.department_id = d.department_id ";
         sql += "       LEFT JOIN employee_images ei ON e.employee_id = ei.employee_id ";
 
-        StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 ");
+        StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 AND e.status = 1 ");
 
 
         CommonUtil.filter(formData.getEmployeeId(), strCondition, paramList, "employee_id");

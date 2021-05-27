@@ -3,6 +3,10 @@ import { FormGroup } from '@angular/forms';
 import { UIChart } from 'primeng/chart';
 import { ReportService } from '../core/services/report.service';
 import { BaseComponent } from '../shared/components/base-component/base-component.component';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction'
+import { EventService } from '../core/services/eventservice';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,8 +30,12 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
   fromDate: Date = this.getMonday(new Date());
   toDate: Date = this.getSunday(new Date());
 
+  events: any[];
+  options: any;
+
   constructor(
-    public reportService: ReportService
+    public reportService: ReportService,
+    private eventService: EventService
   ) {
     super(null);
     this.formSearch = this.buildForm({}, this.formConfig);
@@ -43,8 +51,21 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
   ngAfterViewInit(): void { }
 
   ngOnInit(): void {
-    this.loadLineChart(this.formSearch.controls.dateInWeek.value);
+    const tempTime = new Date();
+    this.loadLineChart(tempTime);
     this.loadPieChart();
+    // event full-calendar
+    this.eventService.getEvents().then(events => {this.events = events;});
+    this.options = {
+      plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
+      defaultDate: new Date(),
+      header: {
+          left: 'prev,next',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      editable: true
+    };
   }
 
   getMonday(d: Date) {
