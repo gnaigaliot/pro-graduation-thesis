@@ -2,8 +2,9 @@
     "data": [
     	{
             "id": 1,
-    		"title": "All Day Event",
-    		"start": "2021-05-28"
+    		"title": "<b>Event in bold</b>",
+    		"start": "2021-05-28",
+			"icon": "fa fa-birthday-cake"
     	},
     	{
             "id": 2,

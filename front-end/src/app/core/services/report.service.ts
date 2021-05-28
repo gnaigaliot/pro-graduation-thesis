@@ -25,4 +25,9 @@ export class ReportService extends BasicService {
     const url = `${this.serviceUrl}/get-chart/${firstDate}/${lastDate}`;
     return this.getRequest(url);
   }
+
+  public getEvents(): Observable<any> {
+    const url = `${this.serviceUrl}/get-event`;
+    return this.getRequest(url);
+  }
 }

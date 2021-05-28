@@ -151,10 +151,12 @@ public class EmployeeController extends BaseController {
         employeeBO.setPositionId(form.getPositionId());
         employeeBO.setAddress(form.getAddress());
         employeeService.saveOrUpdate(employeeBO);
-        GenCodeEmployeeBO genCodeEmployeeBO = new GenCodeEmployeeBO();
-        Long idCode = Long.valueOf(employeeBO.getEmployeeCode().split("-")[1]);
-        genCodeEmployeeBO.setIdCode(idCode);
-        genCodeEmployeeService.saveOrUpdate(genCodeEmployeeBO);
+        if (employeeId <= 0L) {
+            GenCodeEmployeeBO genCodeEmployeeBO = new GenCodeEmployeeBO();
+            Long idCode = Long.valueOf(employeeBO.getEmployeeCode().split("-")[1]);
+            genCodeEmployeeBO.setIdCode(idCode);
+            genCodeEmployeeService.saveOrUpdate(genCodeEmployeeBO);
+        }
         EmployeeImagesBO employeeImageBo;
         if (employeeId > 0L) {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);

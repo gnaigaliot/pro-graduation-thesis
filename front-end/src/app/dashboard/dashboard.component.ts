@@ -55,7 +55,9 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
     this.loadLineChart(tempTime);
     this.loadPieChart();
     // event full-calendar
-    this.eventService.getEvents().then(events => {this.events = events;});
+    this.reportService.getEvents().subscribe(res => {
+      this.events = res.data;
+    });
     this.options = {
       plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
       defaultDate: new Date(),

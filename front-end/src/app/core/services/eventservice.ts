@@ -8,9 +8,9 @@ export class EventService {
     constructor(private http: HttpClient) { }
 
     getEvents() {
-    return this.http.get<any>('assets/showcase/data/scheduleevents.json')
-      .toPromise()
-      .then(res => <any[]>res.data)
-      .then(data => { return data; });
+      return this.http.get<any>('assets/showcase/data/scheduleevents.json')
+        .toPromise()
+        .then(res => <any[]>res.data)
+        .then(data => { return data; });
     }
 }
