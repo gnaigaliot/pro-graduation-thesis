@@ -160,7 +160,7 @@ public class EmployeeController extends BaseController {
         EmployeeImagesBO employeeImageBo;
         if (employeeId > 0L) {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
-            if (!form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
+            if (employeeImageBo != null && !form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
                 employeeImageBo.setEmployeeId(employeeId);
                 employeeImagesService.saveOrUpdate(employeeImageBo);
@@ -191,6 +191,14 @@ public class EmployeeController extends BaseController {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                }
+            } else {
+            	if (!CommonUtil.isNullOrEmpty(form.getEmployeeImgUrl())) {
+                    employeeImageBo = new EmployeeImagesBO();
+                    employeeImageBo.setEmployeeId(employeeBO.getEmployeeId());
+                    employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
+                    employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
+                    employeeImagesService.saveOrUpdate(employeeImageBo);
                 }
             }
         } else {

@@ -1,27 +1,22 @@
+import os
+import cv2
 import face_recognition
 import numpy as np
-import cv2
-import queue
-import threading
 import time
 import requests
 import os
 from common_util import hms_to_seconds
 import datetime
 
-
 class VideoCamera(object):
     def __init__(self):
-        # select the webcam of the computer
-        self.video = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        self.video = cv2.VideoCapture(0)
 
     def __del__(self):
         self.video.release()
-        cv2.destroyAllWindows()
 
     def get_frame(self):
         ret, frame = self.video.read()
-        # *--------------- USERS ------------*
         known_face_encodings = []
         known_face_names = []
         known_face_filenames = []
@@ -104,26 +99,6 @@ class VideoCamera(object):
                     face_names.append(name)
 
             process_this_frame = not process_this_frame
-            # Display result in the camera
-            for (top, right, bottom, left), name in zip(face_locations, face_names):
-                # Scale back up face locations since the frame we detected in was scaled to 1/4 size
-                # top *= 4
-                # right *= 4
-                # bottom *= 4
-                # left *= 4
-
-                # Draw rectangle around this face
-                cv2.rectangle(frame, (left, top), (right, bottom), (0, 0, 255), 2)
-
-                # Draw a label with a name below the face
-                font = cv2.FONT_HERSHEY_DUPLEX
-                cv2.putText(frame, name, (left + 6, bottom - 6), font, 1.0, (255, 255, 255), 1)
-
             ret, jpeg = cv2.imencode('.jpg', frame)
-            return jpeg.tobytes()
-            # Display the result image
-            # cv2.imshow('Detection Camera', frame)
 
-            # Hit 'q' on the key board to quit
-            # if cv2.waitKey(1) & 0xFF == ord('q'):
-            #    break
+            return jpeg.tobytes()
