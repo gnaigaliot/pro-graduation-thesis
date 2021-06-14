@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subject, timer } from 'rxjs';
@@ -11,6 +11,7 @@ import { BaseComponent } from 'src/app/shared/components/base-component/base-com
 import { CommonUtils } from 'src/app/shared/service/common-utils.service';
 import * as _ from 'lodash';
 import { GenCodeService } from 'src/app/core/services/code/gen-code.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-employee-form',
@@ -18,6 +19,7 @@ import { GenCodeService } from 'src/app/core/services/code/gen-code.service';
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent extends BaseComponent implements OnInit {
+  @ViewChild('fileInput') fileInput;
   formSave: FormGroup;
   public listDepartment: any = [];
   public listPositions: any = [];
@@ -46,7 +48,8 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private departmentService: DepartmentService,
     private positionService: PositionService,
-    private genCodeService: GenCodeService
+    private genCodeService: GenCodeService,
+    private http: HttpClient
   ) {
     super(null);
     this.formSave = this.buildForm({}, this.formConfig);
@@ -95,11 +98,23 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
       // tslint:disable-next-line: deprecation
       .subscribe(res => {
         if (this.employeeService.requestIsSuccess(res)) {
-          this.activeModal.close(res);
+          const files: FileList = this.fileInput.nativeElement.files;
+          if (files.length === 0) {
+            return;
+          };
+          this.parseTable(files).subscribe((data: any) => {
+            this.activeModal.close(res);
+          });
         }
       });
      }, () => {// on rejected
    });
+  }
+
+  parseTable(files) {
+    const formData: FormData = new FormData();
+    formData.append('file', files[0], files[0].name);
+    return this.http.post('http://192.168.1.55:5000/upload', formData);
   }
 
   fileChangeEvent(fileInput: any): boolean {

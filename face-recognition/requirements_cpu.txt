@@ -12,3 +12,5 @@ requests==2.20
 psutil==5.4.8
 waitress==1.1
 imutils==0.5.3
+Flask-Cors==3.0.10
+mysql-connector-python==8.0.24

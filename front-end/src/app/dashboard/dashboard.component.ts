@@ -19,6 +19,7 @@ export class DashboardComponent extends BaseComponent implements AfterViewInit, 
   formConfig = {
     dateInWeek: [new Date()]
   };
+
   data: any;  // pie chart
   basicData: any;   // line chart
   basicOptions: any;

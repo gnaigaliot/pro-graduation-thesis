@@ -91,7 +91,7 @@
                     <div class="ui-g-12 ui-md-6 ui-lg-3 nowrap">
                         <!-- <input type="file" (change)="handleUploadAvt($event.target.files)" accept="image/*"> -->
                         <div class="custom-file file-input-profile-wrap">
-                            <input type="file" (change)="fileChangeEvent($event)" accept="image/*" class="file-input-profile">
+                            <input #fileInput type="file" (change)="fileChangeEvent($event)" accept="image/*" class="file-input-profile">
                             <div class="img-space">
                                 <ng-container *ngIf="isImageSaved; else elseTemplate">
                                     <img [src]="cardImageBase64" />
