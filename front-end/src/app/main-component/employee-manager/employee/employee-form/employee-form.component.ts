@@ -103,8 +103,9 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
             return;
           };
           this.parseTable(files).subscribe((data: any) => {
-            this.activeModal.close(res);
+            console.log('upload');
           });
+          this.activeModal.close(res);
         }
       });
      }, () => {// on rejected
@@ -114,7 +115,7 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
   parseTable(files) {
     const formData: FormData = new FormData();
     formData.append('file', files[0], files[0].name);
-    return this.http.post('http://192.168.1.55:5000/upload', formData);
+    return this.http.post('http://192.168.1.71:5000/upload', formData);
   }
 
   fileChangeEvent(fileInput: any): boolean {

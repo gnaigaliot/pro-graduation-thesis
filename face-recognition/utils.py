@@ -5,9 +5,9 @@ import numpy as np
 import glob
 import os
 from tensorflow.python.platform import gfile
-from Lib.facenet import get_model_filenames
-from Lib.mtcnn.detect_face import detect_face  # face detection
-from Lib.facenet import load_image
+from lib.facenet import get_model_filenames
+from lib.mtcnn.detect_face import detect_face  # face detection
+from lib.facenet import load_image
 from scipy.misc import imresize, imsave
 from collections import defaultdict
 from flask import flash
@@ -157,14 +157,15 @@ def identify_face(embedding, embedding_dict):
         if min_distance <= 1.1:
             # remove 'embeddings/' from identity
             identity = identity[11:]
-            result = "It's " + str(identity) + ", the distance is " + str(min_distance)
+            result = str(identity)
             return result
         else:
-            result = "Not in the database, the distance is " + str(min_distance)
+            result = "Unknown"
             return result
     except Exception as e:
         print(str(e))
         return str(e)
+
 
 def hms_to_seconds(hours, minutes, seconds):
     return (hours * 60 + minutes) * 60 + seconds

@@ -3,8 +3,8 @@ import tensorflow as tf
 import os
 from imutils.video import WebcamVideoStream  # For more performant non-blocking multi-threaded OpenCV Web Camera Stream
 from scipy.misc import imread
-from Lib.mtcnn import detect_face  # for MTCNN face detection
-from flask import Flask, request, render_template
+from lib.mtcnn import detect_face  # for MTCNN face detection
+from flask import Flask, request, render_template, jsonify
 from werkzeug.utils import secure_filename
 from waitress import serve
 from utils import (
@@ -25,6 +25,7 @@ import mysql.connector
 import time
 import datetime
 import numpy as np
+import requests
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
@@ -186,20 +187,21 @@ def predict_image():
 
 @app.route("/live", methods=['GET'])
 def face_detect_live():
-    """Detects faces in real-time via Web Camera."""
-
     embedding_dict = load_embeddings()
     if embedding_dict:
-        connection = database_connection()
         try:
             # Start non-blocking multi-threaded OpenCV video stream
             cap = WebcamVideoStream(src=0).start()
+
             while True:
                 frame_orig = cap.read()  # Read frame
+
                 # Resize frame to half its size for faster computation
                 frame = cv2.resize(src=frame_orig, dsize=(0, 0), fx=0.5, fy=0.5)
+
                 # Convert the image from BGR color (which OpenCV uses) to RGB color
                 frame = frame[:, :, ::-1]
+
                 if cv2.waitKey(1) & 0xFF == ord('q'):
                     break
 
@@ -213,163 +215,213 @@ def face_detect_live():
                     )
                     # If there are human faces detected
                     if faces:
+                        # * ---------- Initial JSON to EXPORT --------- *
+                        json_to_export = {}
                         for i in range(len(faces)):
-                            try:
-                                face_img = faces[i]
-                                rect = rects[i]
+                            face_img = faces[i]
+                            rect = rects[i]
+                            # Scale coordinates of face locations by the resize ratio
+                            rect = [coordinate * 2 for coordinate in rect]
+                            face_embedding = forward_pass(
+                                img=face_img,
+                                session=facenet_persistent_session,
+                                images_placeholder=images_placeholder,
+                                embeddings=embeddings,
+                                phase_train_placeholder=phase_train_placeholder,
+                                image_size=image_size
+                            )
+                            # Compare euclidean distance between this embedding and the embeddings in 'embeddings/'
+                            identity = identify_face(
+                                embedding=face_embedding,
+                                embedding_dict=embedding_dict
+                            )
+                            if identity != 'Unknown':
+                                str_show = 'Id: ' + identity
+                            else:
+                                str_show = 'Unknown'
+                            json_to_export['employeeCode'] = identity
+                            json_to_export['hour'] = \
+                                f'{time.localtime().tm_hour}:{time.localtime().tm_min}:{time.localtime().tm_sec}'
+                            json_to_export['date'] = \
+                                f'{time.localtime().tm_year}-{time.localtime().tm_mon}-{time.localtime().tm_mday}'
+                            json_to_export['picture_array'] = frame.tolist()
 
-                                # Scale coordinates of face locations by the resize ratio
-                                rect = [coordinate * 2 for coordinate in rect]
+                            # Check time arrive is late or departure is soon
+                            if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
+                                                                          time.localtime().tm_min,
+                                                                          time.localtime().tm_sec)) -
+                                datetime.timedelta(seconds=hms_to_seconds(8, 30, 0))) >= datetime.timedelta(minutes=1):
+                                json_to_export['is_late'] = 1
+                            else:
+                                json_to_export['is_late'] = 0
 
-                                face_embedding = forward_pass(
-                                    img=face_img,
-                                    session=facenet_persistent_session,
-                                    images_placeholder=images_placeholder,
-                                    embeddings=embeddings,
-                                    phase_train_placeholder=phase_train_placeholder,
-                                    image_size=image_size
-                                )
+                            if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
+                                                                          time.localtime().tm_min,
+                                                                          time.localtime().tm_sec)) -
+                                datetime.timedelta(seconds=hms_to_seconds(17, 30, 0))) >= datetime.timedelta(minutes=1):
+                                json_to_export['left_early'] = 1
+                            else:
+                                json_to_export['left_early'] = 0
 
-                                # Compare euclidean distance between this embedding and the embeddings in 'embeddings/'
-                                identity = identify_face(
-                                    embedding=face_embedding,
-                                    embedding_dict=embedding_dict
-                                )
-                                cv2.rectangle(
-                                    img=frame_orig,
-                                    pt1=(rect[0], rect[1]),
-                                    pt2=(rect[2], rect[3]),
-                                    color=(255, 215, 0),
-                                    thickness=2
-                                )
-                                W = int(rect[2] - rect[0]) // 2
-                                cv2.putText(
-                                    img=frame_orig,
-                                    text=identity,
-                                    org=(rect[0] + W - (W // 2), rect[1] - 7),
-                                    fontFace=cv2.FONT_HERSHEY_SIMPLEX,
-                                    fontScale=0.5,
-                                    color=(255, 215, 0),
-                                    thickness=1,
-                                    lineType=cv2.LINE_AA
-                                )
-                                # save to DB
-                                employeeCode = identity
-                                hour = f'{time.localtime().tm_hour}:{time.localtime().tm_min}:{time.localtime().tm_sec}'
-                                date = f'{time.localtime().tm_year}-{time.localtime().tm_mon}-{time.localtime().tm_mday}'
-                                picture_array = frame.tolist()
-                                if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
-                                                                              time.localtime().tm_min,
-                                                                              time.localtime().tm_sec)) -
-                                    datetime.timedelta(seconds=hms_to_seconds(8, 30, 0))) >= datetime.timedelta(minutes=1):
-                                    is_late = 1
-                                else:
-                                    is_late = 0
-
-                                if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
-                                                                              time.localtime().tm_min,
-                                                                              time.localtime().tm_sec)) -
-                                    datetime.timedelta(seconds=hms_to_seconds(17, 30, 0))) >= datetime.timedelta(minutes=1):
-                                    left_early = 1
-                                else:
-                                    left_early = 0
-
-                                cursor = connection.cursor()
-
-                                # Get employee_id by employee_code from json data
-                                employee_id_query = \
-                                    f"SELECT employee_id FROM employee WHERE 1=1 AND employee_code = '{employeeCode}'"
-                                cursor.execute(employee_id_query)
-                                employee_id = cursor.fetchone()
-
-                                cursor = connection.cursor()
-                                # Query to check if the user as been saw by the camera today
-                                user_saw_today_sql_query = \
-                                    f"SELECT arrival_time, departure_time FROM timekeeping WHERE 1=1 AND " \
-                                    f"DATE(date_timekeeping) = '{date}' AND employee_id = {employee_id[0]}"
-                                cursor.execute(user_saw_today_sql_query)
-                                result = cursor.fetchall()
-                                connection.commit()
-                                if result:
-                                    print('User OUT')
-                                    time_in = result[0][0]
-                                    time_out = result[0][1]
-                                    time_now = datetime.datetime.now()
-                                    is_continue = True
-                                    if time_out is None:
-                                        minus_time = datetime.timedelta(
-                                            seconds=hms_to_seconds(time_now.hour, time_now.minute,
-                                                                   time_now.second)) - time_in
-                                        if minus_time < datetime.timedelta(minutes=5):
-                                            is_continue = False
-                                    else:
-                                        minus_time = datetime.timedelta(
-                                            seconds=hms_to_seconds(time_now.hour, time_now.minute,
-                                                                   time_now.second)) - time_out
-                                        if minus_time < datetime.timedelta(minutes=5):
-                                            is_continue = False
-
-                                    if is_continue is True:
-                                        image_path = f"{FILE_PATH}/assets/img/{date}/{employeeCode}/departure.jpg"
-
-                                        # Save image
-                                        os.makedirs(
-                                            f"{FILE_PATH}/assets/img/{date}/{employeeCode}", exist_ok=True)
-                                        cv2.imwrite(image_path, np.array(picture_array))
-                                        picture_path = image_path
-
-                                        # Update timekeeping in the DB
-                                        update_timekeeping_query = \
-                                            f"UPDATE timekeeping SET departure_time = '{hour}', " \
-                                            f"departure_picture = '{picture_path}', left_early = {left_early} " \
-                                            f"WHERE employee_id = {employee_id[0]} " \
-                                            f"AND DATE(date_timekeeping) = '{date}'"
-                                        cursor.execute(update_timekeeping_query)
-                                    else:
-                                        print('Ban ghi moi chua qua 5 phut')
-                                else:
-                                    print('User IN')
-                                    image_path = \
-                                        f"{FILE_PATH}/assets/img/history/{date}/{employeeCode}/arrival.jpg"
-                                    os.makedirs(
-                                        f"{FILE_PATH}/assets/img/history/{date}/{employeeCode}", exist_ok=True)
-                                    cv2.imwrite(image_path, np.array(picture_array))
-                                    picture_path = image_path
-
-                                    # Create a new row for the user today:
-                                    insert_user_query = f"INSERT INTO timekeeping " \
-                                                        f"(employee_id, date_timekeeping, arrival_time, " \
-                                                        f"arrival_picture, is_late) VALUES " \
-                                                        f"({employee_id[0]}, " \
-                                                        f"'{date}', " \
-                                                        f"'{hour}', " \
-                                                        f"'{picture_path}', " \
-                                                        f"{is_late})"
-                                    cursor.execute(insert_user_query)
-                                cv2.imshow(winname='Video', mat=frame_orig)
-                            except (Exception, mysql.connector.DatabaseError) as error:
-                                print("ERROR DB: ", error)
-                            finally:
-                                connection.commit()
-                                # closing database connection.
-                                if connection:
-                                    cursor.close()
-                                    connection.close()
-                                    print("MySQL connection is closed")
+                            cv2.rectangle(
+                                img=frame_orig,
+                                pt1=(rect[0], rect[1]),
+                                pt2=(rect[2], rect[3]),
+                                color=(0, 0, 255),
+                                thickness=2
+                            )
+                            cv2.rectangle(
+                                img=frame_orig,
+                                pt1=(rect[0], rect[3] - 40),
+                                pt2=(rect[2], rect[3]),
+                                color=(0, 0, 255),
+                                thickness=-1
+                            )
+                            cv2.putText(
+                                img=frame_orig,
+                                text=str_show,
+                                org=(rect[0] + 5, rect[3] - 25),
+                                fontFace=cv2.FONT_HERSHEY_DUPLEX,
+                                fontScale=0.5,
+                                color=(255, 255, 255),
+                                thickness=1,
+                                lineType=cv2.LINE_AA
+                            )
+                            cv2.putText(
+                                img=frame_orig,
+                                text='Time: 12:35',
+                                org=(rect[0] + 5, rect[3] - 5),
+                                fontFace=cv2.FONT_HERSHEY_DUPLEX,
+                                fontScale=0.5,
+                                color=(255, 255, 255),
+                                thickness=1,
+                                lineType=cv2.LINE_AA
+                            )
+                            r = requests.post(url='http://192.168.1.71:5000/receive_data', json=json_to_export)
+                            print("Status: ", r.status_code)
+                        cv2.imshow(winname='Video', mat=frame_orig)
                     # Keep showing camera stream even if no human faces are detected
                     cv2.imshow(winname='Video', mat=frame_orig)
                 else:
                     continue
             cap.stop()  # Stop multi-threaded Video Stream
             cv2.destroyAllWindows()
+
             return render_template(template_name_or_list='index.html')
+
         except Exception as e:
             print(e)
+
     else:
         return render_template(
             template_name_or_list="warning.html",
             status="No embedding files detected! Please upload image files for embedding!"
         )
+
+
+@app.route('/receive_data_test', methods=['POST'])
+def get_receive_data_test():
+    if request.method == 'POST':
+        json_data = request.get_json()
+        print('jsondata', json_data)
+        return jsonify(json_data)
+
+
+@app.route('/receive_data', methods=['POST'])
+def get_receive_data():
+    if request.method == 'POST':
+        json_data = request.get_json()
+
+        # Check if the user is already in the DB
+        connection = database_connection()
+        try:
+            # Connect to the DB
+            cursor = connection.cursor()
+
+            # Get employee_id by employee_code from json data
+            employee_id_query = \
+                f"SELECT employee_id FROM employee WHERE 1=1 AND employee_code = '{json_data['employeeCode']}'"
+            cursor.execute(employee_id_query)
+            employee_id = cursor.fetchone()
+
+            cursor = connection.cursor()
+            # Query to check if the user as been saw by the camera today
+            user_saw_today_sql_query = \
+                f"SELECT arrival_time, departure_time FROM timekeeping WHERE 1=1 AND " \
+                f"DATE(date_timekeeping) = '{json_data['date']}' AND employee_id = {employee_id[0]}"
+            cursor.execute(user_saw_today_sql_query)
+            result = cursor.fetchall()
+            connection.commit()
+            # If use is already in the DB for today:
+            if result:
+                print('User OUT')
+                time_in = result[0][0]
+                time_out = result[0][1]
+                time_now = datetime.datetime.now()
+                is_continue = True
+                if time_out is None:
+                    minus_time = datetime.timedelta(
+                        seconds=hms_to_seconds(time_now.hour, time_now.minute, time_now.second)) - time_in
+                    if minus_time < datetime.timedelta(minutes=5):
+                        is_continue = False
+                else:
+                    minus_time = datetime.timedelta(
+                        seconds=hms_to_seconds(time_now.hour, time_now.minute, time_now.second)) - time_out
+                    if minus_time < datetime.timedelta(minutes=5):
+                        is_continue = False
+
+                if is_continue is True:
+                    image_path = f"{FILE_PATH}/assets/img/{json_data['date']}/{json_data['employeeCode']}/departure.jpg"
+
+                    # Save image
+                    os.makedirs(f"{FILE_PATH}/assets/img/{json_data['date']}/{json_data['employeeCode']}",
+                                exist_ok=True)
+                    cv2.imwrite(image_path, np.array(json_data['picture_array']))
+                    json_data['picture_path'] = image_path
+
+                    # Update timekeeping in the DB
+                    update_timekeeping_query = \
+                        f"UPDATE timekeeping SET departure_time = '{json_data['hour']}', " \
+                        f"departure_picture = '{json_data['picture_path']}', left_early = {json_data['left_early']} " \
+                        f"WHERE employee_id = {employee_id[0]} " \
+                        f"AND DATE(date_timekeeping) = '{json_data['date']}'"
+                    cursor.execute(update_timekeeping_query)
+                else:
+                    print('Ban ghi moi chua qua 5 phut')
+            else:
+                print("User IN")
+                # Save image
+                image_path = \
+                    f"{FILE_PATH}/assets/img/history/{json_data['date']}/{json_data['employeeCode']}/arrival.jpg"
+                os.makedirs(f"{FILE_PATH}/assets/img/history/{json_data['date']}/{json_data['employeeCode']}",
+                            exist_ok=True)
+                cv2.imwrite(image_path, np.array(json_data['picture_array']))
+                json_data['picture_path'] = image_path
+
+                # Create a new row for the user today:
+                insert_user_query = f"INSERT INTO timekeeping " \
+                                    f"(employee_id, date_timekeeping, arrival_time, arrival_picture, is_late) VALUES " \
+                                    f"({employee_id[0]}, " \
+                                    f"'{json_data['date']}', " \
+                                    f"'{json_data['hour']}', " \
+                                    f"'{json_data['picture_path']}', " \
+                                    f"{json_data['is_late']})"
+                cursor.execute(insert_user_query)
+                print("Insert done")
+
+        except (Exception, mysql.connector.DatabaseError) as error:
+            print("ERROR DB: ", error)
+        finally:
+            connection.commit()
+
+            # closing database connection.
+            if connection:
+                cursor.close()
+                connection.close()
+                print("MySQL connection is closed")
+
+            # Return user's data to the front
+        return jsonify(json_data)
 
 
 @app.route("/")
