@@ -1,6 +1,7 @@
 package com.example.timekeeping.form;
 
 import java.util.Date;
+import java.util.List;
 
 public class TimekeepingForm {
     private Long timekeepingId;
@@ -15,6 +16,7 @@ public class TimekeepingForm {
     private Date arrivalLateTime;
     private Date departureEarlyTime;
     private String employeeName;
+    private Boolean isAdmin;
     
     public Long getTimekeepingId() {
         return timekeepingId;
@@ -88,4 +90,10 @@ public class TimekeepingForm {
     public void setEmployeeName(String employeeName) {
         this.employeeName = employeeName;
     }
+	public Boolean getIsAdmin() {
+		return isAdmin;
+	}
+	public void setIsAdmin(Boolean isAdmin) {
+		this.isAdmin = isAdmin;
+	}
 }

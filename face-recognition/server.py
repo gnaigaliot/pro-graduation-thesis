@@ -245,21 +245,28 @@ def face_detect_live():
                             json_to_export['date'] = \
                                 f'{time.localtime().tm_year}-{time.localtime().tm_mon}-{time.localtime().tm_mday}'
                             json_to_export['picture_array'] = frame.tolist()
-
+                            FMT = '%H:%M:%S'
                             # Check time arrive is late or departure is soon
                             if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
                                                                           time.localtime().tm_min,
                                                                           time.localtime().tm_sec)) -
                                 datetime.timedelta(seconds=hms_to_seconds(8, 30, 0))) >= datetime.timedelta(minutes=1):
                                 json_to_export['is_late'] = 1
+                                timeInterval = datetime.datetime.strptime(json_to_export['hour'],
+                                                                          FMT) - datetime.datetime.strptime('08:30:00',
+                                                                                                            FMT)
+                                json_to_export['arrival_late_time'] = f'{timeInterval}'
                             else:
                                 json_to_export['is_late'] = 0
 
-                            if (datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
+                            if (datetime.timedelta(seconds=hms_to_seconds(17, 30, 0)) -
+                                datetime.timedelta(seconds=hms_to_seconds(time.localtime().tm_hour,
                                                                           time.localtime().tm_min,
-                                                                          time.localtime().tm_sec)) -
-                                datetime.timedelta(seconds=hms_to_seconds(17, 30, 0))) >= datetime.timedelta(minutes=1):
+                                                                          time.localtime().tm_sec))) >= datetime.timedelta(minutes=1):
                                 json_to_export['left_early'] = 1
+                                timeInterval = datetime.datetime.strptime('17:30:00', FMT) - datetime.datetime.strptime(
+                                    json_to_export['hour'], FMT)
+                                json_to_export['departure_early_time'] = f'{timeInterval}'
                             else:
                                 json_to_export['left_early'] = 0
 
@@ -287,9 +294,10 @@ def face_detect_live():
                                 thickness=1,
                                 lineType=cv2.LINE_AA
                             )
+                            strTime = 'Time: ' + json_to_export['hour']
                             cv2.putText(
                                 img=frame_orig,
-                                text='Time: 12:35',
+                                text=strTime,
                                 org=(rect[0] + 5, rect[3] - 5),
                                 fontFace=cv2.FONT_HERSHEY_DUPLEX,
                                 fontScale=0.5,
@@ -297,7 +305,7 @@ def face_detect_live():
                                 thickness=1,
                                 lineType=cv2.LINE_AA
                             )
-                            r = requests.post(url='http://192.168.1.71:5000/receive_data', json=json_to_export)
+                            r = requests.post(url='http://192.168.2.11:5000/receive_data', json=json_to_export)
                             print("Status: ", r.status_code)
                         cv2.imshow(winname='Video', mat=frame_orig)
                     # Keep showing camera stream even if no human faces are detected
@@ -380,12 +388,20 @@ def get_receive_data():
                     json_data['picture_path'] = image_path
 
                     # Update timekeeping in the DB
-                    update_timekeeping_query = \
-                        f"UPDATE timekeeping SET departure_time = '{json_data['hour']}', " \
-                        f"departure_picture = '{json_data['picture_path']}', left_early = {json_data['left_early']} " \
-                        f"WHERE employee_id = {employee_id[0]} " \
-                        f"AND DATE(date_timekeeping) = '{json_data['date']}'"
-                    cursor.execute(update_timekeeping_query)
+                    if json_data['left_early'] == 1:
+                        update_timekeeping_query = \
+                            f"UPDATE timekeeping SET departure_time = '{json_data['hour']}', " \
+                            f"departure_picture = '{json_data['picture_path']}', left_early = {json_data['left_early']}, departure_early_time = '{json_data['departure_early_time']}' " \
+                            f"WHERE employee_id = {employee_id[0]} " \
+                            f"AND DATE(date_timekeeping) = '{json_data['date']}'"
+                        cursor.execute(update_timekeeping_query)
+                    else:
+                        update_timekeeping_query = \
+                            f"UPDATE timekeeping SET departure_time = '{json_data['hour']}', " \
+                            f"departure_picture = '{json_data['picture_path']}', left_early = {json_data['left_early']}" \
+                            f"WHERE employee_id = {employee_id[0]} " \
+                            f"AND DATE(date_timekeeping) = '{json_data['date']}'"
+                        cursor.execute(update_timekeeping_query)
                 else:
                     print('Ban ghi moi chua qua 5 phut')
             else:
@@ -399,14 +415,25 @@ def get_receive_data():
                 json_data['picture_path'] = image_path
 
                 # Create a new row for the user today:
-                insert_user_query = f"INSERT INTO timekeeping " \
-                                    f"(employee_id, date_timekeeping, arrival_time, arrival_picture, is_late) VALUES " \
-                                    f"({employee_id[0]}, " \
-                                    f"'{json_data['date']}', " \
-                                    f"'{json_data['hour']}', " \
-                                    f"'{json_data['picture_path']}', " \
-                                    f"{json_data['is_late']})"
-                cursor.execute(insert_user_query)
+                if json_data['is_late'] == 1:
+                    insert_user_query = f"INSERT INTO timekeeping " \
+                                        f"(employee_id, date_timekeeping, arrival_time, arrival_picture, is_late, arrival_late_time) VALUES " \
+                                        f"({employee_id[0]}, " \
+                                        f"'{json_data['date']}', " \
+                                        f"'{json_data['hour']}', " \
+                                        f"'{json_data['picture_path']}', " \
+                                        f"{json_data['is_late']}, " \
+                                        f"'{json_data['arrival_late_time']}')"
+                    cursor.execute(insert_user_query)
+                else:
+                    insert_user_query = f"INSERT INTO timekeeping " \
+                                        f"(employee_id, date_timekeeping, arrival_time, arrival_picture, is_late) VALUES " \
+                                        f"({employee_id[0]}, " \
+                                        f"'{json_data['date']}', " \
+                                        f"'{json_data['hour']}', " \
+                                        f"'{json_data['picture_path']}', " \
+                                        f"{json_data['is_late']}) "
+                    cursor.execute(insert_user_query)
                 print("Insert done")
 
         except (Exception, mysql.connector.DatabaseError) as error:

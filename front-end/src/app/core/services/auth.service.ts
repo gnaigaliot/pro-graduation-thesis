@@ -48,7 +48,8 @@ export class AuthService extends BasicService {
       lstRoleCode: token.lstRoleCode,
       loginTime: new Date().getTime(),
       tokenExpiresIn: expireDate,
-      employeeImgUrl: token.employeeImgUrl
+      employeeImgUrl: token.employeeImgUrl,
+      employeeId: token.employeeId
     };
 
     return loginUser;

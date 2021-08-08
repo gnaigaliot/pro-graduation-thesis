@@ -30,12 +30,12 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
 
   formConfig = {
     employeeId: [''],
-    employeeCode: ['', [Validators.required]],
-    employeeName: ['', [Validators.required]],
+    employeeCode: ['', [Validators.required, Validators.maxLength(10)]],
+    employeeName: ['', [Validators.required, Validators.maxLength(100)]],
     dateOfBirth: ['', [Validators.required]],
     gender: ['', [Validators.required]],
-    email: ['', [Validators.required]],
-    phoneNumber: ['', [Validators.required]],
+    email: ['', [Validators.required, Validators.maxLength(50)]],
+    phoneNumber: ['', [Validators.required, Validators.maxLength(20)]],
     status: [''],
     departmentId: ['', [Validators.required]],
     positionId: ['', [Validators.required]],
@@ -98,8 +98,10 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
       // tslint:disable-next-line: deprecation
       .subscribe(res => {
         if (this.employeeService.requestIsSuccess(res)) {
+          debugger
           const files: FileList = this.fileInput.nativeElement.files;
           if (files.length === 0) {
+            this.activeModal.close(res);
             return;
           };
           this.parseTable(files).subscribe((data: any) => {
@@ -115,7 +117,7 @@ export class EmployeeFormComponent extends BaseComponent implements OnInit {
   parseTable(files) {
     const formData: FormData = new FormData();
     formData.append('file', files[0], files[0].name);
-    return this.http.post('http://192.168.1.71:5000/upload', formData);
+    return this.http.post('http://192.168.143.1:5000/upload', formData);
   }
 
   fileChangeEvent(fileInput: any): boolean {

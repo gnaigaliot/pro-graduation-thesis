@@ -63,4 +63,8 @@ public class TimekeepingService {
     public List<LineChartBean> getLineChartData(Date firstDate, Date lastDate) {
         return timekeepingdao.getListDataLineChart(vfData, firstDate, lastDate);
     }
+    
+    public List<TimekeepingBO> getListTimekeepingByEmployeeId(Long employeeId) {
+        return timekeepingdao.getListTimekeepingByEmployeeId(vfData, employeeId);
+    }
 }

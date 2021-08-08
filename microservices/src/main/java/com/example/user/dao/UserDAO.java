@@ -53,6 +53,7 @@ public interface UserDAO extends CrudRepository<UserBO, Long> {
                 + "     , rls.role_id as roleId"
                 + "     , rls.role_name as roleName"
                 + "     , e.employee_img_url as employeeImgUrl "
+                + "     , e.employee_id as employeeId "
                 + " FROM users usr "
                 + " LEFT JOIN employee_images e ON usr.employee_id = e.employee_id "
                 + " LEFT JOIN employee ep ON usr.employee_id = ep.employee_id "

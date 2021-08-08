@@ -35,6 +35,8 @@ import com.example.employeeManager.employeeImages.bo.EmployeeImagesBO;
 import com.example.employeeManager.employeeImages.service.EmployeeImagesService;
 import com.example.genCodeEmployee.bo.GenCodeEmployeeBO;
 import com.example.genCodeEmployee.service.GenCodeEmployeeService;
+import com.example.timekeeping.bo.TimekeepingBO;
+import com.example.timekeeping.service.TimekeepingService;
 import com.example.user.entity.RoleBO;
 import com.example.user.entity.UserBO;
 import com.example.user.entity.UserForm;
@@ -69,6 +71,9 @@ public class EmployeeController extends BaseController {
     
     @Autowired
     private GenCodeEmployeeService genCodeEmployeeService;
+    
+    @Autowired
+    private TimekeepingService timekeepingService;
 
     /**
      * findById
@@ -160,10 +165,9 @@ public class EmployeeController extends BaseController {
         EmployeeImagesBO employeeImageBo;
         if (employeeId > 0L) {
             employeeImageBo = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
-            if (employeeImageBo != null && !form.getEmployeeImgUrl().equals(employeeImageBo.getEmployeeImgUrl())) {
+            if (employeeImageBo != null) {
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
                 employeeImageBo.setEmployeeId(employeeId);
-                employeeImagesService.saveOrUpdate(employeeImageBo);
                 // delete old file and add new file
                 String base64String = employeeImageBo.getEmployeeImgUrl();
                 String[] strings = base64String.split(",");
@@ -180,24 +184,26 @@ public class EmployeeController extends BaseController {
                     break;
                 }
                 String path = "../assets/img/users/" + employeeBO.getEmployeeCode() + "." + extension;
+                employeeImageBo.setImgName(employeeBO.getEmployeeCode() + "." + extension);
                 try {
                     File f = new File(path);
                     if (f.delete()) {
                         System.out.println(f.getName() + " deleted");
                         employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(),
-                                employeeBO.getEmployeeCode());
+                                employeeBO.getEmployeeCode(), employeeImageBo);
                     } else {
                         System.out.println("failed");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+                employeeImagesService.saveOrUpdate(employeeImageBo);
             } else {
             	if (!CommonUtil.isNullOrEmpty(form.getEmployeeImgUrl())) {
                     employeeImageBo = new EmployeeImagesBO();
                     employeeImageBo.setEmployeeId(employeeBO.getEmployeeId());
                     employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
-                    employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
+                    employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode(), employeeImageBo);
                     employeeImagesService.saveOrUpdate(employeeImageBo);
                 }
             }
@@ -206,7 +212,7 @@ public class EmployeeController extends BaseController {
                 employeeImageBo = new EmployeeImagesBO();
                 employeeImageBo.setEmployeeId(employeeBO.getEmployeeId());
                 employeeImageBo.setEmployeeImgUrl(form.getEmployeeImgUrl());
-                employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode());
+                employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(), employeeBO.getEmployeeCode(), employeeImageBo);
                 employeeImagesService.saveOrUpdate(employeeImageBo);
             }
         }
@@ -261,6 +267,7 @@ public class EmployeeController extends BaseController {
     public @ResponseBody Response delete(HttpServletRequest req, @PathVariable Long employeeId) {
         EmployeeBO bo;
         EmployeeImagesBO employeeImageBO;
+        List<TimekeepingBO> timekeepingBO;
         if (employeeId > 0L) {
             bo = employeeService.findById(employeeId);
             if (bo == null) {
@@ -269,6 +276,35 @@ public class EmployeeController extends BaseController {
             employeeImageBO = employeeImagesService.getEmployeeImageByEmployeeIdBO(employeeId);
             if (employeeImageBO == null) {
                 return Response.warning(Constants.RESPONSE_CODE.RECORD_DELETED);
+            }
+            timekeepingBO = timekeepingService.getListTimekeepingByEmployeeId(employeeId);
+            String path1 = "../assets/img/users/" + employeeImageBO.getImgName();
+            String path2 = "../face-recognition/uploads/" + employeeImageBO.getImgName();
+            String path3 = "../face-recognition/embeddings/" + bo.getEmployeeCode() + ".npy";
+            try {
+                File f = new File(path1);
+                if (f.delete()) {
+                    System.out.println(f.getName() + " deleted");
+                } else {
+                    System.out.println("failed");
+                }
+                File f1 = new File(path2);
+                if (f1.delete()) {
+                    System.out.println(f1.getName() + " deleted");
+                } else {
+                    System.out.println("failed");
+                }
+                File f2 = new File(path3);
+                if (f2.delete()) {
+                    System.out.println(f2.getName() + " deleted");
+                } else {
+                    System.out.println("failed");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            for (TimekeepingBO item : timekeepingBO) {
+                timekeepingService.delete(item);
             }
             employeeImagesService.delete(employeeImageBO);
             employeeService.delete(bo);
@@ -311,7 +347,7 @@ public class EmployeeController extends BaseController {
                 if (f.delete()) {
                     System.out.println(f.getName() + " deleted");
                     employeeImagesService.saveImageToDirectory(form.getEmployeeImgUrl(),
-                            employeeBO.getEmployeeCode());
+                            employeeBO.getEmployeeCode(), bo);
                 } else {
                     System.out.println("failed");
                 }

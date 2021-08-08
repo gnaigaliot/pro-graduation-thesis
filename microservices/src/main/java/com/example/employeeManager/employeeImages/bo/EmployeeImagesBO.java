@@ -27,6 +27,9 @@ public class EmployeeImagesBO {
 
     @Column(name = "employee_img_url")
     private String employeeImgUrl;
+    
+    @Column(name = "img_name")
+    private String imgName;
 
 
     /**
@@ -75,4 +78,11 @@ public class EmployeeImagesBO {
         return this.employeeImgUrl;
     }
 
+    public String getImgName() {
+        return imgName;
+    }
+
+    public void setImgName(String imgName) {
+        this.imgName = imgName;
+    }
 }

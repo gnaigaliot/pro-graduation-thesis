@@ -15,8 +15,8 @@ export class DepartmentFormComponent extends BaseComponent implements OnInit {
   formSave: FormGroup;
   formConfig = {
     departmentId: [''],
-    departmentCode: ['', [Validators.required]],
-    departmentName: ['', [Validators.required]],
+    departmentCode: ['', [Validators.required, Validators.maxLength(10)]],
+    departmentName: ['', [Validators.required, Validators.maxLength(50)]],
     statusDepartment: ['']
   };
   constructor(

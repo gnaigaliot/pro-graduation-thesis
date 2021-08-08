@@ -33,4 +33,5 @@ export class UserToken {
   // userMenuList: UserMenu[];
   userInfo: any;
   employeeImgUrl: string;
+  employeeId: number;
 }

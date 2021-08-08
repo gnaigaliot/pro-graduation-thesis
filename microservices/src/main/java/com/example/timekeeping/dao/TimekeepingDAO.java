@@ -50,6 +50,9 @@ public interface TimekeepingDAO extends CrudRepository<TimekeepingBO, Long> {
         sql += "       INNER JOIN employee e ON t.employee_id = e.employee_id AND e.status = 1 ";
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 ");
+        if (formData.getEmployeeId() != null && formData.getIsAdmin() == false) {
+            strCondition.append(String.format(" AND e.employee_id = %d ", formData.getEmployeeId()));
+        }
         
         CommonUtil.filter(formData.getDateTimekeeping(), strCondition, paramList, "t.date_timekeeping");
         CommonUtil.filter(formData.getEmployeeName(), strCondition, paramList, "e.employee_name");
@@ -80,6 +83,19 @@ public interface TimekeepingDAO extends CrudRepository<TimekeepingBO, Long> {
         query.setParameter("firstDate", CommonUtil.convertDateToString(monday));
         query.setParameter("lastDate", CommonUtil.convertDateToString(sunday));
         vfData.setResultTransformer(query, LineChartBean.class);
+        return query.list();
+    }
+    
+    public default List<TimekeepingBO> getListTimekeepingByEmployeeId(VfData vfData, Long employeeId) {
+        String sql = " SELECT "
+                + " t.timekeeping_id as timekeepingId, "
+                + " t.employee_id as employeeId "
+                + " FROM timekeeping t "
+                + " WHERE 1 = 1 "
+                + " AND t.employee_id = :employeeId ";
+        SQLQuery query = vfData.createSQLQuery(sql);
+        query.setParameter("employeeId", employeeId);
+        vfData.setResultTransformer(query, TimekeepingBO.class);
         return query.list();
     }
 }

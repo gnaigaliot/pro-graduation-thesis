@@ -15,9 +15,9 @@ export class RoleFormComponent extends BaseComponent implements OnInit {
   formSave: FormGroup;
   formConfig = {
     roleId: [''],
-    role: ['', [Validators.required]],
-    roleName: ['', [Validators.required]],
-    description: ['']
+    role: ['', [Validators.required, Validators.maxLength(50)]],
+    roleName: ['', [Validators.required, Validators.maxLength(200)]],
+    description: ['', [Validators.maxLength(500)]]
   };
 
   constructor(

@@ -75,7 +75,7 @@ public class EmployeeImagesService {
         return employeeImagesdao.getUrlImageByEmployeeIdBO(vfData, employeeId);
     }
     
-    public void saveImageToDirectory(String employeeImageUrl, String employeeCode) {
+    public void saveImageToDirectory(String employeeImageUrl, String employeeCode, EmployeeImagesBO employeeImagesBO) {
         // save string base64 as a file to folder start
         String base64String = employeeImageUrl;
         String[] strings = base64String.split(",");
@@ -94,6 +94,7 @@ public class EmployeeImagesService {
         //convert base64 string to binary data
         byte[] data = DatatypeConverter.parseBase64Binary(strings[1]);
         String path = "../assets/img/users/" + employeeCode + "." + extension;
+        employeeImagesBO.setImgName(employeeCode + "." + extension);
         File file = new File(path);
         try (OutputStream outputStream = new BufferedOutputStream(new FileOutputStream(file))) {
             outputStream.write(data);
