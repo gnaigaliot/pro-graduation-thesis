@@ -69,4 +69,8 @@ public class EmployeeService {
     public List<PieChartBean> getPieChartData() {
         return employeedao.getPieChartData(vfData);
     }
+    
+    public List<EmployeeBean> getListActiveEmployee() {
+        return employeedao.getListActiveEmployee(vfData);
+    }
 }

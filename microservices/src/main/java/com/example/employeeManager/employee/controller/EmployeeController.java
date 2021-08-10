@@ -114,7 +114,7 @@ public class EmployeeController extends BaseController {
     @GetMapping
     public @ResponseBody List<EmployeeBO> getAll(HttpServletRequest req) {
       return employeeService.findAll();
-  } 
+    }
 
     /**
      * saveOrUpdate EmployeeBO
@@ -356,5 +356,10 @@ public class EmployeeController extends BaseController {
             }
         }
         return Response.success(Constants.RESPONSE_CODE.SUCCESS).withData(bo);
+    }
+    
+    @GetMapping(path = "/get-list-active-employee")
+    public @ResponseBody List<EmployeeBean> getListActiveEmployee(HttpServletRequest req) {
+        return employeeService.getListActiveEmployee();
     }
 }

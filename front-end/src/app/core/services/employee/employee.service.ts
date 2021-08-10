@@ -34,4 +34,9 @@ export class EmployeeService extends BasicService {
     const url = `${this.serviceUrl}/change-avatar`;
     return this.postRequest(url, CommonUtils.convertData(data));
   }
+
+  public getListActiveEmployee(): Observable<any> {
+    const url = `${this.serviceUrl}/get-list-active-employee`;
+    return this.getRequest(url);
+  }
 }

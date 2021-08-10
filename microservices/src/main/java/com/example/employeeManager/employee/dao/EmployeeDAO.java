@@ -119,4 +119,16 @@ public interface EmployeeDAO extends CrudRepository<EmployeeBO, Long>
         vfData.setResultTransformer(query, PieChartBean.class);
         return query.list();
     }
+    
+    public default List<EmployeeBean> getListActiveEmployee(VfData vfData) {
+        String sql = " SELECT "
+               + " e.employee_id As employeeId, "
+               + " e.employee_code As employeeCode, "
+               + " e.employee_name As employeeName "
+               + " FROM employee e "
+               + " WHERE 1=1 AND e.status = 1 ";
+        SQLQuery query = vfData.createSQLQuery(sql);
+        vfData.setResultTransformer(query, EmployeeBean.class);
+        return query.list();
+    }
 }

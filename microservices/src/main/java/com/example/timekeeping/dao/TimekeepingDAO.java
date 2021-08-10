@@ -50,12 +50,14 @@ public interface TimekeepingDAO extends CrudRepository<TimekeepingBO, Long> {
         sql += "       INNER JOIN employee e ON t.employee_id = e.employee_id AND e.status = 1 ";
 
         StringBuilder strCondition = new StringBuilder(" WHERE 1 = 1 ");
+        // neu khong phai admin thi chi lay ban ghi cua nhan vien day thoi
         if (formData.getEmployeeId() != null && formData.getIsAdmin() == false) {
             strCondition.append(String.format(" AND e.employee_id = %d ", formData.getEmployeeId()));
         }
         
         CommonUtil.filter(formData.getDateTimekeeping(), strCondition, paramList, "t.date_timekeeping");
-        CommonUtil.filter(formData.getEmployeeName(), strCondition, paramList, "e.employee_name");
+        CommonUtil.filter(formData.getDepartmentId(), strCondition, paramList, "e.department_id");
+        CommonUtil.filter(formData.getEmployeeId(), strCondition, paramList, "e.employee_id");
         
         String orderBy = " ORDER BY timekeepingId DESC";
         return vfData.findPaginationQuery(sql + strCondition.toString(), orderBy, paramList, TimekeepingBean.class);

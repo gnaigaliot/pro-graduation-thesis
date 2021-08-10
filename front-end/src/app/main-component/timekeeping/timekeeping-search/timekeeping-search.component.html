@@ -8,19 +8,32 @@
         </div>
         <div class="panel-body padding-xl ui-g">
             <div class="ui-g-12">
-                <label class="ui-g-12 ui-md-4 ui-lg-2 control-label vt-align-right">Tên nhân viên</label>
-                <div class="ui-g-12 ui-md-4 ui-lg-3">
-                    <input class="form-control" formControlName="employeeName" autofocus>
-                </div>
-                <label class="ui-g-12 ui-md-4 ui-lg-3 control-label vt-align-right">Ngày chấm công</label>
+                <label class="ui-g-12 ui-md-4 ui-lg-2 control-label vt-align-right">Ngày chấm công</label>
                 <div class="ui-g-12 ui-md-4 ui-lg-3">
                     <date-picker [property]="f['dateTimekeeping']" dateFormat='dd/mm/yy'></date-picker>
+                </div>
+            </div>
+            <div class="ui-g-12" *ngIf="havePermission('ROLE_ADMIN')">
+                <label class="ui-g-12 ui-md-4 ui-lg-2 control-label vt-align-right">Chọn phòng ban</label>
+                <div class="ui-g-12 ui-md-4 ui-lg-3">
+                    <app-select-filter [options]="listDepartment" [placeHolder]="'Chọn phòng ban'" [property]="f['departmentId']" 
+                        optionLabel="departmentName" optionValue="departmentId"></app-select-filter>
+                    <app-control-messages [control]="f['departmentId']"></app-control-messages>
+                </div>
+                <label class="ui-g-12 ui-md-4 ui-lg-3 control-label vt-align-right">Chọn nhân viên</label>
+                <div class="ui-g-12 ui-md-4 ui-lg-3">
+                    <app-select-filter [options]="listEmployee" [placeHolder]="'Chọn nhân viên'" [property]="f['employeeId']" 
+                        optionLabel="employeeNameCode" optionValue="employeeId"></app-select-filter>
+                    <app-control-messages [control]="f['employeeId']"></app-control-messages>
                 </div>
             </div>
         </div>
         <div class="panel-footer vt-area-button">
             <button type="submit" (click)="processSearch();" class="btn btn-sm btn-info">
                 <i class="pi pi-search"></i> Tìm kiếm
+            </button>
+            <button type="submit" (click)="exportExcel();" class="btn btn-sm btn-success">
+                <i class="pi pi-download"></i> Xuất báo cáo
             </button>
         </div>
     </form>
@@ -33,7 +46,7 @@
         </strong>
     </div>
     <div class="panel-body panel-table">
-        <p-table #ptable [value]="resultList.data" [paginator]="resultList.data && resultList.data.length"
+        <p-table #ptable [value]="resultList.data" [paginator]="resultList.data && resultList.data.length" [rowsPerPageOptions]="[10,25,50]"
             (onLazyLoad)="processSearch($event)" [lazy]="true" [rows]="10" [totalRecords]="resultList.recordsTotal"
             [responsive]="true" [lazyLoadOnInit]="false"
             tableStyleClass="table table-wrapper table-hover table-striped b-t b-b">
