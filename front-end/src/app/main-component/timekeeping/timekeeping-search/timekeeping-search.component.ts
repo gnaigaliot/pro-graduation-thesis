@@ -34,9 +34,10 @@ export class TimekeepingSearchComponent extends BaseComponent implements OnInit 
     this.setMainService(timekeepingService);
     const userLogin = Storage.getUserToken();
     this.formSearch = this.buildForm({}, this.formConfig);
-    this.formSearch.controls.employeeId.setValue(userLogin.employeeId);
     if (userLogin.lstRoleCode.includes('ROLE_ADMIN')) {
       this.formSearch.controls.isAdmin.setValue(true);
+    } else {
+      this.formSearch.controls.employeeId.setValue(userLogin.employeeId);
     }
     this.departmentService.getAllWithoutPagination().subscribe(res => {
       this.listDepartment = res;

@@ -305,7 +305,7 @@ def face_detect_live():
                                 thickness=1,
                                 lineType=cv2.LINE_AA
                             )
-                            r = requests.post(url='http://192.168.2.11:5000/receive_data', json=json_to_export)
+                            r = requests.post(url='http://192.168.143.1:5000/receive_data', json=json_to_export)
                             print("Status: ", r.status_code)
                         cv2.imshow(winname='Video', mat=frame_orig)
                     # Keep showing camera stream even if no human faces are detected
